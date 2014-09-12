@@ -22,7 +22,6 @@ namespace Vayne_The_Hunter_Of_The_Night
         public static string[] gapcloser;
         public static Obj_AI_Hero tar;
         public static Dictionary<string, SpellSlot> spellData;
-
         static void Main(string[] args)
         {
             try
@@ -37,7 +36,6 @@ namespace Vayne_The_Hunter_Of_The_Night
         }
         static void Game_OnGameLoad(EventArgs args)
         {
-            //
             if (player.BaseSkinName != champName) return;
             //Q = new Spell(SpellSlot.Q, 0);
             
@@ -49,7 +47,7 @@ namespace Vayne_The_Hunter_Of_The_Night
             var ts = new Menu("Target Selector","TargetSelector");
             SimpleTs.AddToMenu(ts);
             VayneMenu.AddSubMenu(ts);
-            
+          
             VayneMenu.AddSubMenu(new Menu( "Vayne Combo","Combo"));
             VayneMenu.SubMenu("Combo").AddItem(new MenuItem("UseQ", "Use Q").SetValue(true));
             VayneMenu.SubMenu("Combo").AddItem(new MenuItem("UseE", "Use E").SetValue(true));
@@ -103,6 +101,7 @@ namespace Vayne_The_Hunter_Of_The_Night
                 "AlZaharNetherGrasp", "FallenOne", "Pantheon_GrandSkyfall_Jump", "VarusQ", "CaitlynAceintheHole",
                 "MissFortuneBulletTime", "InfiniteDuress", "LucianR"
             };
+            VayneMenu.SubMenu("gap").AddItem(new MenuItem("RengarLeap", "Rengar Leap")).SetValue(true);
             for (int i = 0; i < gapcloser.Length; i++)
             {
                 VayneMenu.SubMenu("gap").AddItem(new MenuItem(gapcloser[i], gapcloser[i])).SetValue(true);
@@ -115,11 +114,13 @@ namespace Vayne_The_Hunter_Of_The_Night
             {
                 VayneMenu.SubMenu("int").AddItem(new MenuItem(interrupt[i], interrupt[i])).SetValue(true);
             }
+            
             E.SetTargetted(0.25f, 2200f);
-            Game.PrintChat("Vayne - The Hunter of The Night Loaded By DZ191");
+            Game.PrintChat("Vayne - The Hunter of The Night By DZ191 Loaded");
             Obj_AI_Base.OnProcessSpellCast += Game_ProcessSpell;
             Game.OnGameUpdate += Game_OnGameUpdate;
             Orbwalking.AfterAttack += Orbwalking_AfterAttack;
+            Obj_AI_Base.OnPlayAnimation += OnRengarAnimation;
             VayneMenu.AddToMainMenu();
         }
         public static void Game_ProcessSpell(Obj_AI_Base hero, GameObjectProcessSpellCastEventArgs args)
@@ -153,6 +154,7 @@ namespace Vayne_The_Hunter_Of_The_Night
                 E.Cast(hero);
             }
         }
+        
         public static void Orbwalking_AfterAttack(Obj_AI_Base unit, Obj_AI_Base target)
         {
             if (unit.IsMe)
@@ -185,6 +187,10 @@ namespace Vayne_The_Hunter_Of_The_Night
                         }
                         if (getManaPer() >= ManaVal1)
                         {
+                            if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
+                            {
+                                R.Cast();
+                            }
                             Q.Cast(Game.CursorPos);
                         }
                     }
@@ -202,6 +208,10 @@ namespace Vayne_The_Hunter_Of_The_Night
                             ManaVal = VayneMenu.Item("QManaM").GetValue<Slider>().Value;
                         }
                         if(getManaPer() >= ManaVal){
+                            if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
+                            {
+                                R.Cast();
+                            }
                              Q.Cast(Game.CursorPos);
                         }
                     }
@@ -224,7 +234,7 @@ namespace Vayne_The_Hunter_Of_The_Night
 
          public static void Game_OnGameUpdate(EventArgs args)
          {
-             if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady())
+             if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && !VayneMenu.Item("UseRQ").GetValue<bool>())
              {
                  R.Cast();
              }
@@ -259,9 +269,31 @@ namespace Vayne_The_Hunter_Of_The_Night
                     E.Cast(hero);
                 }
             }
-            
          }
-         public static void useItem(int id, Obj_AI_Hero target = null)
+         public static void OnRengarAnimation(LeagueSharp.Obj_AI_Base sender, LeagueSharp.GameObjectPlayAnimationEventArgs args)
+         {
+             
+             if(sender.BaseSkinName == "Rengar" && !sender.IsAlly)
+             {
+                 
+                 if(args.Animation.Equals("Rengar_LeapSound.troy") && VayneMenu.Item("RengarLeap").GetValue<bool>())
+                 {
+                     AntiGapcloseRengarLeap(sender);
+                 }
+             }
+         }
+        public static void AntiGapcloseRengarLeap(Obj_AI_Base rengar)
+         {
+             bool EState = E.IsReady();
+             if(Vector3.DistanceSquared(ObjectManager.Player.Position, rengar.Position)<1000*1000)
+             { 
+                if(EState)
+                {
+                    E.Cast(rengar);
+                }
+             }
+         }
+        public static void useItem(int id, Obj_AI_Hero target = null)
          {
              if (Items.HasItem(id) && Items.CanUseItem(id))
              {
