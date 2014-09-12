@@ -212,7 +212,7 @@ namespace Vayne_The_Hunter_Of_The_Night
                         {
                             ManaVal = VayneMenu.Item("QManaM").GetValue<Slider>().Value;
                         }
-                        Game.PrintChat((getManaPer() >= ManaVal1).ToString());
+                        Game.PrintChat("Hue"+(getManaPer() >= ManaVal).ToString());
                         if(getManaPer() >= ManaVal){
                             if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
                             {
