@@ -167,7 +167,7 @@ namespace Vayne_The_Hunter_Of_The_Night
                     VayneMenu.Item("ENextAuto").SetValue<KeyBind>(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle));
                 }
 
-                if ((Orbwalker.ActiveMode.ToString() == "Combo" || Orbwalker.ActiveMode.ToString() == "Mixed") && VayneMenu.Item("UseQ").GetValue<bool>() && VayneMenu.Item("UseQM").GetValue<bool>() &&
+                if ((Orbwalker.ActiveMode.ToString() == "Combo" || Orbwalker.ActiveMode.ToString() == "Mixed") && VayneMenu.Item("UseQ").GetValue<bool>()  &&
                     Q.IsReady())
                 {
                     var after = ObjectManager.Player.Position + Normalize(Game.CursorPos - ObjectManager.Player.Position) * 300;
