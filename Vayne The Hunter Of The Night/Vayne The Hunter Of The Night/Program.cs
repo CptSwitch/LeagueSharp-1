@@ -235,6 +235,9 @@ namespace Vayne_The_Hunter_Of_The_Night
 
          public static void Game_OnGameUpdate(EventArgs args)
          {
+             Game.PrintChat((VayneMenu.Item("UseR").GetValue<bool>()).ToString());
+             Game.PrintChat((R.IsReady()).ToString());
+             Game.PrintChat((VayneMenu.Item("UseRQ").GetValue<bool>()).ToString());
              if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && !VayneMenu.Item("UseRQ").GetValue<bool>())
              {
                  R.Cast();
