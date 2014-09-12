@@ -185,19 +185,16 @@ namespace Vayne_The_Hunter_Of_The_Night
                         {
                             ManaVal1 = VayneMenu.Item("QManaM").GetValue<Slider>().Value;
                         }
-                        Game.PrintChat((getManaPer() >= ManaVal1).ToString());
-                        if (getManaPer() >= ManaVal1)
-                        {
-                           
+                        //Game.PrintChat((getManaPer() >= ManaVal1).ToString());
+                        //if (getManaPer() >= ManaVal1)
+                        //{
                             if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
                             {
                                 R.Cast();
                                 Q.Cast(Game.CursorPos);
                             }
                             Q.Cast(Game.CursorPos);
-                            
-                            
-                        }
+                        //}
                     }
                     if (Vector3.DistanceSquared(tar.Position, ObjectManager.Player.Position) > 630 * 630 &&
                         disafter < 630 * 630)
@@ -212,15 +209,15 @@ namespace Vayne_The_Hunter_Of_The_Night
                         {
                             ManaVal = VayneMenu.Item("QManaM").GetValue<Slider>().Value;
                         }
-                        Game.PrintChat("Hue"+(getManaPer() >= ManaVal).ToString());
-                        if(getManaPer() >= ManaVal){
+                        
+                       // if(getManaPer() >= ManaVal){
                             if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
                             {
                                 R.Cast();
                                 Q.Cast(Game.CursorPos);
                             }
                              Q.Cast(Game.CursorPos);
-                        }
+                       // }
                     }
                 }
                 float OwnH = getPlHPer();
