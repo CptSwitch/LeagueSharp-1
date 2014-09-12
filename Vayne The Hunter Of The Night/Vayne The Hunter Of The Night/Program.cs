@@ -265,6 +265,7 @@ namespace Vayne_The_Hunter_Of_The_Night
                 {
                     ManaVal = VayneMenu.Item("EManaM").GetValue<Slider>().Value;
                 }
+                Game.PrintChat((getManaPer() >= ManaVal).ToString());
                if (getManaPer() >= ManaVal)
                 {
                     E.Cast(hero,true);
