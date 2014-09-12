@@ -65,7 +65,6 @@ namespace Vayne_The_Hunter_Of_The_Night
             VayneMenu.SubMenu("Items").AddItem(new MenuItem("Youmuu", "Use Youmuu").SetValue(true));
             VayneMenu.SubMenu("Items").AddItem(new MenuItem("OwnHPercBotrk", "Min Own H % Botrk").SetValue(new Slider(50, 1, 100)));
             VayneMenu.SubMenu("Items").AddItem(new MenuItem("EnHPercBotrk", "Min Enemy H % Botrk").SetValue(new Slider(20, 1, 100)));
-            VayneMenu.SubMenu("Items").AddItem(new MenuItem("ItInComb", "Use Items In Combo").SetValue(true));
             VayneMenu.SubMenu("Items").AddItem(new MenuItem("ItInMix", "Use Items In Mixed Mode").SetValue(false));
             VayneMenu.AddSubMenu(new Menu( "Vayne Mana Manager","ManaMan"));
             VayneMenu.SubMenu("ManaMan").AddItem(new MenuItem("QManaC", "Min Q Mana in Combo").SetValue(new Slider(30, 0, 100)));
@@ -119,7 +118,7 @@ namespace Vayne_The_Hunter_Of_The_Night
             Obj_AI_Base.OnProcessSpellCast += Game_ProcessSpell;
             Game.OnGameUpdate += Game_OnGameUpdate;
             Orbwalking.AfterAttack += Orbwalking_AfterAttack;
-            Obj_AI_Base.OnPlayAnimation += OnRengarAnimation;
+           // Obj_AI_Base.OnPlayAnimation += OnRengarAnimation;
             VayneMenu.AddToMainMenu();
         }
         public static void Game_ProcessSpell(Obj_AI_Base hero, GameObjectProcessSpellCastEventArgs args)
@@ -186,15 +185,14 @@ namespace Vayne_The_Hunter_Of_The_Night
                             ManaVal1 = VayneMenu.Item("QManaM").GetValue<Slider>().Value;
                         }
                         //Game.PrintChat((getManaPer() >= ManaVal1).ToString());
-                        //if (getManaPer() >= ManaVal1)
-                        //{
-                            if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
+                        if (getManaPer() >= ManaVal1)
+                        {
+                            Q.Cast(Game.CursorPos,true);
+                            if (VayneMenu.Item("UseR").GetValue<bool>() == true && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>() == true)
                             {
                                 R.Cast();
-                                Q.Cast(Game.CursorPos);
                             }
-                            Q.Cast(Game.CursorPos);
-                        //}
+                        }
                     }
                     if (Vector3.DistanceSquared(tar.Position, ObjectManager.Player.Position) > 630 * 630 &&
                         disafter < 630 * 630)
@@ -210,14 +208,13 @@ namespace Vayne_The_Hunter_Of_The_Night
                             ManaVal = VayneMenu.Item("QManaM").GetValue<Slider>().Value;
                         }
                         
-                       // if(getManaPer() >= ManaVal){
-                            if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
-                            {
-                                R.Cast();
-                                Q.Cast(Game.CursorPos);
-                            }
-                             Q.Cast(Game.CursorPos);
-                       // }
+                    if(getManaPer() >= ManaVal){     
+                             Q.Cast(Game.CursorPos,true);
+                             if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
+                             {
+                                 R.Cast();
+                             }
+                    }
                     }
                 }
                 float OwnH = getPlHPer();
@@ -242,7 +239,7 @@ namespace Vayne_The_Hunter_Of_The_Night
              {
                  R.Cast();
              }
-             if ((!E.IsReady()) || (((Orbwalker.ActiveMode.ToString() != "Combo") || (Orbwalker.ActiveMode.ToString() != "Mixed")) && !VayneMenu.Item("UseE").GetValue<bool>() && !VayneMenu.Item("UseEM").GetValue<bool>())) return;
+             if ((!E.IsReady()) || (((Orbwalker.ActiveMode.ToString() != "Combo") || (Orbwalker.ActiveMode.ToString() != "Mixed")) && !VayneMenu.Item("UseE").GetValue<bool>())) return;
             foreach (var hero in from hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f))
                 let prediction = E.GetPrediction(hero)
                 where NavMesh.GetCollisionFlags(
