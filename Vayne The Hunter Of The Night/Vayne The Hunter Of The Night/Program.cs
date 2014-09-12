@@ -185,14 +185,14 @@ namespace Vayne_The_Hunter_Of_The_Night
                         {
                             ManaVal1 = VayneMenu.Item("QManaM").GetValue<Slider>().Value;
                         }
-                        if (getManaPer() >= ManaVal1)
-                        {
+                        //if (getManaPer() >= ManaVal1)
+                        //{
                             if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
                             {
                                 R.Cast();
                             }
                             Q.Cast(Game.CursorPos);
-                        }
+                        //}
                     }
                     if (Vector3.DistanceSquared(tar.Position, ObjectManager.Player.Position) > 630 * 630 &&
                         disafter < 630 * 630)
@@ -207,13 +207,13 @@ namespace Vayne_The_Hunter_Of_The_Night
                         {
                             ManaVal = VayneMenu.Item("QManaM").GetValue<Slider>().Value;
                         }
-                        if(getManaPer() >= ManaVal){
+                        //if(getManaPer() >= ManaVal){
                             if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
                             {
                                 R.Cast();
                             }
                              Q.Cast(Game.CursorPos);
-                        }
+                        //}
                     }
                 }
                 float OwnH = getPlHPer();
@@ -264,10 +264,10 @@ namespace Vayne_The_Hunter_Of_The_Night
                 {
                     ManaVal = VayneMenu.Item("EManaM").GetValue<Slider>().Value;
                 }
-                if (getManaPer() > ManaVal)
-                {
+               // if (getManaPer() >= ManaVal)
+               // {
                     E.Cast(hero);
-                }
+              //  }
             }
          }
          public static void OnRengarAnimation(LeagueSharp.Obj_AI_Base sender, LeagueSharp.GameObjectPlayAnimationEventArgs args)
@@ -275,7 +275,6 @@ namespace Vayne_The_Hunter_Of_The_Night
              
              if(sender.BaseSkinName == "Rengar" && !sender.IsAlly)
              {
-                 
                  if(args.Animation.Equals("Rengar_LeapSound.troy") && VayneMenu.Item("RengarLeap").GetValue<bool>())
                  {
                      AntiGapcloseRengarLeap(sender);
