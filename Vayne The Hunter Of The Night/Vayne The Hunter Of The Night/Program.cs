@@ -158,7 +158,7 @@ namespace Vayne_The_Hunter_Of_The_Night
         {
             if (unit.IsMe)
             {
-                Game.PrintChat(getManaPer().ToString());
+                
                 tar = (Obj_AI_Hero)target;
 
                 if (VayneMenu.Item("ENextAuto").GetValue<KeyBind>().Active)
@@ -185,6 +185,8 @@ namespace Vayne_The_Hunter_Of_The_Night
                         {
                             ManaVal1 = VayneMenu.Item("QManaM").GetValue<Slider>().Value;
                         }
+                        Game.PrintChat(getManaPer().ToString());
+                        Game.PrintChat((getManaPer() >= ManaVal1).ToString());
                         if (getManaPer() >= ManaVal1)
                         {
                             if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
@@ -192,6 +194,7 @@ namespace Vayne_The_Hunter_Of_The_Night
                                 R.Cast();
                             }
                             Q.Cast(Game.CursorPos);
+                            
                         }
                     }
                     if (Vector3.DistanceSquared(tar.Position, ObjectManager.Player.Position) > 630 * 630 &&
