@@ -285,9 +285,20 @@ namespace Vayne_The_Hunter_Of_The_Night
         public static void AntiGapcloseRengarLeap(Obj_AI_Base rengar)
          {
              bool EState = E.IsReady();
+             bool state = false;
+             if (VayneMenu.Item("InAlwa").GetValue<bool>())
+             {
+                 state = true;
+             }else if (VayneMenu.Item("InCombo").GetValue<bool>() && Orbwalker.ActiveMode.ToString() == "Combo")
+             {
+                 state = true;
+             }else if((VayneMenu.Item("InHarrass").GetValue<bool>() && Orbwalker.ActiveMode.ToString() == "Mixed")
+             {
+                 state = true;
+             }
              if(Vector3.DistanceSquared(ObjectManager.Player.Position, rengar.Position)<1000*1000)
              { 
-                if(EState)
+                if(EState && state)
                 {
                     E.Cast(rengar);
                 }
