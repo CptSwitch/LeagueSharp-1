@@ -127,29 +127,29 @@ namespace Vayne_The_Hunter_Of_The_Night
             {
                 if (interrupt.Any(str => str.Contains(args.SData.Name)))
                 {
-                    E.Cast(hero);
+                    E.Cast(hero,true);
                 }
             }
             if (gapcloser.Any(str => str.Contains(args.SData.Name)) && args.Target == ObjectManager.Player &&
                 hero.IsValidTarget(550f) && VayneMenu.Item(args.SData.Name).GetValue<bool>() && VayneMenu.Item("InAlwa").GetValue<bool>())
             {
-                E.Cast(hero);
+                E.Cast(hero,true);
             }
             if (Orbwalker.ActiveMode.ToString() == "Combo" && VayneMenu.Item("InCombo").GetValue<bool>() && gapcloser.Any(str => str.Contains(args.SData.Name)) && args.Target == ObjectManager.Player &&
                 hero.IsValidTarget(550f) && VayneMenu.Item(args.SData.Name).GetValue<bool>())
             {
-                E.Cast(hero);
+                E.Cast(hero,true);
             }
             if (Orbwalker.ActiveMode.ToString() == "Mixed" && VayneMenu.Item("InHarrass").GetValue<bool>() && gapcloser.Any(str => str.Contains(args.SData.Name)) && args.Target == ObjectManager.Player &&
                 hero.IsValidTarget(550f) && VayneMenu.Item(args.SData.Name).GetValue<bool>())
             {
-                E.Cast(hero);
+                E.Cast(hero,true);
             }
             if (notarget.Any(str => str.Contains(args.SData.Name)) &&
                 Vector3.Distance(args.End, ObjectManager.Player.Position) <= 300 && hero.IsValidTarget(550f) &&
                 VayneMenu.Item(args.SData.Name).GetValue<bool>())
             {
-                E.Cast(hero);
+                E.Cast(hero,true);
             }
         }
         
@@ -162,7 +162,7 @@ namespace Vayne_The_Hunter_Of_The_Night
 
                 if (VayneMenu.Item("ENextAuto").GetValue<KeyBind>().Active)
                 {
-                    E.Cast(target);
+                    E.Cast(target,true);
                     VayneMenu.Item("ENextAuto").SetValue<KeyBind>(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle));
                 }
 
@@ -267,7 +267,7 @@ namespace Vayne_The_Hunter_Of_The_Night
                 }
                if (getManaPer() >= ManaVal)
                 {
-                    E.Cast(hero);
+                    E.Cast(hero,true);
                 }
             }
          }
@@ -298,7 +298,7 @@ namespace Vayne_The_Hunter_Of_The_Night
              { 
                 if(EState && state)
                 {
-                    E.Cast(rengar);
+                    E.Cast(rengar,true);
                 }
              }
          }
