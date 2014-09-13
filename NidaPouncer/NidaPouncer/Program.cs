@@ -76,20 +76,18 @@ namespace NidaPouncer
             {
                 foreach (KeyValuePair<Vector3,Vector3> entry in positions)
                 {
+                    if (player.Distance(entry.Key) <= 1500f && player.Distance(entry.Value) <= 1500f)
+                    {
                         Drawing.DrawCircle(entry.Key, 50f, Color.GreenYellow);
                         Drawing.DrawCircle(entry.Value, 50f, Color.GreenYellow);
-                    
+                    }
                 }
-                Drawing.DrawCircle(new Vector3(11590.95f, 4656.26f, 0f), 80f, System.Drawing.Color.FromArgb(255, 255, 255, 255));
-
-
             }
         }
 
 
         public static void fillPositions()
         {
-
             Dictionary<Vector3, Vector3> positions = new Dictionary<Vector3, Vector3>();
             Vector3 pos0 = new Vector3(6393.7299804688f, 8341.7451171875f, -63.87451171875f);
             Vector3 pos1 = new Vector3(6612.1625976563f, 8574.7412109375f, 56.018413543701f);
