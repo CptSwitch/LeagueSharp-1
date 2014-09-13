@@ -88,7 +88,6 @@ namespace NidaPouncer
 
         public static void fillPositions()
         {
-            Dictionary<Vector3, Vector3> positions = new Dictionary<Vector3, Vector3>();
             Vector3 pos0 = new Vector3(6393.7299804688f, 8341.7451171875f, -63.87451171875f);
             Vector3 pos1 = new Vector3(6612.1625976563f, 8574.7412109375f, 56.018413543701f);
             positions.Add(pos0, pos1);
