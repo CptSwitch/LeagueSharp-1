@@ -20,6 +20,7 @@ namespace FioraRaven
         public static Obj_AI_Hero tar;
         public static Dictionary<string, SpellSlot> spellData;
         public static DZApi api = new DZApi();
+        public static bool firstQ;
         static void Main(string[] args)
         {
             try
@@ -47,10 +48,6 @@ namespace FioraRaven
             menu.SubMenu("Combo").AddItem(new MenuItem("UseW", "Use W").SetValue(true));
             menu.SubMenu("Combo").AddItem(new MenuItem("UseE", "Use E").SetValue(true));
             menu.SubMenu("Combo").AddItem(new MenuItem("UseR", "Use R").SetValue(true));
-            menu.AddSubMenu(new Menu("Fiora Harrass", "Harrass"));
-            menu.SubMenu("Harrass").AddItem(new MenuItem("UseQ", "Use Q").SetValue(true));
-            menu.SubMenu("Harrass").AddItem(new MenuItem("UseW", "Use W"));
-            menu.SubMenu("Harrass").AddItem(new MenuItem("UseE", "Use E").SetValue(true));
             menu.AddSubMenu(new Menu("Fiora Misc", "Misc"));
             menu.SubMenu("Misc").AddItem(new MenuItem("WBlock", "Use W to block Autos").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("RDodge", "Use R to dodge dangerous").SetValue(true));
@@ -126,19 +123,18 @@ namespace FioraRaven
                     int itemId = 3074;
                     api.useItem(itemId);
                 }
+                firstQ = false;
             }
         }
         public static void Game_OnGameUpdate(EventArgs args)
         {
-            if (player.HasBuff("Lunge: Ready"))
+            if (player.HasBuff("FioraQLunge"))
             {
                 Game.PrintChat("Buff");
             }
             if (isCombo()) { 
                 var target = SimpleTs.GetTarget(Q.Range, SimpleTs.DamageType.Physical);
                 CastQ(target);
-                
-                
                 if ((R.GetDamage(target) >= target.Health))
                 {
                     CastR(target);
@@ -149,9 +145,14 @@ namespace FioraRaven
         public static void CastQ(Obj_AI_Hero target)
         {        
             if (target == null) return;
-            if(target.IsValidTarget(Q.Range) && Q.IsReady()&&Q.InRange(target.Position))
+            if(target.IsValidTarget(Q.Range) && Q.IsReady()&&Q.InRange(target.Position) && !firstQ)
             {
                 Q.Cast(target, true, false);
+                firstQ = true;
+            }
+            if(!Q.IsReady())
+            {
+                firstQ = false;
             }
         }
         public static void CastR(Obj_AI_Hero target)
