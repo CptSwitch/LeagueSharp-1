@@ -74,13 +74,24 @@ namespace FioraRaven
             Game.OnGameUpdate += Game_OnGameUpdate;
             Orbwalking.AfterAttack += Orbwalking_AfterAttack;
             Orbwalking.OnAttack += Orbwalking_OnAttack;
+            Drawing.OnDraw += Drawing_OnDraw;
             Q = new Spell(SpellSlot.Q, 600f);
             W = new Spell(SpellSlot.W, float.MaxValue);
             E = new Spell(SpellSlot.E, float.MaxValue);
             R = new Spell(SpellSlot.R, 400f);
             menu.AddToMainMenu();
         }
-
+        static void Drawing_OnDraw(EventArgs args)
+        {
+            if (isEn("DrQ"))
+            {
+                Drawing.DrawCircle(player.Position, Q.Range, Color.MediumPurple);
+            }
+            if (isEn("DrR"))
+            {
+                Drawing.DrawCircle(player.Position, R.Range, Color.MediumPurple);
+            }
+        }
        
         public static void Game_ProcessSpell(Obj_AI_Base hero, GameObjectProcessSpellCastEventArgs args)
         {
