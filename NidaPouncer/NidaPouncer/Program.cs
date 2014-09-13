@@ -44,7 +44,7 @@ namespace NidaPouncer
             menu.SubMenu("Drawing").AddItem(new MenuItem("PouncerDr", "Draw Pounce Spots").SetValue(true));
             menu.AddSubMenu(new Menu("[Pouncer] Flee", "FleeM"));
             menu.SubMenu("FleeM").AddItem(new MenuItem("FleeKey", "Flee").SetValue(new KeyBind("T".ToCharArray()[0],KeyBindType.Press)));
-            menu.AddToMainMenu();
+            
             Game.PrintChat("Nida Pouncer By DZ191 Loaded");
             Drawing.OnDraw += Drawing_OnDraw;
             Game.OnGameUpdate += Game_OnGameUpdate;
@@ -57,13 +57,13 @@ namespace NidaPouncer
            {
                foreach (KeyValuePair<Vector3, Vector3> entry in positions)
                {
-                   if (player.Distance(entry.Key) <= 100f || player.Distance(entry.Value) <= 100f)
+                   if (player.Distance(entry.Key) <= 200f || player.Distance(entry.Value) <= 200f)
                    {
-                       
+                       Game.PrintChat("Wut");
                        Vector3 closest = entry.Key;
                        Vector3 farther = entry.Value;
-                       if (player.Distance(entry.Key) <= player.Distance(entry.Value)) { closest = entry.Key; farther = entry.Value; }
-                       if (player.Distance(entry.Key) >= player.Distance(entry.Value)) { closest = entry.Value; farther = entry.Key; }
+                       if (player.Distance(entry.Key) < player.Distance(entry.Value)) { closest = entry.Key; farther = entry.Value; }
+                       if (player.Distance(entry.Key) > player.Distance(entry.Value)) { closest = entry.Value; farther = entry.Key; }
                        Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(closest.X, closest.Y)).Send();
                        W.Cast(farther, false);
                    }
