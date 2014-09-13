@@ -17,7 +17,7 @@ namespace NidaPouncer
         public static Orbwalking.Orbwalker Orbwalker;
         public static Obj_AI_Base player = ObjectManager.Player;
         public static Menu menu;
-        private static Spell W;
+        public static Spell W;
         static void Main(string[] args)
         {
             try
@@ -44,11 +44,12 @@ namespace NidaPouncer
             menu.SubMenu("Drawing").AddItem(new MenuItem("PouncerDr", "Draw Pounce Spots").SetValue(true));
             menu.AddSubMenu(new Menu("[Pouncer] Flee", "FleeM"));
             menu.SubMenu("FleeM").AddItem(new MenuItem("FleeKey", "Flee (C)").SetValue(new KeyBind("C".ToCharArray()[0],KeyBindType.Press)));
-             W = new Spell(SpellSlot.W, 375f);
+            
             menu.AddToMainMenu();
             Game.PrintChat("Nida Pouncer By DZ191 Loaded");
             Drawing.OnDraw += Drawing_OnDraw;
             Game.OnGameUpdate += Game_OnGameUpdate;
+            W = new Spell(SpellSlot.W, 375f);
         }
 
         private static void Game_OnGameUpdate(EventArgs args)
