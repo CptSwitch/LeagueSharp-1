@@ -156,7 +156,7 @@ namespace FioraRaven
         {
             if (isCombo() && target.IsValidTarget() && R.InRange(target.Position) && (R.GetDamage(target) >= target.Health))
             {
-                R.Cast();
+                R.Cast(target,true);
             }
         }
         public static bool isCombo()
