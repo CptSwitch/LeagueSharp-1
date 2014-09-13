@@ -84,6 +84,54 @@ namespace FioraRaven
        
         public static void Game_ProcessSpell(Obj_AI_Base hero, GameObjectProcessSpellCastEventArgs args)
         {
+            String name = args.SData.Name;
+            Obj_AI_Hero tar = (Obj_AI_Hero)hero;
+            GameObjectProcessSpellCastEventArgs spell = args;
+            if(api.getDanSpellsName().ContainsKey(args.SData.Name) && isEn(name))
+            {
+                //Got Dangerous Spell. Starting Predictions and Custom Evade Logics.
+                if(name == "CurseofTheSadMummy")
+                {
+                    if(player.Distance(hero.Position)<=600f)
+                    {
+                        Obj_AI_Hero tar1 = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
+                        CastR(tar1);
+                    }
+                }
+                if(name == "InfernalGuardian")
+                {
+                    if (player.Distance(spell.End)<=270f)
+                    {
+                        Obj_AI_Hero tar1 = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
+                        CastR(tar1);
+                    }
+                }
+                if (name == "BlindMonkRKick" || name == "syndrar" || name == "VeigarPrimordialBurst" || name == "AlZaharNetherGrasp")
+                {
+                    if (spell.Target.IsMe)
+                    {
+                        Obj_AI_Hero tar1 = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
+                        CastR(tar1);
+                    }
+                }
+                if (name == "BusterShot" || name == "ViR")
+                {
+                    if (spell.Target.IsMe || player.Distance(spell.Target.Position)<=50f)
+                    {
+                        Obj_AI_Hero tar1 = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
+                        CastR(tar1);
+                    }
+                }
+                
+                if (name == "GalioIdolOfDurand")
+                {
+                    if (player.Distance(hero.Position) <= 600f)
+                    {
+                        Obj_AI_Hero tar1 = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
+                        CastR(tar1);
+                    }
+                }
+            }
         }
         static void Orbwalking_OnAttack(Obj_AI_Base unit, Obj_AI_Base target)
         {
@@ -145,7 +193,7 @@ namespace FioraRaven
         public static void CastQ(Obj_AI_Hero target)
         {        
             if (target == null) return;
-            if(target.IsValidTarget(Q.Range) && Q.IsReady()&&Q.InRange(target.Position) && !firstQ)
+            if(target.IsValidTarget(Q.Range) && Q.IsReady()&&Q.InRange(target.ServerPosition) && !firstQ)
             {
                 Q.Cast(target, true, false);
                 firstQ = true;
@@ -157,7 +205,7 @@ namespace FioraRaven
         }
         public static void CastR(Obj_AI_Hero target)
         {
-            if (isCombo() && target.IsValidTarget() && R.InRange(target.Position) && (R.GetDamage(target) >= target.Health))
+            if (isCombo() && target.IsValidTarget() && R.InRange(target.ServerPosition) && (R.GetDamage(target) >= target.Health))
             {
                 R.Cast(target,true);
             }
@@ -170,5 +218,6 @@ namespace FioraRaven
         {
             return menu.Item(item).GetValue<bool>();
         }
+        
     }
 }

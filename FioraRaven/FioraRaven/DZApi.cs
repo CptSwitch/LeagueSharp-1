@@ -33,15 +33,14 @@ namespace FioraRaven
         {
             addSpell("CurseofTheSadMummy", "Amumu R");
             addSpell("InfernalGuardian", "Annie Tibbers");
-            addSpell("EnchantedCrystalArrow", "Ashe R");
             addSpell("BlindMonkRKick", "Lee Sin R");
             addSpell("GalioIdolOfDurand", "Galio R");
-            addSpell("SonaR", "Sona R");
             addSpell("syndrar", "Syndra R");
             addSpell("BusterShot", "Trist R");
             addSpell("UFSlash", "Malphite R");
             addSpell("VeigarPrimordialBurst", "Veigar R");
             addSpell("ViR", "Vi R");
+            addSpell("AlZaharNetherGrasp", "Malzahar R");
         }
         public float getEnH(Obj_AI_Hero target)
         {
