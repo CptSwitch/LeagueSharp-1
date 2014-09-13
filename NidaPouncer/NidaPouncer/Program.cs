@@ -43,7 +43,7 @@ namespace NidaPouncer
             menu.AddSubMenu(new Menu("[Pouncer] Drawing", "Drawing"));
             menu.SubMenu("Drawing").AddItem(new MenuItem("PouncerDr", "Draw Pounce Spots").SetValue(true));
             menu.AddSubMenu(new Menu("[Pouncer] Flee", "FleeM"));
-            menu.SubMenu("FleeM").AddItem(new MenuItem("FleeKey", "Flee (C)").SetValue(new KeyBind("C".ToCharArray()[0],KeyBindType.Press)));
+            menu.SubMenu("FleeM").AddItem(new MenuItem("FleeKey", "Flee").SetValue(new KeyBind("T".ToCharArray()[0],KeyBindType.Press)));
             menu.AddToMainMenu();
             Game.PrintChat("Nida Pouncer By DZ191 Loaded");
             Drawing.OnDraw += Drawing_OnDraw;
