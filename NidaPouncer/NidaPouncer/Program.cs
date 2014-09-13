@@ -44,12 +44,13 @@ namespace NidaPouncer
             var ts = new Menu("Target Selector", "TargetSelector");
             SimpleTs.AddToMenu(ts);
             menu.AddSubMenu(ts);
-            menu.AddSubMenu(new Menu("[Pouncer] Drawing", "Drawing"));
+            menu.AddSubMenu(new Menu("Pouncer Drawing", "Drawing"));
             menu.SubMenu("Drawing").AddItem(new MenuItem("PouncerDr", "Draw Pounce Spots").SetValue(true));
-            menu.AddSubMenu(new Menu("[Pouncer] Flee", "FleeM"));
+            menu.AddSubMenu(new Menu("Pouncer Flee", "FleeM"));
             menu.SubMenu("FleeM").AddItem(new MenuItem("FleeKey", "Flee").SetValue(new KeyBind("T".ToCharArray()[0],KeyBindType.Press)));
             menu.AddToMainMenu();
             Game.PrintChat("Nida Pouncer By DZ191 Loaded");
+
             Drawing.OnDraw += Drawing_OnDraw;
             Game.OnGameUpdate += Game_OnGameUpdate;
           
