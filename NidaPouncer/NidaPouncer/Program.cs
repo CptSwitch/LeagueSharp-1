@@ -22,15 +22,7 @@ namespace NidaPouncer
         public static List<Spell> SpellList = new List<Spell>();
         static void Main(string[] args)
         {
-            try
-            {
-                CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.ToString());
-                return;
-            }
+                CustomEvents.Game.OnGameLoad += Game_OnGameLoad;       
         }
         static void Game_OnGameLoad(EventArgs args)
         {
@@ -69,7 +61,7 @@ namespace NidaPouncer
                        if (player.Distance(entry.Key) < player.Distance(entry.Value)) { closest = entry.Key; farther = entry.Value; }
                        if (player.Distance(entry.Key) > player.Distance(entry.Value)) { closest = entry.Value; farther = entry.Key; }
                        Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(closest.X, closest.Y)).Send();
-                       if (player.ServerPosition == closest) { W.Cast(farther, true); }
+                       if (player.Position.Equals(closest) || player.ServerPosition.Equals(closest)) { W.Cast(farther, true); }
                    }
                }
            }
