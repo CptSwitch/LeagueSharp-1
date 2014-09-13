@@ -70,6 +70,7 @@ namespace FioraRaven
             menu.SubMenu("Drawing").AddItem(new MenuItem("DrR", "Draw R"));
            
             Game.PrintChat("Fiora The Raven By DZ191 Loaded ");
+            menu.AddToMainMenu();
             Obj_AI_Base.OnProcessSpellCast += Game_ProcessSpell;
             Game.OnGameUpdate += Game_OnGameUpdate;
             Orbwalking.AfterAttack += Orbwalking_AfterAttack;
@@ -79,7 +80,7 @@ namespace FioraRaven
             W = new Spell(SpellSlot.W, float.MaxValue);
             E = new Spell(SpellSlot.E, float.MaxValue);
             R = new Spell(SpellSlot.R, 400f);
-            menu.AddToMainMenu();
+            
         }
         static void Drawing_OnDraw(EventArgs args)
         {
