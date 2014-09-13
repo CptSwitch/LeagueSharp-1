@@ -10,6 +10,7 @@ using Color = System.Drawing.Color;
 
 namespace NidaPouncer
 {
+    //Big thanks to blm95
     class NidaPouncer
     {
         private static Dictionary<Vector3, Vector3> positions = new Dictionary<Vector3, Vector3>();
@@ -18,6 +19,7 @@ namespace NidaPouncer
         public static Obj_AI_Base player = ObjectManager.Player;
         public static Menu menu;
         public static Spell W;
+        public static List<Spell> SpellList = new List<Spell>();
         static void Main(string[] args)
         {
             try
@@ -34,6 +36,8 @@ namespace NidaPouncer
         {
             if (player.BaseSkinName != champName) return;
             fillPositions();
+            W = new Spell(SpellSlot.W, 375f);
+            SpellList.Add(W);
             menu = new Menu("Nida Pouncer", "NidaPMenu", true);
             menu.AddSubMenu(new Menu("Orbwalker", "Orbwalker1"));
             Orbwalker = new Orbwalking.Orbwalker(menu.SubMenu("Orbwalker1"));
@@ -44,16 +48,16 @@ namespace NidaPouncer
             menu.SubMenu("Drawing").AddItem(new MenuItem("PouncerDr", "Draw Pounce Spots").SetValue(true));
             menu.AddSubMenu(new Menu("[Pouncer] Flee", "FleeM"));
             menu.SubMenu("FleeM").AddItem(new MenuItem("FleeKey", "Flee").SetValue(new KeyBind("T".ToCharArray()[0],KeyBindType.Press)));
-            
+            menu.AddToMainMenu();
             Game.PrintChat("Nida Pouncer By DZ191 Loaded");
             Drawing.OnDraw += Drawing_OnDraw;
             Game.OnGameUpdate += Game_OnGameUpdate;
-            W = new Spell(SpellSlot.W, 375f);
+          
         }
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-           if(menu.Item("FleeKey").GetValue<bool>())
+            if (menu.Item("FleeKey").GetValue<KeyBind>().Active)
            {
                foreach (KeyValuePair<Vector3, Vector3> entry in positions)
                {
@@ -65,7 +69,7 @@ namespace NidaPouncer
                        if (player.Distance(entry.Key) < player.Distance(entry.Value)) { closest = entry.Key; farther = entry.Value; }
                        if (player.Distance(entry.Key) > player.Distance(entry.Value)) { closest = entry.Value; farther = entry.Key; }
                        Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(closest.X, closest.Y)).Send();
-                       W.Cast(farther, false);
+                       W.Cast(farther, true);
                    }
                }
            }
