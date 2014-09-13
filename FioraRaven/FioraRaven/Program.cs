@@ -98,7 +98,7 @@ namespace FioraRaven
                         CastR(tar1);
                     }
                 }
-                if(name == "InfernalGuardian")
+                if(name == "InfernalGuardian" || name == "UFSlash")
                 {
                     if (player.Distance(spell.End)<=270f)
                     {
