@@ -176,10 +176,6 @@ namespace FioraRaven
         }
         public static void Game_OnGameUpdate(EventArgs args)
         {
-            if (player.HasBuff("FioraQLunge"))
-            {
-                Game.PrintChat("Buff");
-            }
             if (isCombo()) { 
                 var target = SimpleTs.GetTarget(Q.Range, SimpleTs.DamageType.Physical);
                 CastQ(target);
@@ -187,8 +183,7 @@ namespace FioraRaven
                 {
                     CastR(target);
                 }
-            }
-            
+            } 
         }
         public static void CastQ(Obj_AI_Hero target)
         {        
