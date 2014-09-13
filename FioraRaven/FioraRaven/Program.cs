@@ -203,7 +203,7 @@ namespace FioraRaven
         public static void CastQ(Obj_AI_Hero target)
         {        
             if (target == null) return;
-            if(target.IsValidTarget(Q.Range) && Q.IsReady()&&Q.InRange(target.ServerPosition) && !firstQ)
+            if(target.IsValidTarget(Q.Range) && Q.IsReady()&&Q.InRange(target.ServerPosition) && !firstQ && isEn("UseQ"))
             {
                 Q.Cast(target, true, false);
                 firstQ = true;
@@ -215,7 +215,7 @@ namespace FioraRaven
         }
         public static void CastR(Obj_AI_Hero target)
         {
-            if (isCombo() && target.IsValidTarget() && R.InRange(target.ServerPosition) && (R.GetDamage(target) >= target.Health))
+            if (isCombo() && target.IsValidTarget() && R.InRange(target.ServerPosition) && (R.GetDamage(target) >= target.Health) && isEn("UseR"))
             {
                 R.Cast(target,true);
             }
