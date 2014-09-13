@@ -22,7 +22,6 @@ namespace NidaPouncer
         {
             try
             {
-                
                 CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
             }
             catch (Exception e)
@@ -42,20 +41,19 @@ namespace NidaPouncer
             SimpleTs.AddToMenu(ts);
             menu.AddSubMenu(ts);
             menu.AddSubMenu(new Menu("[Pouncer] Drawing", "Drawing"));
-            menu.SubMenu("Drawing").AddItem(new MenuItem("Pouncer", "Draw Pounce Spots").SetValue(true));
+            menu.SubMenu("Drawing").AddItem(new MenuItem("PouncerDr", "Draw Pounce Spots").SetValue(true));
             menu.AddSubMenu(new Menu("[Pouncer] Flee", "FleeM"));
-            menu.SubMenu("FleeM").AddItem(new MenuItem("Flee", "Flee (C)").SetValue(new KeyBind("C".ToCharArray()[0],KeyBindType.Press)));
+            menu.SubMenu("FleeM").AddItem(new MenuItem("FleeKey", "Flee (C)").SetValue(new KeyBind("C".ToCharArray()[0],KeyBindType.Press)));
              W = new Spell(SpellSlot.W, 375f);
             menu.AddToMainMenu();
             Game.PrintChat("Nida Pouncer By DZ191 Loaded");
             Drawing.OnDraw += Drawing_OnDraw;
-             Game.OnGameUpdate += Game_OnGameUpdate;
-           
+            Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
         private static void Game_OnGameUpdate(EventArgs args)
         {
-           if(menu.Item("Flee").GetValue<bool>())
+           if(menu.Item("FleeKey").GetValue<bool>())
            {
                foreach (KeyValuePair<Vector3, Vector3> entry in positions)
                {
@@ -73,7 +71,7 @@ namespace NidaPouncer
         }
         private static void Drawing_OnDraw(EventArgs args)
         {
-            if(menu.Item("Pouncer").GetValue<bool>())
+            if(menu.Item("PouncerDr").GetValue<bool>())
             {
                 foreach (KeyValuePair<Vector3,Vector3> entry in positions)
                 {
