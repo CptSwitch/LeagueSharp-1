@@ -61,15 +61,14 @@ namespace NidaPouncer
            {
                foreach (KeyValuePair<Vector3, Vector3> entry in positions)
                {
-                   if (player.Distance(entry.Key) <= 200f || player.Distance(entry.Value) <= 200f)
+                   if (player.Distance(entry.Key) <= 220f || player.Distance(entry.Value) <= 220f)
                    {
-                       Game.PrintChat("Wut");
                        Vector3 closest = entry.Key;
                        Vector3 farther = entry.Value;
                        if (player.Distance(entry.Key) < player.Distance(entry.Value)) { closest = entry.Key; farther = entry.Value; }
                        if (player.Distance(entry.Key) > player.Distance(entry.Value)) { closest = entry.Value; farther = entry.Key; }
                        Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(closest.X, closest.Y)).Send();
-                       W.Cast(farther, true);
+                       if (player.ServerPosition == closest) { W.Cast(farther, true); }
                    }
                }
            }
@@ -82,8 +81,8 @@ namespace NidaPouncer
                 {
                     if (player.Distance(entry.Key) <= 1500f && player.Distance(entry.Value) <= 1500f)
                     {
-                        Drawing.DrawCircle(entry.Key, 50f, Color.GreenYellow);
-                        Drawing.DrawCircle(entry.Value, 50f, Color.GreenYellow);
+                        Drawing.DrawCircle(entry.Key, 75f, Color.GreenYellow);
+                        Drawing.DrawCircle(entry.Value, 75f, Color.GreenYellow);
                     }
                 }
             }
