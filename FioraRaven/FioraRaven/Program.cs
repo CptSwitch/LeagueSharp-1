@@ -66,8 +66,8 @@ namespace FioraRaven
                 menu.SubMenu("DangSpells").AddItem(new MenuItem(entry.Key, entry.Value).SetValue(true));
             }
             menu.AddSubMenu(new Menu("Fiora Drawing", "Drawing"));
-            menu.SubMenu("Drawing").AddItem(new MenuItem("DrQ", "Draw Q"));
-            menu.SubMenu("Drawing").AddItem(new MenuItem("DrR", "Draw R"));
+            menu.SubMenu("Drawing").AddItem(new MenuItem("DrQ", "Draw Q").SetValue(true));
+            menu.SubMenu("Drawing").AddItem(new MenuItem("DrR", "Draw R").SetValue(true));
            
             Game.PrintChat("Fiora The Raven By DZ191 Loaded ");
             menu.AddToMainMenu();
