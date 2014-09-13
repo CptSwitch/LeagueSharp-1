@@ -143,6 +143,10 @@ namespace FioraRaven
                     }
                 }
             }
+            if(spell.SData.Name.Contains("Attack") && isEn("WBlock") && spell.Target.IsMe)
+            {
+                W.Cast();
+            }
         }
         static void Orbwalking_OnAttack(Obj_AI_Base unit, Obj_AI_Base target)
         {
