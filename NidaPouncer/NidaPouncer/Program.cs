@@ -76,7 +76,7 @@ namespace NidaPouncer
             {
                 foreach (KeyValuePair<Vector3,Vector3> entry in positions)
                 {
-                    if(player.Distance(entry.Key)<=600 && player.Distance(entry.Value)<=600)
+                    if(player.Distance(entry.Key)<=1500f && player.Distance(entry.Value)<=1500f)
                     {
                         Drawing.DrawCircle(entry.Key, 50f, Color.GreenYellow);
                         Drawing.DrawCircle(entry.Value, 50f, Color.GreenYellow);
