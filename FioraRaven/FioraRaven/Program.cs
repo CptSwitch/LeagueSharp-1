@@ -17,8 +17,6 @@ namespace FioraRaven
         public static Obj_AI_Base player = ObjectManager.Player;
         public static Spell Q, W, E, R;
         public static Menu menu;
-        public static Dictionary<String , String> dSp;
-        public static Dictionary<String, String> dSpAr;
         public static Obj_AI_Hero tar;
         public static Dictionary<string, SpellSlot> spellData;
         public static DZApi api = new DZApi();
@@ -80,9 +78,9 @@ namespace FioraRaven
             Orbwalking.AfterAttack += Orbwalking_AfterAttack;
             Orbwalking.OnAttack += Orbwalking_OnAttack;
             Q = new Spell(SpellSlot.Q, 600f);
-            E = new Spell(SpellSlot.W, float.MaxValue);
+            W = new Spell(SpellSlot.W, float.MaxValue);
             E = new Spell(SpellSlot.E, float.MaxValue);
-            E = new Spell(SpellSlot.R, 400f);
+            R = new Spell(SpellSlot.R, 400f);
             menu.AddToMainMenu();
         }
 
@@ -95,7 +93,7 @@ namespace FioraRaven
             if (unit.IsMe)
             {
                 tar = (Obj_AI_Hero)target;
-                if (isEn("Botrk") && isCombo() && target.IsValidTarget())
+                if (isEn("Botrk") && isCombo() && target.IsValidTarget()&&isEn("ItInComb"))
                 {
                     float OwnH = api.getPlHPer();
                     if ((menu.Item("OwnHPercBotrk").GetValue<Slider>().Value <= OwnH) && ((menu.Item("EnHPercBotrk").GetValue<Slider>().Value <= api.getEnH(tar))))
@@ -103,7 +101,7 @@ namespace FioraRaven
                         api.useItem(3153, tar);
                     }
                 }
-                if (isEn("Youmuu") && isCombo() && target.IsValidTarget())
+                if (isEn("Youmuu") && isCombo() && target.IsValidTarget() && isEn("ItInComb"))
                 {
                     api.useItem(3142, tar);
                 }
