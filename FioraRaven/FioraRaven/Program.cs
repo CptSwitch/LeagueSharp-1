@@ -130,7 +130,7 @@ namespace FioraRaven
         }
         public static void Game_OnGameUpdate(EventArgs args)
         {
-            if (player.HasBuff("FioraQLunge",true))
+            if (player.HasBuff("Lunge: Ready"))
             {
                 Game.PrintChat("Buff");
             }
