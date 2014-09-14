@@ -11,9 +11,9 @@ using Color = System.Drawing.Color;
 namespace NidaPouncer
 {
     //Big thanks to blm95
-    class NidaPouncer
+    class Program
     {
-        private static Dictionary<Vector3, Vector3> positions;
+        public static Dictionary<Vector3, Vector3> positions;
         public static String champName = "Nidalee";
         
         public static Obj_AI_Base player;
