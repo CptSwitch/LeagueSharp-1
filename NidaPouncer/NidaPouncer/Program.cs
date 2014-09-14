@@ -13,42 +13,60 @@ namespace NidaPouncer
     //Big thanks to blm95
     class NidaPouncer
     {
-        private static Dictionary<Vector3, Vector3> positions = new Dictionary<Vector3, Vector3>();
+        private static Dictionary<Vector3, Vector3> positions;
         public static String champName = "Nidalee";
-        public static Orbwalking.Orbwalker Orbwalker;
-        public static Obj_AI_Base player = ObjectManager.Player;
+        
+        public static Obj_AI_Base player;
         public static Menu menu;
-        public static Spell W;
+        
         public static List<Spell> SpellList = new List<Spell>();
+        public static Spell W;
+
         static void Main(string[] args)
         {
                 CustomEvents.Game.OnGameLoad += Game_OnGameLoad;       
         }
         static void Game_OnGameLoad(EventArgs args)
         {
+            player =  ObjectManager.Player;
             if (player.BaseSkinName != champName) return;
             fillPositions();
+
             W = new Spell(SpellSlot.W, 375f);
             SpellList.Add(W);
+
             menu = new Menu("Nida Pouncer", "NidaPMenu", true);
-            menu.AddSubMenu(new Menu("Orbwalker", "Orbwalker1"));
-            Orbwalker = new Orbwalking.Orbwalker(menu.SubMenu("Orbwalker1"));
-            var ts = new Menu("Target Selector", "TargetSelector");
-            SimpleTs.AddToMenu(ts);
-            menu.AddSubMenu(ts);
+
             menu.AddSubMenu(new Menu("Pouncer Drawing", "Drawing"));
             menu.SubMenu("Drawing").AddItem(new MenuItem("PouncerDr", "Draw Pounce Spots").SetValue(true));
-            menu.AddSubMenu(new Menu("Pouncer Flee", "FleeM"));
-            menu.SubMenu("FleeM").AddItem(new MenuItem("FleeKey", "Flee").SetValue(new KeyBind("T".ToCharArray()[0],KeyBindType.Press)));
-            menu.AddToMainMenu();
-            Game.PrintChat("Nida Pouncer By DZ191 Loaded");
 
-            Drawing.OnDraw += Drawing_OnDraw;
+            menu.AddSubMenu(new Menu("Pouncer Flee", "FleeM"));
+            menu.SubMenu("FleeM").AddItem(new MenuItem("FleeKey", "Flee").SetValue(new KeyBind("T".ToCharArray()[0], KeyBindType.Press)));
+
+            menu.AddToMainMenu();
+
+            Game.PrintChat("Nida Pouncer By DZ191 Loaded");  
             Game.OnGameUpdate += Game_OnGameUpdate;
-          
+            Drawing.OnDraw += Drawing_OnDraw;
         }
 
-        private static void Game_OnGameUpdate(EventArgs args)
+        public static void Drawing_OnDraw(EventArgs args)
+        {
+            if (menu.Item("PouncerDr").GetValue<bool>())
+            {
+                foreach (KeyValuePair<Vector3, Vector3> entry in positions)
+                {
+                    if (player.Distance(entry.Key) <= 1500f && player.Distance(entry.Value) <= 1500f)
+                    {
+                        Drawing.DrawCircle(entry.Key, 75f, Color.GreenYellow);
+                        Drawing.DrawCircle(entry.Value, 75f, Color.GreenYellow);
+                    }
+                }
+            }
+        }
+
+
+        public static void Game_OnGameUpdate(EventArgs args)
         {
             if (menu.Item("FleeKey").GetValue<KeyBind>().Active)
            {
@@ -61,29 +79,16 @@ namespace NidaPouncer
                        if (player.Distance(entry.Key) < player.Distance(entry.Value)) { closest = entry.Key; farther = entry.Value; }
                        if (player.Distance(entry.Key) > player.Distance(entry.Value)) { closest = entry.Value; farther = entry.Key; }
                        Packet.C2S.Move.Encoded(new Packet.C2S.Move.Struct(closest.X, closest.Y)).Send();
-                        W.Cast(farther, true); 
+                       W.Cast(farther, true); 
                    }
                }
            }
         }
-        private static void Drawing_OnDraw(EventArgs args)
-        {
-            if(menu.Item("PouncerDr").GetValue<bool>())
-            {
-                foreach (KeyValuePair<Vector3,Vector3> entry in positions)
-                {
-                    if (player.Distance(entry.Key) <= 1500f && player.Distance(entry.Value) <= 1500f)
-                    {
-                        Drawing.DrawCircle(entry.Key, 75f, Color.GreenYellow);
-                        Drawing.DrawCircle(entry.Value, 75f, Color.GreenYellow);
-                    }
-                }
-            }
-        }
-
+        
 
         public static void fillPositions()
         {
+            positions = new Dictionary<Vector3, Vector3>();
             Vector3 pos0 = new Vector3(6393.7299804688f, 8341.7451171875f, -63.87451171875f);
             Vector3 pos1 = new Vector3(6612.1625976563f, 8574.7412109375f, 56.018413543701f);
             positions.Add(pos0, pos1);
