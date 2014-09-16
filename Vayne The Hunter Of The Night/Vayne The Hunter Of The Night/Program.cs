@@ -76,7 +76,7 @@ namespace Vayne_The_Hunter_Of_The_Night
             VayneMenu.AddSubMenu(new Menu("Gapcloser List 2", "gap2"));
             VayneMenu.AddSubMenu(new Menu("Interrupt List", "int"));
             VayneMenu.AddSubMenu(new Menu("Vayne Misc","Misc"));
-            VayneMenu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind(69, KeyBindType.Toggle)));
+            VayneMenu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle)));
             VayneMenu.SubMenu("Misc").AddItem(new MenuItem("Interrupt", "Interrupt Spells").SetValue(true));
             VayneMenu.SubMenu("Misc").AddItem(new MenuItem("UseRQ", "Use RQ").SetValue(false));
             VayneMenu.SubMenu("Misc").AddItem(new MenuItem("PushDistance", "E Push Dist").SetValue(new Slider(425, 400, 475)));
@@ -123,29 +123,20 @@ namespace Vayne_The_Hunter_Of_The_Night
         }
         public static void Game_ProcessSpell(Obj_AI_Base hero, GameObjectProcessSpellCastEventArgs args)
         {
-            if (VayneMenu.Item("Interrupt").GetValue<bool>() && hero.IsValidTarget(550f) && VayneMenu.Item(args.SData.Name).GetValue<bool>())
+            if (VayneMenu.Item("Interrupt").GetValue<bool>() && ((Orbwalker.ActiveMode.ToString() == "Combo" && VayneMenu.Item("InCombo").GetValue<bool>())||(VayneMenu.Item("InHarrass").GetValue<bool>() && Orbwalker.ActiveMode.ToString() == "Mixed")||(VayneMenu.Item("InAlwa").GetValue<bool>())) && hero.IsValidTarget(550f) && VayneMenu.Item(args.SData.Name).GetValue<bool>())
             {
                 if (interrupt.Any(str => str.Contains(args.SData.Name)))
                 {
                     E.Cast(hero,true);
                 }
             }
-            if (gapcloser.Any(str => str.Contains(args.SData.Name)) && args.Target == ObjectManager.Player &&
-                hero.IsValidTarget(550f) && VayneMenu.Item(args.SData.Name).GetValue<bool>() && VayneMenu.Item("InAlwa").GetValue<bool>())
-            {
-                E.Cast(hero,true);
-            }
-            if (Orbwalker.ActiveMode.ToString() == "Combo" && VayneMenu.Item("InCombo").GetValue<bool>() && gapcloser.Any(str => str.Contains(args.SData.Name)) && args.Target == ObjectManager.Player &&
+            if (((Orbwalker.ActiveMode.ToString() == "Combo" && VayneMenu.Item("InCombo").GetValue<bool>())||(VayneMenu.Item("InHarrass").GetValue<bool>() && Orbwalker.ActiveMode.ToString() == "Mixed")||(VayneMenu.Item("InAlwa").GetValue<bool>())) && gapcloser.Any(str => str.Contains(args.SData.Name)) && args.Target == ObjectManager.Player &&
                 hero.IsValidTarget(550f) && VayneMenu.Item(args.SData.Name).GetValue<bool>())
             {
                 E.Cast(hero,true);
             }
-            if (Orbwalker.ActiveMode.ToString() == "Mixed" && VayneMenu.Item("InHarrass").GetValue<bool>() && gapcloser.Any(str => str.Contains(args.SData.Name)) && args.Target == ObjectManager.Player &&
-                hero.IsValidTarget(550f) && VayneMenu.Item(args.SData.Name).GetValue<bool>())
-            {
-                E.Cast(hero,true);
-            }
-            if (notarget.Any(str => str.Contains(args.SData.Name)) &&
+          
+            if (notarget.Any(str => str.Contains(args.SData.Name)) && ((Orbwalker.ActiveMode.ToString() == "Combo" && VayneMenu.Item("InCombo").GetValue<bool>())||(VayneMenu.Item("InHarrass").GetValue<bool>() && Orbwalker.ActiveMode.ToString() == "Mixed")||(VayneMenu.Item("InAlwa").GetValue<bool>())) &&
                 Vector3.Distance(args.End, ObjectManager.Player.Position) <= 300 && hero.IsValidTarget(550f) &&
                 VayneMenu.Item(args.SData.Name).GetValue<bool>())
             {
@@ -187,11 +178,12 @@ namespace Vayne_The_Hunter_Of_The_Night
                         //Game.PrintChat((getManaPer() >= ManaVal1).ToString());
                         if (getManaPer() >= ManaVal1)
                         {
-                            Q.Cast(Game.CursorPos,true);
                             if (VayneMenu.Item("UseR").GetValue<bool>() == true && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>() == true)
                             {
                                 R.Cast();
                             }
+                            Q.Cast(Game.CursorPos,true);
+                            
                         }
                     }
                     if (Vector3.DistanceSquared(tar.Position, ObjectManager.Player.Position) > 630 * 630 &&
@@ -208,12 +200,13 @@ namespace Vayne_The_Hunter_Of_The_Night
                             ManaVal = VayneMenu.Item("QManaM").GetValue<Slider>().Value;
                         }
                         
-                    if(getManaPer() >= ManaVal){     
+                    if(getManaPer() >= ManaVal){
+                        if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
+                        {
+                            R.Cast();
+                        }
                              Q.Cast(Game.CursorPos,true);
-                             if (VayneMenu.Item("UseR").GetValue<bool>() && R.IsReady() && VayneMenu.Item("UseRQ").GetValue<bool>())
-                             {
-                                 R.Cast();
-                             }
+                             
                     }
                     }
                 }
@@ -325,5 +318,10 @@ namespace Vayne_The_Hunter_Of_The_Night
             float h = (player.Health / player.MaxHealth) * 100;
             return h;
         }
+        public static bool isEn(String item)
+        {
+            return VayneMenu.Item(item).GetValue<bool>();
+        }
+        
     }
 }
