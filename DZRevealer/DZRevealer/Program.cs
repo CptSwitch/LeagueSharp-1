@@ -40,6 +40,7 @@ namespace DZRevealer
             menu.AddItem(new MenuItem("doRev", "Reveal").SetValue(true));
             menu.AddItem(new MenuItem("revDesc1", "Priority:"));
             menu.AddItem(new MenuItem("prior", "ON: Pink OFF: Trinket").SetValue(true));
+            menu.AddToMainMenu();
             fillDict();
             Game.PrintChat(player.BaseSkinName);
             Game.OnGameUpdate += Game_GameUpdate;
