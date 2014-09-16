@@ -20,7 +20,8 @@ namespace DZRevealer
         public static Menu menu;
         public static int VISION_WARD = 2043;
         public static int TRINKET_RED = 3364;
-        public static float Ward_range,trinket_range = 600f;
+        public static float wardrange = 600f;
+        public static float trinket_range = 600f;
         static void Main(string[] args)
         {
             try
@@ -80,15 +81,15 @@ namespace DZRevealer
             if (isEn("prior"))
             {
                 //W
-                if (player.Distance(enemy) <= Ward_range+1000)
+                if (player.Distance(enemy) <= wardrange+1000)
                 {
-                    if(player.Distance(enemy) <= Ward_range)
+                    if(player.Distance(enemy) <= wardrange)
                     {
                         useItem(VISION_WARD, enemy.Position);
                     }
                     else
                     {
-                        Vector3 trPos = new Vector3(player.Position.X + Ward_range, player.Position.Y + Ward_range, player.Position.Z + Ward_range);
+                        Vector3 trPos = new Vector3(player.Position.X + wardrange, player.Position.Y + wardrange, player.Position.Z + wardrange);
                         Vector3 pos = player.Position - (enemy.ServerPosition - player.Position) * trPos;
                         useItem(VISION_WARD, pos);
                     }

@@ -32,8 +32,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="clipper_library">
+      <HintPath>..\..\..\..\..\..\Desktop\Ionic 1209L#\Assemblies\System\clipper_library.dll</HintPath>
+    </Reference>
+    <Reference Include="LeagueSharp">
+      <HintPath>..\..\..\..\..\..\Desktop\Ionic 1209L#\Assemblies\System\LeagueSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="LeagueSharp.Common">
+      <HintPath>..\..\..\..\..\..\Desktop\Ionic 1209L#\Assemblies\System\LeagueSharp.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX">
+      <HintPath>..\..\..\..\..\..\Desktop\Ionic 1209L#\Assemblies\System\SharpDX.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Direct3D9">
+      <HintPath>..\..\..\..\..\..\Desktop\Ionic 1209L#\Assemblies\System\SharpDX.Direct3D9.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Toolkit">
+      <HintPath>..\..\..\..\..\..\Desktop\Ionic 1209L#\Assemblies\System\SharpDX.Toolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="SharpDX.Toolkit.Graphics">
+      <HintPath>..\..\..\..\..\..\Desktop\Ionic 1209L#\Assemblies\System\SharpDX.Toolkit.Graphics.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
