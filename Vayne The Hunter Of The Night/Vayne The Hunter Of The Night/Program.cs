@@ -114,7 +114,7 @@ namespace Vayne_The_Hunter_Of_The_Night
             }
             
             E.SetTargetted(0.25f, 2200f);
-            Game.PrintChat("Vayne - The Hunter of The Night By DZ191 Loaded");
+            Game.PrintChat("Vayne - The Hunter of The Night 1.2 By DZ191 Loaded");
             Obj_AI_Base.OnProcessSpellCast += Game_ProcessSpell;
             Game.OnGameUpdate += Game_OnGameUpdate;
             Orbwalking.AfterAttack += Orbwalking_AfterAttack;
