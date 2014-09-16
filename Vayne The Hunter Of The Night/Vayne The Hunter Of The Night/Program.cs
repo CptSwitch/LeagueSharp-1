@@ -232,7 +232,7 @@ namespace Vayne_The_Hunter_Of_The_Night
              {
                  R.Cast();
              }
-             if ((!E.IsReady()) || (((Orbwalker.ActiveMode.ToString() != "Combo") || (Orbwalker.ActiveMode.ToString() != "Mixed")) && !VayneMenu.Item("UseE").GetValue<bool>())) return;
+             if (!(E.IsReady()) || (((Orbwalker.ActiveMode.ToString() != "Combo") || (Orbwalker.ActiveMode.ToString() != "Mixed"))) || !isEn("UseE")) return;
             foreach (var hero in from hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f))
                 let prediction = E.GetPrediction(hero)
                 where NavMesh.GetCollisionFlags(
