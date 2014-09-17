@@ -22,7 +22,7 @@ namespace DZRevealer
         public static int TRINKET_RED = 3364;
         public static float wardrange = 600f;
         public static float trinket_range = 600f;
-        public static bool debug = true;
+        public static bool debug = false;
         static void Main(string[] args)
         {
             try
