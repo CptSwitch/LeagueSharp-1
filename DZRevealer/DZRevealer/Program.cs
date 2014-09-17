@@ -55,20 +55,24 @@ namespace DZRevealer
                 BuffInstance[] buffs = enemy.Buffs;
                 foreach (var buff in buffs)
                 {
-                    foreach (KeyValuePair<string, string> entry in dict)
-                    {
-                        
-                        if(acquiredBuffs.ContainsKey(entry.Value)&&(entry.Key==enemy.BaseSkinName)&&!ArrayCKey(buffs,entry.Value))
+                    
+                        if (dict.ContainsKey(enemy.BaseSkinName) && dict.ContainsValue(buff.Name))
                         {
-                            acquiredBuffs.Remove(enemy.BaseSkinName);
+                            foreach (var vari in acquiredBuffs)
+                            {
+                                if (!ArrayCKey(buffs, vari.Value))
+                                {
+                                    acquiredBuffs.Remove(vari.Key);
+                                }
+                            }
+                            if (!acquiredBuffs.ContainsKey(buff.Name))
+                            {
+                                 acquiredBuffs.Add(enemy.BaseSkinName,buff.Name);
+                                 Reveal(enemy);
+                            }
+                            
                         }
-                       
-                        if((buff.Name == entry.Value)&&!acquiredBuffs.ContainsValue(entry.Value))
-                        { 
-                                acquiredBuffs.Add(enemy.BaseSkinName, entry.Value);
-                                Reveal(enemy);
-                        }
-                    }
+                    
                 }
             }
                
