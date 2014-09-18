@@ -41,13 +41,13 @@ namespace VayneHunter2._0
             menu.SubMenu("Combo").AddItem(new MenuItem("UseR", "Use R").SetValue(true));
             menu.AddSubMenu(new Menu("[Hunter]Harrass", "Harrass"));
             menu.SubMenu("Harrass").AddItem(new MenuItem("UseQH", "Use Q").SetValue(true));
-            menu.SubMenu("Harrass").AddItem(new MenuItem("UseEH", "Use E").SetValue(true));
-            menu.SubMenu("Harrass").AddItem(new MenuItem("UseQPH", "Use Q&Auto While they auto minions").SetValue(true));
+            //menu.SubMenu("Harrass").AddItem(new MenuItem("UseEH", "Use E").SetValue(true));
+            //menu.SubMenu("Harrass").AddItem(new MenuItem("UseQPH", "Use Q&Auto While they auto minions").SetValue(true));
             menu.AddSubMenu(new Menu("[Hunter]Misc", "Misc"));
             menu.SubMenu("Misc").AddItem(new MenuItem("AntiGP", "Use AntiGapcloser").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("Interrupt", "Interrupt Spells").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle)));
-            menu.SubMenu("Misc").AddItem(new MenuItem("UseRQ", "Use RQ").SetValue(false));
+            menu.SubMenu("Misc").AddItem(new MenuItem("UseRQ", "Use RQ Combo").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("UsePK", "Use Packets").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("PushDistance", "E Push Dist").SetValue(new Slider(425, 400, 475)));
             menu.AddSubMenu(new Menu("[Hunter]Items", "Items"));
@@ -68,6 +68,7 @@ namespace VayneHunter2._0
             GPIntmenuCreate();
             
             menu.AddToMainMenu();
+            Game.PrintChat("Vayne - Hunter 2.0 By DZ191 Loaded");
             Q = new Spell(SpellSlot.Q, 0f);
             E = new Spell(SpellSlot.E, 550f);
             R = new Spell(SpellSlot.R, 0f);
@@ -90,7 +91,15 @@ namespace VayneHunter2._0
                      menu.Item("ENextAuto").SetValue<KeyBind>(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle));
                  }
                 if(isEn("UseQ") && isMode("Combo"))
-                { 
+                {
+                    if (isEn("UseRQ"))
+                    {
+                        R.Cast();
+                    }
+                    CastQ();
+                }
+                if (isEn("UseQH") && isMode("Mixed"))
+                {
                     CastQ();
                 }
                 if(isMode("Combo"))
@@ -185,7 +194,7 @@ namespace VayneHunter2._0
         }
         public static void CastQ()
         {
-                Game.PrintChat("UsingQ1");
+                
                 if(Q.IsReady())
                 {
                     if(isMode("Combo") && getManaPer()>= menu.Item("QManaC").GetValue<Slider>().Value)
