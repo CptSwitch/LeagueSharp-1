@@ -66,7 +66,7 @@ namespace VayneHunter2._0
             menu.AddSubMenu(new Menu("Gapcloser List 2", "gap2"));
             menu.AddSubMenu(new Menu("Interrupt List", "int"));
             GPIntmenuCreate();
-            Game.PrintChat("DZVayne Loaded");
+            
             menu.AddToMainMenu();
             Q = new Spell(SpellSlot.Q, 0f);
             E = new Spell(SpellSlot.E, 550f);
