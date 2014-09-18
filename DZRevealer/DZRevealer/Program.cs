@@ -58,13 +58,12 @@ namespace DZRevealer
         private static void Game_OnGameProcessPacket(GamePacketEventArgs args)
         {
             byte[] pdata = args.PacketData;
-            Game.PrintChat("PacketProcess "+args.PacketData[0].ToString());
+            //Game.PrintChat("PacketProcess "+args.PacketData[0].ToString());
             if(pdata[0] == 0xB7)
             {
                 Game.PrintChat("OnGainBuffDump");
                 foreach(var b in pdata)
                 {
-                    
                     Game.PrintChat(b.ToString());
                 }
             }
