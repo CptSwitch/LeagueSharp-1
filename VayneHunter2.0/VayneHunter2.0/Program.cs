@@ -68,7 +68,7 @@ namespace VayneHunter2._0
             GPIntmenuCreate();
             
             menu.AddToMainMenu();
-            Game.PrintChat("VayneHunter v2 By DZ191");
+            //Game.PrintChat("VayneHunter v2 By DZ191");
             Q = new Spell(SpellSlot.Q, 0f);
             E = new Spell(SpellSlot.E, 550f);
             R = new Spell(SpellSlot.R, 0f);
