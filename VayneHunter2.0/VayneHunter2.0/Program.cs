@@ -57,20 +57,22 @@ namespace VayneHunter2._0
             menu.SubMenu("Items").AddItem(new MenuItem("EnHPercBotrk", "Min Enemy H % Botrk").SetValue(new Slider(20, 1, 100)));
             menu.SubMenu("Items").AddItem(new MenuItem("ItInMix", "Use Items In Mixed Mode").SetValue(false));
             menu.AddSubMenu(new Menu("[Hunter]Mana Mng", "ManaMan"));
-            menu.SubMenu("ManaMan").AddItem(new MenuItem("QManaC", "Min Q Mana in Combo").SetValue(new Slider(30, 0, 100)));
-            menu.SubMenu("ManaMan").AddItem(new MenuItem("QManaM", "Min Q Mana in Mixed").SetValue(new Slider(30, 0, 100)));
-            menu.SubMenu("ManaMan").AddItem(new MenuItem("EManaC", "Min E Mana in Combo").SetValue(new Slider(20, 0, 100)));
-            menu.SubMenu("ManaMan").AddItem(new MenuItem("EManaM", "Min E Mana in Mixed").SetValue(new Slider(20, 0, 100)));
+            menu.SubMenu("ManaMan").AddItem(new MenuItem("QManaC", "Min Q Mana in Combo").SetValue(new Slider(30, 1, 100)));
+            menu.SubMenu("ManaMan").AddItem(new MenuItem("QManaM", "Min Q Mana in Mixed").SetValue(new Slider(30, 1, 100)));
+            menu.SubMenu("ManaMan").AddItem(new MenuItem("EManaC", "Min E Mana in Combo").SetValue(new Slider(20, 1, 100)));
+            menu.SubMenu("ManaMan").AddItem(new MenuItem("EManaM", "Min E Mana in Mixed").SetValue(new Slider(20, 1, 100)));
             //Thank you blm95 ;)
             menu.AddSubMenu(new Menu("Gapcloser List", "gap"));
             menu.AddSubMenu(new Menu("Gapcloser List 2", "gap2"));
             menu.AddSubMenu(new Menu("Interrupt List", "int"));
             GPIntmenuCreate();
+ 
+            menu.AddToMainMenu();
             Q = new Spell(SpellSlot.Q, 0f);
             E = new Spell(SpellSlot.E, 550f);
             R = new Spell(SpellSlot.R, 0f);
             E.SetTargetted(0.25f, 2200f);
-            menu.AddToMainMenu();
+            
             Game.OnGameUpdate += OnTick;
             Orbwalking.AfterAttack += OW_AfterAttack;
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
@@ -89,6 +91,7 @@ namespace VayneHunter2._0
                  }
                 if(isEn("UseQ") && isMode("Combo"))
                 {
+                    
                     CastQ();
                 }
                 if(isMode("Combo"))
@@ -185,34 +188,17 @@ namespace VayneHunter2._0
         {
             var after = ObjectManager.Player.Position + Normalize(Game.CursorPos - ObjectManager.Player.Position) * 300;
             var disafter = Vector3.DistanceSquared(after, tar.Position);
-            if ((disafter < 630 * 630) && disafter > 100 * 100)
-            {
+                Game.PrintChat("UsingQ1");
                 if(Q.IsReady())
                 {
-                    if(isMode("Combo") && getManaPer()<=menu.Item("QManaC").GetValue<Slider>().Value)
+                    if(isMode("Combo") && getManaPer()>= menu.Item("QManaC").GetValue<Slider>().Value)
                     {
                         Q.Cast(Game.CursorPos, isEn("UsePK"));
-                    }else if(isMode("Mixed") && getManaPer()<=menu.Item("QManaM").GetValue<Slider>().Value)
+                    }else if(isMode("Mixed") && getManaPer()>= menu.Item("QManaM").GetValue<Slider>().Value)
                     {
                         Q.Cast(Game.CursorPos, isEn("UsePK"));
-                    }
+                    } 
                 }
-            }
-            if (Vector3.DistanceSquared(tar.Position, ObjectManager.Player.Position) > 630 * 630 &&
-                        disafter < 630 * 630)
-            {
-                if(Q.IsReady())
-                {
-                    if (isMode("Combo") && getManaPer() <= menu.Item("QManaC").GetValue<Slider>().Value)
-                    {
-                        Q.Cast(Game.CursorPos, isEn("UsePK"));
-                    }
-                    else if (isMode("Mixed") && getManaPer() <= menu.Item("QManaM").GetValue<Slider>().Value)
-                    {
-                        Q.Cast(Game.CursorPos, isEn("UsePK"));
-                    }
-                }
-            }
         }
         static void CastE(Obj_AI_Hero Target,bool forGp=false)
         {
@@ -220,11 +206,11 @@ namespace VayneHunter2._0
             {
                 if(!forGp)
                 { 
-                    if (isMode("Combo") && getManaPer() <= menu.Item("EManaC").GetValue<Slider>().Value)
+                    if (isMode("Combo") && getManaPer() >= menu.Item("EManaC").GetValue<Slider>().Value)
                     {
                         E.Cast(Target, isEn("UsePK"));
                     }
-                    else if (isMode("Mixed") && getManaPer() <= menu.Item("EManaM").GetValue<Slider>().Value)
+                    else if (isMode("Mixed") && getManaPer() >= menu.Item("EManaM").GetValue<Slider>().Value)
                     {
                         E.Cast(Target, isEn("UsePK"));
                     }
