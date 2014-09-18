@@ -90,8 +90,7 @@ namespace VayneHunter2._0
                      menu.Item("ENextAuto").SetValue<KeyBind>(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle));
                  }
                 if(isEn("UseQ") && isMode("Combo"))
-                {
-                    
+                { 
                     CastQ();
                 }
                 if(isMode("Combo"))
@@ -184,10 +183,8 @@ namespace VayneHunter2._0
             double distance = Math.Sqrt(A.X*A.X + A.Y*A.Y);
             return new Vector3(new Vector2((float) (A.X/distance)), (float) (A.Y/distance));
         }
-        static void CastQ()
+        public static void CastQ()
         {
-            var after = ObjectManager.Player.Position + Normalize(Game.CursorPos - ObjectManager.Player.Position) * 300;
-            var disafter = Vector3.DistanceSquared(after, tar.Position);
                 Game.PrintChat("UsingQ1");
                 if(Q.IsReady())
                 {
