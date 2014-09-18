@@ -22,7 +22,7 @@ namespace DZRevealer
         public static int TRINKET_RED = 3364;
         public static float wardrange = 600f;
         public static float trinket_range = 600f;
-        public static bool debug = true;
+        public static bool debug = false;
         static void Main(string[] args)
         {
             try
@@ -62,13 +62,21 @@ namespace DZRevealer
             if(pdata[0] == 0xB7)
             {
                 Game.PrintChat("OnGainBuffDump");
+                var P = new GamePacket(args.PacketData);
+                Obj_AI_Hero player = ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(pdata[1]);
+                BuffInstance[] Buff = player.Buffs;
+                
                 foreach(var b in pdata)
                 {
+                
                     Game.PrintChat(b.ToString());
                 }
             }
         }
+        public static void OnGainBuff(Obj_AI_Hero unit,String buff)
+        {
 
+        }
         private static void Game_GameUpdate(EventArgs args)
         {
             if (!isEn("doRev")) return;
