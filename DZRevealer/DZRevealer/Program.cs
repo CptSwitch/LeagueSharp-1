@@ -22,7 +22,7 @@ namespace DZRevealer
         public static int TRINKET_RED = 3364;
         public static float wardrange = 600f;
         public static float trinket_range = 600f;
-        public static bool debug = false;
+        public static bool debug = true;
         static void Main(string[] args)
         {
             try
@@ -47,6 +47,7 @@ namespace DZRevealer
             menu.AddItem(new MenuItem("doRev", "Reveal").SetValue(true));
             menu.AddItem(new MenuItem("revDesc1", "Priority:"));
             menu.AddItem(new MenuItem("prior", "ON: Pink OFF: Trinket").SetValue(true));
+            Game.PrintChat("DZReveal Loaded");
             menu.AddToMainMenu();
             fillDict();
             Game.PrintChat(player.BaseSkinName);
@@ -56,7 +57,17 @@ namespace DZRevealer
 
         private static void Game_OnGameProcessPacket(GamePacketEventArgs args)
         {
-            
+            byte[] pdata = args.PacketData;
+            Game.PrintChat("PacketProcess "+args.PacketData[0].ToString());
+            if(pdata[0] == 0xB7)
+            {
+                Game.PrintChat("OnGainBuffDump");
+                foreach(var b in pdata)
+                {
+                    
+                    Game.PrintChat(b.ToString());
+                }
+            }
         }
 
         private static void Game_GameUpdate(EventArgs args)
