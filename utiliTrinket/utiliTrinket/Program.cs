@@ -44,6 +44,8 @@ namespace utiliTrinket
             menu.AddItem(new MenuItem("sweeperQ", "Buy Sweeper On Quill Coat").SetValue(true));
             menu.AddItem(new MenuItem("sweeperW", "Buy Sweeper on Wriggle").SetValue(true));
             position = player.Position;
+            menu.AddToMainMenu();
+            Game.PrintChat("utiliTrinket By DZ191 Based on PewPewPew2 Loaded!")
             Game.OnGameUpdate += OnTick;
             
         }
@@ -85,6 +87,7 @@ namespace utiliTrinket
                 }
                 if(hasItem(YellowW) && GetTimer()>= menu.Item("timer").GetValue<Slider>().Value && !boughtSweep)
                 {
+                    boughtSweep = true;
                     player1.SellItem(trinketSlot);
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(TRINKET_RED, ObjectManager.Player.NetworkId)).Send();
                 }
@@ -94,7 +97,6 @@ namespace utiliTrinket
         
         public static float GetTimer()
         {
-            Game.PrintChat((Game.Time / 60).ToString());
             return Game.Time/60;
         }
         public static bool hasItem(int id)
