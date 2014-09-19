@@ -89,7 +89,7 @@ namespace utiliTrinket
                 {
                     Game.PrintChat("Called");
                     boughtSweep = true;
-                    player1.SellItem(trinketSlot);
+                    player1.SellItem(TRINKET_RED);
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(TRINKET_RED, ObjectManager.Player.NetworkId)).Send();
                 }
 
