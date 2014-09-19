@@ -47,7 +47,7 @@ namespace VayneHunter2._0
             menu.SubMenu("Misc").AddItem(new MenuItem("AntiGP", "Use AntiGapcloser").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("Interrupt", "Interrupt Spells").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle)));
-            menu.SubMenu("Misc").AddItem(new MenuItem("UseRQ", "Use RQ Combo").SetValue(false));
+            //menu.SubMenu("Misc").AddItem(new MenuItem("UseRQ", "Use RQ Combo").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("UsePK", "Use Packets").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("PushDistance", "E Push Dist").SetValue(new Slider(425, 400, 475)));
             menu.AddSubMenu(new Menu("[Hunter]Items", "Items"));
@@ -92,7 +92,7 @@ namespace VayneHunter2._0
                  }
                 if(isEn("UseQ") && isMode("Combo"))
                 {
-                    if (isEn("UseRQ") && isEn("UseR"))
+                    if (isEn("UseR"))
                     {
                         R.Cast();
                     }
