@@ -79,6 +79,8 @@ namespace VayneHunter2._0
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
         }
 
+       
+
         public static void OW_AfterAttack(Obj_AI_Base unit, Obj_AI_Base target)
         {
             if(unit.IsMe)
