@@ -62,9 +62,9 @@ namespace VayneHunter2._0
             menu.SubMenu("ManaMan").AddItem(new MenuItem("EManaC", "Min E Mana in Combo").SetValue(new Slider(20, 1, 100)));
             menu.SubMenu("ManaMan").AddItem(new MenuItem("EManaM", "Min E Mana in Mixed").SetValue(new Slider(20, 1, 100)));
             //Thank you blm95 ;)
-            menu.AddSubMenu(new Menu("Gapcloser List", "gap"));
-            menu.AddSubMenu(new Menu("Gapcloser List 2", "gap2"));
-            menu.AddSubMenu(new Menu("Interrupt List", "int"));
+            menu.AddSubMenu(new Menu("[Hunter]Gapcloser", "gap"));
+            menu.AddSubMenu(new Menu("[Hunter]Gapcloser 2", "gap2"));
+            menu.AddSubMenu(new Menu("[Hunter]Interrupts", "int"));
             GPIntmenuCreate();
 
             menu.AddToMainMenu();
@@ -128,7 +128,7 @@ namespace VayneHunter2._0
             }
             //NonTargeted GP
             if (isEn(spellName) && sender.IsValidTarget(550f) && isEn("AntiGP") && notarget.Any(str => str.Contains(args.SData.Name)) 
-                && player.Distance(args.End)<=300f)
+                && player.Distance(args.End)<=320f)
             {
                 CastE((Obj_AI_Hero)sender,true);
             }
@@ -187,11 +187,7 @@ namespace VayneHunter2._0
                 menu.SubMenu("int").AddItem(new MenuItem(interrupt[i], interrupt[i])).SetValue(true);
             }
         }
-        public static Vector3 Normalize(Vector3 A)
-        {
-            double distance = Math.Sqrt(A.X*A.X + A.Y*A.Y);
-            return new Vector3(new Vector2((float) (A.X/distance)), (float) (A.Y/distance));
-        }
+        
         public static void CastQ()
         {
                 
