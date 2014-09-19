@@ -36,17 +36,17 @@ namespace utiliTrinket
         static void Game_OnGameLoad(EventArgs args)
         {
             
-            menu = new Menu("UtiliTrinket DZ191", "UtiliTrkMenu", true);
-            menu.AddItem(new MenuItem("ward", "Buy W Totem at start of the game").SetValue(true));
-            menu.AddItem(new MenuItem("timer", "Buy Sweeper at x minutes").SetValue(new Slider(15, 1, 30)));
+            menu = new Menu("utiliTrinket", "UtiliTrkMenu", true);
+            menu.AddItem(new MenuItem("ward", "Buy WTotem at start").SetValue(true));
+            menu.AddItem(new MenuItem("timer", "Buy Sw at x min").SetValue(new Slider(15, 1, 30)));
             menu.AddItem(new MenuItem("orb", "Buy Orb").SetValue(true));
-            menu.AddItem(new MenuItem("timer2", "Buy Orb at x minutes").SetValue(new Slider(40, 30, 60)));
-            menu.AddItem(new MenuItem("sweeperS", "Buy Sweeper On Sightstone").SetValue(true));
-            menu.AddItem(new MenuItem("sweeperQ", "Buy Sweeper On Quill Coat").SetValue(true));
-            menu.AddItem(new MenuItem("sweeperW", "Buy Sweeper on Wriggle").SetValue(true));
+            menu.AddItem(new MenuItem("timer2", "Buy Orb at x min").SetValue(new Slider(40, 30, 60)));
+            menu.AddItem(new MenuItem("sweeperS", "Buy Sw On Sightstone").SetValue(true));
+            menu.AddItem(new MenuItem("sweeperQ", "Buy Sw QuillCoat").SetValue(true));
+            menu.AddItem(new MenuItem("sweeperW", "Buy Sw on Wriggle").SetValue(true));
             position = player.Position;
             menu.AddToMainMenu();
-            Game.PrintChat("utiliTrinket By DZ191 Based on PewPewPew2 Loaded!");
+            Game.PrintChat("utiliTrinket By DZ191 Based on PewPewPew Loaded!");
             Game.OnGameUpdate += OnTick;
             
         }
