@@ -39,7 +39,7 @@ namespace VayneHunter2._0
             menu.SubMenu("Combo").AddItem(new MenuItem("UseQ", "Use Q").SetValue(true));
             menu.SubMenu("Combo").AddItem(new MenuItem("UseE", "Use E").SetValue(true));
             menu.SubMenu("Combo").AddItem(new MenuItem("UseR", "Use R").SetValue(true));
-            menu.AddSubMenu(new Menu("[Hunter]Harrass", "Harrass"));
+            menu.AddSubMenu(new Menu("[Hunter]Mixed Mode", "Harrass"));
             menu.SubMenu("Harrass").AddItem(new MenuItem("UseQH", "Use Q").SetValue(true));
             //menu.SubMenu("Harrass").AddItem(new MenuItem("UseEH", "Use E").SetValue(true));
             //menu.SubMenu("Harrass").AddItem(new MenuItem("UseQPH", "Use Q&Auto While they auto minions").SetValue(true));
@@ -92,7 +92,7 @@ namespace VayneHunter2._0
                  }
                 if(isEn("UseQ") && isMode("Combo"))
                 {
-                    if (isEn("UseRQ"))
+                    if (isEn("UseRQ") && isEn("UseR"))
                     {
                         R.Cast();
                     }
