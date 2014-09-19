@@ -45,7 +45,7 @@ namespace utiliTrinket
             menu.AddItem(new MenuItem("sweeperW", "Buy Sweeper on Wriggle").SetValue(true));
             position = player.Position;
             menu.AddToMainMenu();
-            Game.PrintChat("utiliTrinket By DZ191 Based on PewPewPew2 Loaded!")
+            Game.PrintChat("utiliTrinket By DZ191 Based on PewPewPew2 Loaded!");
             Game.OnGameUpdate += OnTick;
             
         }
