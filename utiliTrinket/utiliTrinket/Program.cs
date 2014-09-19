@@ -26,7 +26,7 @@ namespace utiliTrinket
         static bool boughtYellow = false;
         static bool boughtSweep = false;
         static bool boughtBlue = false;
-        static int trinketSlot;
+        static int trinketSlot = 134;
         static Vector3 position;
         static void Main(string[] args)
         {
@@ -35,6 +35,7 @@ namespace utiliTrinket
 
         static void Game_OnGameLoad(EventArgs args)
         {
+            
             menu = new Menu("UtiliTrinket DZ191", "UtiliTrkMenu", true);
             menu.AddItem(new MenuItem("ward", "Buy W Totem at start of the game").SetValue(true));
             menu.AddItem(new MenuItem("timer", "Buy Sweeper at x minutes").SetValue(new Slider(15, 1, 30)));
@@ -87,9 +88,9 @@ namespace utiliTrinket
                 }
                 if(hasItem(YellowW) && GetTimer()>= menu.Item("timer").GetValue<Slider>().Value && !boughtSweep)
                 {
-                    Game.PrintChat("Called");
+                    //Game.PrintChat("Called");
                     boughtSweep = true;
-                    player1.SellItem(TRINKET_RED);
+                    player1.SellItem(trinketSlot);
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(TRINKET_RED, ObjectManager.Player.NetworkId)).Send();
                 }
 
