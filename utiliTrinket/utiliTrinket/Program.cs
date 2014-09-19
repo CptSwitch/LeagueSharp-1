@@ -87,6 +87,7 @@ namespace utiliTrinket
                 }
                 if(hasItem(YellowW) && GetTimer()>= menu.Item("timer").GetValue<Slider>().Value && !boughtSweep)
                 {
+                    Game.PrintChat("Called");
                     boughtSweep = true;
                     player1.SellItem(trinketSlot);
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(TRINKET_RED, ObjectManager.Player.NetworkId)).Send();
