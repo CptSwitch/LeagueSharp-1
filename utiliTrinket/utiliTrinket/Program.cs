@@ -44,9 +44,8 @@ namespace utiliTrinket
             menu.AddItem(new MenuItem("sweeperS", "Buy Sw On Sightstone").SetValue(true));
             menu.AddItem(new MenuItem("sweeperQ", "Buy Sw QuillCoat").SetValue(true));
             menu.AddItem(new MenuItem("sweeperW", "Buy Sw on Wriggle").SetValue(true));
-            //position = player.Position;
-            menu.AddToMainMenu();
             Game.PrintChat("utiliTrinket By DZ191 based on PewPewPew's Script Loaded!");
+            menu.AddToMainMenu();
             Game.OnGameUpdate += OnTick;
             
         }
@@ -59,7 +58,6 @@ namespace utiliTrinket
                 if(GetTimer()<1 && !hasItem(YellowW) && isEn("ward"))
                 {
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(YellowW, ObjectManager.Player.NetworkId)).Send();
-                    
                 }
                 if(hasItem(SightStone) && isEn("sweeperS") && !hasItem(TRINKET_RED))
                 {
@@ -83,7 +81,6 @@ namespace utiliTrinket
                 }
                 if (hasItem(YellowW) && (GetTimer() >= menu.Item("timer").GetValue<Slider>().Value) && (GetTimer() < menu.Item("timer2").GetValue<Slider>().Value) && !hasItem(TRINKET_RED))
                 {
-                    Game.PrintChat("Called");
                     player1.SellItem((int)SpellSlot.Trinket);
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(TRINKET_RED, ObjectManager.Player.NetworkId)).Send();
                 }
