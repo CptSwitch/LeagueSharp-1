@@ -53,8 +53,6 @@ namespace utiliTrinket
 
         private static void OnTick(EventArgs args)
         {
-            Obj_AI_Hero player1 = (Obj_AI_Hero)player;
-            GetTimer();
  	        if(player.IsDead || Utility.InShopRange())
             {
                 if(GetTimer()<1 && !hasItem(YellowW) && isEn("ward"))
@@ -63,30 +61,30 @@ namespace utiliTrinket
                 }
                 if(hasItem(SightStone) && isEn("sweeperS") && !hasItem(TRINKET_RED))
                 {
-                    player1.SellItem(trinketSlot);
+                    Packet.C2S.SellItem.Encoded(new Packet.C2S.SellItem.Struct(SpellSlot.Trinket, ObjectManager.Player.NetworkId)).Send();
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(TRINKET_RED, ObjectManager.Player.NetworkId)).Send();
                 }
                 if (hasItem(QuillCoat) && isEn("sweeperQ") && !hasItem(TRINKET_RED))
                 {
-                    player1.SellItem(trinketSlot);
+                    Packet.C2S.SellItem.Encoded(new Packet.C2S.SellItem.Struct(SpellSlot.Trinket, ObjectManager.Player.NetworkId)).Send();
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(TRINKET_RED, ObjectManager.Player.NetworkId)).Send();
                 }
                 if (hasItem(Wriggle) && isEn("sweeperW") && !hasItem(TRINKET_RED))
                 {
-                    player1.SellItem(trinketSlot);
+                    Packet.C2S.SellItem.Encoded(new Packet.C2S.SellItem.Struct(SpellSlot.Trinket, ObjectManager.Player.NetworkId)).Send();
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(TRINKET_RED, ObjectManager.Player.NetworkId)).Send();
                 }
                 if (isEn("orb") && (GetTimer() >= menu.Item("timer2").GetValue<Slider>().Value) && !hasItem(Orb))
                 {
-                    
-                    player1.SellItem(trinketSlot);
+
+                    Packet.C2S.SellItem.Encoded(new Packet.C2S.SellItem.Struct(SpellSlot.Trinket, ObjectManager.Player.NetworkId)).Send();
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(Orb, ObjectManager.Player.NetworkId)).Send();
                 }
                 if (hasItem(YellowW) && (GetTimer() >= menu.Item("timer").GetValue<Slider>().Value) && (GetTimer() < menu.Item("timer2").GetValue<Slider>().Value) && !hasItem(TRINKET_RED))
                 {
                     //Game.PrintChat("Called");
-                    
-                    player1.SellItem(trinketSlot);
+
+                    Packet.C2S.SellItem.Encoded(new Packet.C2S.SellItem.Struct(SpellSlot.Trinket, ObjectManager.Player.NetworkId)).Send();
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(TRINKET_RED, ObjectManager.Player.NetworkId)).Send();
                 }
 
