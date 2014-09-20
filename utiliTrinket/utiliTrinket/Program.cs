@@ -55,7 +55,7 @@ namespace utiliTrinket
             Obj_AI_Hero player1 = (Obj_AI_Hero)player;
  	        if(player.IsDead || Utility.InShopRange())
             {
-                Game.PrintChat(hasItem(YellowW).ToString());
+                //Game.PrintChat(hasItem(YellowW).ToString());
                 if(GetTimer()<1 && !hasItem(YellowW) && isEn("ward"))
                 {
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(YellowW, ObjectManager.Player.NetworkId)).Send();
@@ -82,6 +82,7 @@ namespace utiliTrinket
                 }
                 if (hasItem(YellowW) && (GetTimer() >= menu.Item("timer").GetValue<Slider>().Value) && (GetTimer() < menu.Item("timer2").GetValue<Slider>().Value) && !hasItem(TRINKET_RED))
                 {
+                    Game.PrintChat("Called");
                     player1.SellItem((int)SpellSlot.Trinket);
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(TRINKET_RED, ObjectManager.Player.NetworkId)).Send();
                 }
