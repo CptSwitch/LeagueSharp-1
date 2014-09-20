@@ -20,14 +20,14 @@ namespace utiliTrinket
         static int TRINKET_RED = 3341;
         static int QuillCoat = 3204;
         static int Wriggle = 3154;
-        static bool boughtSweepS = false;
-        static bool boughtSweepW = false;
-        static bool boughtSweepQ = false;
-        static bool boughtYellow = false;
-        static bool boughtSweep = false;
-        static bool boughtBlue = false;
-        static int trinketSlot = 134;
-        static Vector3 position;
+        //static bool boughtSweepS = false;
+        //static bool boughtSweepW = false;
+        //static bool boughtSweepQ = false;
+        //static bool boughtYellow = false;
+        //static bool boughtSweep = false;
+        //static bool boughtBlue = false;
+        //static int trinketSlot = 134;
+        //static Vector3 position;
         static void Main(string[] args)
         {
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
@@ -44,7 +44,7 @@ namespace utiliTrinket
             menu.AddItem(new MenuItem("sweeperS", "Buy Sw On Sightstone").SetValue(true));
             menu.AddItem(new MenuItem("sweeperQ", "Buy Sw QuillCoat").SetValue(true));
             menu.AddItem(new MenuItem("sweeperW", "Buy Sw on Wriggle").SetValue(true));
-            position = player.Position;
+            //position = player.Position;
             menu.AddToMainMenu();
             Game.PrintChat("utiliTrinket# By DZ191 based on PewPewPew's Script Loaded!");
             Game.OnGameUpdate += OnTick;
