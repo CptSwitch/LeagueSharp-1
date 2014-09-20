@@ -46,7 +46,7 @@ namespace utiliTrinket
             menu.AddItem(new MenuItem("sweeperW", "Buy Sw on Wriggle").SetValue(true));
             position = player.Position;
             menu.AddToMainMenu();
-            Game.PrintChat("utiliTrinket By DZ191 Based on PewPewPew Loaded!");
+            Game.PrintChat("utiliTrinket# By DZ191 Based on PewPewPew's Script Loaded!");
             Game.OnGameUpdate += OnTick;
             
         }
@@ -57,7 +57,7 @@ namespace utiliTrinket
             GetTimer();
  	        if(player.IsDead || Utility.InShopRange())
             {
-                if(GetTimer()<1 && !hasItem(YellowW))
+                if(GetTimer()<1 && !hasItem(YellowW) && isEn("ward"))
                 {
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(YellowW, ObjectManager.Player.NetworkId)).Send();
                 }
@@ -82,7 +82,7 @@ namespace utiliTrinket
                     player1.SellItem(trinketSlot);
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(Orb, ObjectManager.Player.NetworkId)).Send();
                 }
-                if (hasItem(YellowW) && GetTimer() >= menu.Item("timer").GetValue<Slider>().Value && !hasItem(TRINKET_RED))
+                if (hasItem(YellowW) && (GetTimer() >= menu.Item("timer").GetValue<Slider>().Value) && (GetTimer() < menu.Item("timer2").GetValue<Slider>().Value) && !hasItem(TRINKET_RED))
                 {
                     //Game.PrintChat("Called");
                     
