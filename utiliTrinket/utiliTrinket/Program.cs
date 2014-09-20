@@ -53,11 +53,13 @@ namespace utiliTrinket
 
         private static void OnTick(EventArgs args)
         {
+            Obj_AI_Hero player1 = (Obj_AI_Hero)player;
  	        if(player.IsDead || Utility.InShopRange())
             {
                 if(GetTimer()<1 && !hasItem(YellowW) && isEn("ward"))
                 {
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(YellowW, ObjectManager.Player.NetworkId)).Send();
+                    player1.SellItem((int)SpellSlot.Trinket);
                 }
                 if(hasItem(SightStone) && isEn("sweeperS") && !hasItem(TRINKET_RED))
                 {
