@@ -29,6 +29,7 @@ namespace VayneHunter2._0
 
         static void Game_OnGameLoad(EventArgs args)
         {
+            if (player.BaseSkinName != champName) return;
             menu = new Menu("Vayne Hunter", "VHMenu",true);
             menu.AddSubMenu(new Menu("Orbwalker", "Orbwalker1"));
             Orbwalker = new Orbwalking.Orbwalker(menu.SubMenu("Orbwalker1"));
