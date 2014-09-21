@@ -111,7 +111,7 @@ namespace DZRevealer
                     }
                     else
                     {
-                        Vector3 pos1 = Vector3.Lerp(player.Position, enemy.Position, wardrange / player.Distance(enemy));
+                        Vector3 pos1 = Vector3.Lerp(player.Position, enemy.Position, trinket_range / player.Distance(enemy));
                         useItem(TRINKET_RED, pos1);
                     }
                     
