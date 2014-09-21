@@ -15,7 +15,6 @@ namespace DZRevealer
     class Program
     {
         public static Dictionary<String, String> dict;
-        public static Dictionary<String, String> acquiredBuffs = new Dictionary<string,string>();
         public static Obj_AI_Base player = ObjectManager.Player;
         public static Spell E;
         public static Menu menu;
