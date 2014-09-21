@@ -86,7 +86,7 @@ namespace DZRevealer
             if (isEn("prior"))
             {
                 //W
-                if (player.Distance(enemy) <= wardrange+1000)
+                if (player.Distance(enemy) <= wardrange+300f)
                 {
                     if(player.Distance(enemy) <= wardrange)
                     {
@@ -103,7 +103,7 @@ namespace DZRevealer
             else
             {
                 //Trink
-                if (player.Distance(enemy) <= trinket_range)
+                if (player.Distance(enemy) <= trinket_range+300f)
                 {
                     if (player.Distance(enemy) <= trinket_range)
                     {
