@@ -17,6 +17,7 @@ namespace DZRevealer
         public static Dictionary<String, String> dict;
         public static Dictionary<String, String> acquiredBuffs = new Dictionary<string,string>();
         public static Obj_AI_Base player = ObjectManager.Player;
+        public static Spell E;
         public static Menu menu;
         public static int VISION_WARD = 2043;
         public static int TRINKET_RED = 3364;
@@ -38,15 +39,15 @@ namespace DZRevealer
         }
         static void Game_OnGameLoad(EventArgs args)
         {
-            if (!debug)
-            {
-                Game.PrintChat("Work in progress");
-                return;
-            }
             menu = new Menu("DZReveal!", "DZReveal", true);
             menu.AddItem(new MenuItem("doRev", "Reveal").SetValue(true));
             menu.AddItem(new MenuItem("revDesc1", "Priority:"));
             menu.AddItem(new MenuItem("prior", "ON: Pink OFF: Trinket").SetValue(true));
+            if(player.BaseSkinName =="LeeSin")
+            {
+                menu.AddItem(new MenuItem("leeE", "Lee Sin: Use E").SetValue(true));
+                E = new Spell(SpellSlot.E, 350f);
+            }
             Game.PrintChat("DZReveal Loaded");
             menu.AddToMainMenu();
             fillDict();
@@ -57,21 +58,6 @@ namespace DZRevealer
 
         private static void Game_OnGameProcessPacket(GamePacketEventArgs args)
         {
-            byte[] pdata = args.PacketData;
-            //Game.PrintChat("PacketProcess "+args.PacketData[0].ToString());
-            if(pdata[0] == 0xB7)
-            {
-                Game.PrintChat("OnGainBuffDump");
-                var P = new GamePacket(args.PacketData);
-                Obj_AI_Hero player = ObjectManager.GetUnitByNetworkId<Obj_AI_Hero>(pdata[1]);
-                BuffInstance[] Buff = player.Buffs;
-                
-                foreach(var b in pdata)
-                {
-                
-                    Game.PrintChat(b.ToString());
-                }
-            }
         }
         public static void OnGainBuff(Obj_AI_Hero unit,String buff)
         {
@@ -82,36 +68,22 @@ namespace DZRevealer
             if (!isEn("doRev")) return;
             foreach (var enemy in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
             {
-                BuffInstance[] buffs = enemy.Buffs;
-                foreach (var buff in buffs)
+                if(enemy.HasBuffOfType(BuffType.Invisibility) && !(enemy.BaseSkinName =="Evelynn"))
                 {
-                    
-                        if (dict.ContainsKey(enemy.BaseSkinName) && dict.ContainsValue(buff.Name))
-                        {
-                            foreach (var vari in acquiredBuffs)
-                            {
-                                if (!ArrayCKey(buffs, vari.Value))
-                                {
-                                    acquiredBuffs.Remove(vari.Key);
-                                }
-                            }
-                            if (!acquiredBuffs.ContainsKey(buff.Name))
-                            {
-                                 acquiredBuffs.Add(enemy.BaseSkinName,buff.Name);
-                                 Reveal(enemy);
-                            }
-                            
-                        }
-                    
+                    Reveal(enemy);
                 }
             }
-               
-            
+
         }
 
         static void Reveal(Obj_AI_Hero enemy)
         {
-            
+            if(player.BaseSkinName == "LeeSin" && E.IsReady() && player.Distance(enemy)<= E.Range && isEn("leeE"))
+            {
+                E.Cast();
+            }
+            else
+            {
             if (isEn("prior"))
             {
                 //W
@@ -147,6 +119,7 @@ namespace DZRevealer
                     }
                     
                 }
+            }
             }
             
         }
