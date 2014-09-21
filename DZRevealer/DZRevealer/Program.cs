@@ -93,10 +93,9 @@ namespace DZRevealer
                         useItem(VISION_WARD, enemy.Position);
                     }
                     else
-                    {
-                        Vector3 trPos = new Vector3(player.Position.X + wardrange, player.Position.Y + wardrange, player.Position.Z + wardrange);
-                        Vector3 pos = player.Position - (enemy.ServerPosition - player.Position) * trPos;
-                        useItem(VISION_WARD, pos);
+                    {       
+                        Vector3 pos1 = Vector3.Lerp(player.Position, enemy.Position, wardrange / player.Distance(enemy));
+                        useItem(VISION_WARD, pos1);
                     }
                     
                 }
@@ -112,9 +111,8 @@ namespace DZRevealer
                     }
                     else
                     {
-                        Vector3 trPos = new Vector3(player.Position.X + (trinket_range + trinket_range / 2), player.Position.Y + (trinket_range + trinket_range / 2), player.Position.Z + (trinket_range + trinket_range / 2));
-                        Vector3 pos = player.Position - (enemy.ServerPosition - player.Position) * trPos;
-                        useItem(TRINKET_RED, pos);
+                        Vector3 pos1 = Vector3.Lerp(player.Position, enemy.Position, wardrange / player.Distance(enemy));
+                        useItem(TRINKET_RED, pos1);
                     }
                     
                 }
@@ -126,17 +124,7 @@ namespace DZRevealer
         {
             return menu.Item(item).GetValue<bool>();
         }
-        static bool ArrayCKey(BuffInstance[] array,String key)
-        {
-            foreach(var b in array)
-            {
-                if(b.Name == key)
-                {
-                    return true;
-                }
-            }
-           return false;
-        }
+        
         static void fillDict()
         {
             dict = new Dictionary<String, String>();
