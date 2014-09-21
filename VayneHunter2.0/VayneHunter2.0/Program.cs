@@ -48,7 +48,7 @@ namespace VayneHunter2._0
             menu.SubMenu("Misc").AddItem(new MenuItem("AntiGP", "Use AntiGapcloser").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("Interrupt", "Interrupt Spells").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle)));
-            //menu.SubMenu("Misc").AddItem(new MenuItem("UseRQ", "Use RQ Combo").SetValue(false));
+            menu.SubMenu("Misc").AddItem(new MenuItem("SmartQ", "Use Q for GapClose").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("UsePK", "Use Packets").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("PushDistance", "E Push Dist").SetValue(new Slider(425, 400, 475)));
             menu.AddSubMenu(new Menu("[Hunter]Items", "Items"));
@@ -84,37 +84,44 @@ namespace VayneHunter2._0
 
         public static void OW_AfterAttack(Obj_AI_Base unit, Obj_AI_Base target)
         {
-            if(unit.IsMe)
+            if (unit.IsMe)
             {
-                 Obj_AI_Hero targ = (Obj_AI_Hero)target;
-                 if (!targ.IsValidTarget()) { return; }
-                 if (isEnK("ENextAuto"))
-                 {
-                     CastE(targ);
-                     menu.Item("ENextAuto").SetValue<KeyBind>(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle));
-                 }
-                if(isEn("UseQ") && isMode("Combo"))
+                Obj_AI_Hero targ = (Obj_AI_Hero)target;
+                if(isEn("SmartQ")){
+                    if ((player.Distance(targ) > Orbwalking.GetRealAutoAttackRange(null) + 300f)) { return; }
+                }
+                else
+                {
+                    if (!targ.IsValidTarget()) { return; }
+                }
+                if (isEnK("ENextAuto"))
+                {
+                    CastE(targ);
+                    menu.Item("ENextAuto").SetValue<KeyBind>(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle));
+                }
+                if (isEn("UseQ") && isMode("Combo"))
                 {
                     if (isEn("UseR"))
                     {
                         R.Cast();
                     }
-                    CastQ();
+                    CastQ(targ);
                 }
                 if (isEn("UseQH") && isMode("Mixed"))
                 {
-                    CastQ();
+                    CastQ(targ);
                 }
-                if(isMode("Combo"))
+                if (isMode("Combo"))
                 {
                     useItems(targ);
                 }
-                if(isMode("Mixed")&&isEn("ItInMix"))
+                if (isMode("Mixed") && isEn("ItInMix"))
                 {
                     useItems(targ);
                 }
             }
         }
+            
         public static void OnProcessSpell(Obj_AI_Base sender, GameObjectProcessSpellCastEventArgs args)
         {
             String spellName = args.SData.Name;
@@ -191,11 +198,47 @@ namespace VayneHunter2._0
             }
         }
         
-        public static void CastQ()
+        public static void CastQ(Obj_AI_Hero targ)
         {
-                
                 if(Q.IsReady())
                 {
+                    if(isEn("SmartQ"))
+                    {
+                        if (isMode("Combo") && getManaPer() >= menu.Item("QManaC").GetValue<Slider>().Value)
+                        {
+                            float tumbleRange = 300f;
+                            bool canGapclose = player.Distance(targ) <= Orbwalking.GetRealAutoAttackRange(null) + tumbleRange;
+                            if ((player.Distance(targ) >= Orbwalking.GetRealAutoAttackRange(null)))
+                            {
+                                if (canGapclose)
+                                {
+                                    Vector3 PositionForQ = new Vector3(targ.Position.X, targ.Position.Y, targ.Position.Z);
+                                    Q.Cast(PositionForQ);
+                                }
+                                else
+                                {
+                                    Q.Cast(Game.CursorPos, isEn("UsePK"));
+                                }
+                            }
+                        }
+                        else if (isMode("Mixed") && getManaPer() >= menu.Item("QManaM").GetValue<Slider>().Value)
+                        {
+                            float tumbleRange = 300f;
+                            bool canGapclose = player.Distance(targ) <= Orbwalking.GetRealAutoAttackRange(null) + tumbleRange;
+                            if ((player.Distance(targ) >= Orbwalking.GetRealAutoAttackRange(null)))
+                            {
+                                if (canGapclose)
+                                {
+                                    Vector3 PositionForQ = new Vector3(targ.Position.X, targ.Position.Y, targ.Position.Z);
+                                    Q.Cast(PositionForQ);
+                                }
+                                else
+                                {
+                                    Q.Cast(Game.CursorPos, isEn("UsePK"));
+                                }
+                            }
+                        }
+                    }else { 
                     if(isMode("Combo") && getManaPer()>= menu.Item("QManaC").GetValue<Slider>().Value)
                     {
                         Q.Cast(Game.CursorPos, isEn("UsePK"));
@@ -203,6 +246,8 @@ namespace VayneHunter2._0
                     {
                         Q.Cast(Game.CursorPos, isEn("UsePK"));
                     } 
+                    }
+                    
                 }
         }
         static void CastE(Obj_AI_Hero Target,bool forGp=false)
