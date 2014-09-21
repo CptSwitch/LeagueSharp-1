@@ -213,11 +213,7 @@ namespace VayneHunter2._0
                                 if (canGapclose)
                                 {
                                     Vector3 PositionForQ = new Vector3(targ.Position.X, targ.Position.Y, targ.Position.Z);
-                                    Q.Cast(PositionForQ);
-                                }
-                                else
-                                {
-                                    Q.Cast(Game.CursorPos, isEn("UsePK"));
+                                    Q.Cast(PositionForQ, isEn("UsePK"));
                                 }
                             }
                         }
@@ -230,15 +226,11 @@ namespace VayneHunter2._0
                                 if (canGapclose)
                                 {
                                     Vector3 PositionForQ = new Vector3(targ.Position.X, targ.Position.Y, targ.Position.Z);
-                                    Q.Cast(PositionForQ);
-                                }
-                                else
-                                {
-                                    Q.Cast(Game.CursorPos, isEn("UsePK"));
+                                    Q.Cast(PositionForQ, isEn("UsePK"));
                                 }
                             }
                         }
-                    }else { 
+                    }else{ 
                     if(isMode("Combo") && getManaPer()>= menu.Item("QManaC").GetValue<Slider>().Value)
                     {
                         Q.Cast(Game.CursorPos, isEn("UsePK"));
