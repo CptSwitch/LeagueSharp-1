@@ -186,51 +186,11 @@ namespace VayneHunter2._0
             {
                 foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(675f)))
                 {
-                    Vector3 enemyPosition=new Vector3(0,0,0);
-                    Vector3 predPosition = condemnCollisionTime(hero);
-                    if(predPosition != new Vector3(0,0,0) && !IsWall(predPosition))
+                    if(hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero)< 715f && player.Distance(hero)>0f)
                     {
-                        float checkHeroDistance = menu.Item("CheckDistance").GetValue<Slider>().Value;
-                        //float pushDistance = menu.Item("PushDistance").GetValue<Slider>().Value;
-                        var heroChecks = (double)menu.Item("Checks").GetValue<Slider>().Value;
-                        bool AllInsideWall = true;
-                        int checkCount = 0;
-                        float sumCheckDist = 0;
-                        for (double i = -Math.Floor(heroChecks / 2); i<=Math.Floor(heroChecks / 2);i++ )
-                        {
-                            checkCount++;
-                            Vector3 var1 = (enemyPosition-player.Position);
-                            var1.Normalize();
-                            var enemyPos = predPosition +  Vector3.Multiply(var1,checkHeroDistance*(float)i);
-                            var checkDistance = 50;
-                            var checks =(int) Math.Ceiling(425 / (double)checkDistance);
-                            bool InsideTheWall = false;
-                            Vector3 checksPos = new Vector3(0,0,0);
-                            for (int k = 1; k <= checks; k++)
-                            {
-                                Vector3 var2 = (enemyPos - player.Position);
-                                var2.Normalize();
-                                checksPos = enemyPos + Vector3.Multiply(var2,checkHeroDistance*(float)k);
-                                if(IsWall(checksPos))
-                                {
-                                    InsideTheWall = true;
-                                    break;
-                                }
-                            }
-                            if(!InsideTheWall)
-                            {
-                                AllInsideWall = false;
-                            }
-                            sumCheckDist = sumCheckDist + Vector3.Distance(checksPos, player.Position);
-                            if(AllInsideWall)
-                            {
-                                if (sumCheckDist / checkCount < menu.Item("MaxDistance").GetValue<Slider>().Value && player.Distance(hero) < sumCheckDist / checkCount)
-                                {
-                                    CastE(hero);
-                                }                          
-                            }
-                        }
+
                     }
+                    
                 }
             }
         }
