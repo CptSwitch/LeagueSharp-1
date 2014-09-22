@@ -25,6 +25,7 @@ namespace VayneHunter2._0
         public static Dictionary<Obj_AI_Hero, Vector3> dirDic, lastVecDic= new Dictionary<Obj_AI_Hero,Vector3>();
         public static Dictionary<Obj_AI_Hero, float> angleDic = new Dictionary<Obj_AI_Hero,float>();
         public static Vector3 currentVec, lastVec;
+        public static bool sol=false;
         static void Main(string[] args)
         {
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
@@ -76,12 +77,7 @@ namespace VayneHunter2._0
             menu.AddSubMenu(new Menu("[Hunter]Interrupts", "int"));
             GPIntmenuCreate();
            // initHeroes();
-            foreach (var champ in ObjectManager.Get<Obj_AI_Hero>().Where(champ => champ.IsEnemy))
-            {
-                dirDic.Add(champ, new Vector3(0, 0, 0));
-                lastVecDic.Add(champ, new Vector3(0, 0, 0));
-                angleDic.Add(champ, 0f);
-            }
+            
             menu.AddToMainMenu();
             Q = new Spell(SpellSlot.Q, 0f);
             E = new Spell(SpellSlot.E, 550f);
@@ -157,6 +153,16 @@ namespace VayneHunter2._0
         }
         public static void OnTick(EventArgs args)
         {
+            if(!sol)
+            {
+                foreach (var champ in ObjectManager.Get<Obj_AI_Hero>().Where(champ => champ.IsEnemy))
+                {
+                    dirDic.Add(champ, new Vector3(0, 0, 0));
+                    lastVecDic.Add(champ, new Vector3(0, 0, 0));
+                    angleDic.Add(champ, 0f);
+                }
+                sol = true;
+            }
             if (!isMode("Combo") || !isEn("UseE") || !E.IsReady()) { return; }
             if (!isEn("UseEZCdmn"))
             {
