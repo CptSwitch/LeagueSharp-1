@@ -76,6 +76,12 @@ namespace VayneHunter2._0
             menu.AddSubMenu(new Menu("[Hunter]Interrupts", "int"));
             GPIntmenuCreate();
            // initHeroes();
+            foreach (var champ in ObjectManager.Get<Obj_AI_Hero>().Where(champ => champ.IsEnemy))
+            {
+                dirDic.Add(champ, new Vector3(0, 0, 0));
+                lastVecDic.Add(champ, new Vector3(0, 0, 0));
+                angleDic.Add(champ, 0f);
+            }
             menu.AddToMainMenu();
             Q = new Spell(SpellSlot.Q, 0f);
             E = new Spell(SpellSlot.E, 550f);
@@ -174,7 +180,7 @@ namespace VayneHunter2._0
             }
             else
             {
-                foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f)))
+                foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(675f)))
                 {
                     Vector3 enemyPosition=new Vector3(0,0,0);
                     Vector3 predPosition = condemnCollisionTime(hero);
@@ -226,12 +232,7 @@ namespace VayneHunter2._0
         }
         static void initHeroes()
         {
-            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
-            {
-                dirDic.Add(hero, new Vector3(0, 0, 0));
-                lastVecDic.Add(hero, new Vector3(0, 0, 0));
-                angleDic.Add(hero, 0f);
-            }
+            
         }
          public static bool IsWall(Vector3 position)
        {
