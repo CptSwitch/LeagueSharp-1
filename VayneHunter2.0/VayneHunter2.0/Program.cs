@@ -202,7 +202,7 @@ namespace VayneHunter2._0
         {
                 if(Q.IsReady())
                 {
-                    if(isEn("SmartQ"))
+                    if(isEn("SmartQ") && player.Distance(targ)>=Orbwalking.GetRealAutoAttackRange(null))
                     {
                         if (isMode("Combo") && getManaPer() >= menu.Item("QManaC").GetValue<Slider>().Value)
                         {
