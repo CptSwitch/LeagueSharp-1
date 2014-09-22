@@ -52,7 +52,7 @@ namespace VayneHunter2._0
             menu.SubMenu("Misc").AddItem(new MenuItem("AntiGP", "Use AntiGapcloser").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("Interrupt", "Interrupt Spells").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle)));
-            //menu.SubMenu("Misc").AddItem(new MenuItem("UseEZCdmn", "Use ezCondemn E").SetValue(true));
+            menu.SubMenu("Misc").AddItem(new MenuItem("AdvE", "Use Adv E").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("SmartQ", "Use Q for GapClose").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("UsePK", "Use Packets").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("PushDistance", "E Push Dist").SetValue(new Slider(425, 400, 475)));
@@ -153,18 +153,10 @@ namespace VayneHunter2._0
         }
         public static void OnTick(EventArgs args)
         {
-            if(!sol)
-            {
-                foreach (var champ in ObjectManager.Get<Obj_AI_Hero>().Where(champ => champ.IsEnemy))
-                {
-                    dirDic.Add(champ, new Vector3(0, 0, 0));
-                    lastVecDic.Add(champ, new Vector3(0, 0, 0));
-                    angleDic.Add(champ, 0f);
-                }
-                sol = true;
-            }
-            if (!isMode("Combo") || !isEn("UseE") || !E.IsReady()) { return; }
             
+            if (!isMode("Combo") || !isEn("UseE") || !E.IsReady()) { return; }
+            if (!isEn("AdvE"))
+            {
                 foreach (var hero in from hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f))
                                      let prediction = E.GetPrediction(hero)
                                      where NavMesh.GetCollisionFlags(
@@ -182,15 +174,43 @@ namespace VayneHunter2._0
                 {
                     CastE(hero);
                 }
-            if(1==0)
+            }
+            else
             {
                 foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(675f)))
                 {
-                    if(hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero)< 715f && player.Distance(hero)>0f)
+                    if (hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero) < 715f && player.Distance(hero) > 0f)
                     {
+                        var pred = E.GetPrediction(hero);
 
+                        Vector3 enemyPosition = pred.UnitPosition;
+                        Vector3 sub = Vector3.Subtract(hero.Position, player.Position);
+                        sub.Normalize();
+                        Vector3 pushingPosition = enemyPosition + sub * menu.Item("PushDistance").GetValue<Slider>().Value;
+                        if (hero.Position.X > 0 && hero.Position.Z > 0)
+                        {
+                            var checks = Math.Ceiling((double)menu.Item("PushDistance").GetValue<Slider>().Value / 65);
+                            var checkDistance = menu.Item("PushDistance").GetValue<Slider>().Value / checks;
+                            bool InsideWall = false;
+                            for (int k = 1; k < checks; k++)
+                            {
+                                Vector3 sub2 = Vector3.Subtract(enemyPosition, player.Position);
+                                sub2.Normalize();
+                                Vector3 checkPos = enemyPosition + Vector3.Multiply(sub2, (float)(checkDistance * k));
+                                bool isThePosWall = IsWall(checkPos);
+                                if (isThePosWall)
+                                {
+                                    InsideWall = true;
+                                    break;
+                                }
+                                if (InsideWall)
+                                {
+                                    CastE(hero);
+                                }
+                            }
+                        }
                     }
-                    
+
                 }
             }
         }
