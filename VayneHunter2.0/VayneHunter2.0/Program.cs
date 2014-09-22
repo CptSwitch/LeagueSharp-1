@@ -52,7 +52,7 @@ namespace VayneHunter2._0
             menu.SubMenu("Misc").AddItem(new MenuItem("AntiGP", "Use AntiGapcloser").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("Interrupt", "Interrupt Spells").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle)));
-            menu.SubMenu("Misc").AddItem(new MenuItem("UseEZCdmn", "Use ezCondemn E").SetValue(true));
+            //menu.SubMenu("Misc").AddItem(new MenuItem("UseEZCdmn", "Use ezCondemn E").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("SmartQ", "Use Q for GapClose").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("UsePK", "Use Packets").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("PushDistance", "E Push Dist").SetValue(new Slider(425, 400, 475)));
@@ -67,10 +67,10 @@ namespace VayneHunter2._0
             menu.SubMenu("ManaMan").AddItem(new MenuItem("QManaM", "Min Q Mana in Mixed").SetValue(new Slider(30, 1, 100)));
             menu.SubMenu("ManaMan").AddItem(new MenuItem("EManaC", "Min E Mana in Combo").SetValue(new Slider(20, 1, 100)));
             menu.SubMenu("ManaMan").AddItem(new MenuItem("EManaM", "Min E Mana in Mixed").SetValue(new Slider(20, 1, 100)));
-            menu.AddSubMenu(new Menu("[Hunter]EzCondemn", "ezCondemn"));
-            menu.SubMenu("ezCondemn").AddItem(new MenuItem("CheckDistance", "Condemn check Distance").SetValue(new Slider(25, 1, 200)));
-            menu.SubMenu("ezCondemn").AddItem(new MenuItem("Checks", "Num of Checks").SetValue(new Slider(3, 0, 5)));
-            menu.SubMenu("ezCondemn").AddItem(new MenuItem("MaxDistance", "Max Condemn Distance").SetValue(new Slider(1000, 0, 1500)));
+            //menu.AddSubMenu(new Menu("[Hunter]WIP", "ezCondemn"));
+           // menu.SubMenu("ezCondemn").AddItem(new MenuItem("CheckDistance", "Condemn check Distance").SetValue(new Slider(25, 1, 200)));
+            //menu.SubMenu("ezCondemn").AddItem(new MenuItem("Checks", "Num of Checks").SetValue(new Slider(3, 0, 5)));
+            //menu.SubMenu("ezCondemn").AddItem(new MenuItem("MaxDistance", "Max Condemn Distance").SetValue(new Slider(1000, 0, 1500)));
             //Thank you blm95 ;)
             menu.AddSubMenu(new Menu("[Hunter]Gapcloser", "gap"));
             menu.AddSubMenu(new Menu("[Hunter]Gapcloser 2", "gap2"));
@@ -164,8 +164,7 @@ namespace VayneHunter2._0
                 sol = true;
             }
             if (!isMode("Combo") || !isEn("UseE") || !E.IsReady()) { return; }
-            if (!isEn("UseEZCdmn"))
-            {
+            
                 foreach (var hero in from hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f))
                                      let prediction = E.GetPrediction(hero)
                                      where NavMesh.GetCollisionFlags(
@@ -183,8 +182,7 @@ namespace VayneHunter2._0
                 {
                     CastE(hero);
                 }
-            }
-            else
+            if(1==0)
             {
                 foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(675f)))
                 {
@@ -236,10 +234,7 @@ namespace VayneHunter2._0
                 }
             }
         }
-        static void initHeroes()
-        {
-            
-        }
+        
          public static bool IsWall(Vector3 position)
        {
            var cFlags = NavMesh.GetCollisionFlags(position);
