@@ -75,14 +75,12 @@ namespace VayneHunter2._0
             menu.AddSubMenu(new Menu("[Hunter]Gapcloser 2", "gap2"));
             menu.AddSubMenu(new Menu("[Hunter]Interrupts", "int"));
             GPIntmenuCreate();
-
-            menu.AddToMainMenu();
             initHeroes();
+            menu.AddToMainMenu();
             Q = new Spell(SpellSlot.Q, 0f);
             E = new Spell(SpellSlot.E, 550f);
             R = new Spell(SpellSlot.R, 0f);
             E.SetTargetted(0.25f, 2200f);
-            
             Game.OnGameUpdate += OnTick;
             Orbwalking.AfterAttack += OW_AfterAttack;
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
