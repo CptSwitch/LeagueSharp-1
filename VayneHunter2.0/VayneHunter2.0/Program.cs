@@ -67,7 +67,7 @@ namespace VayneHunter2._0
             menu.SubMenu("ManaMan").AddItem(new MenuItem("EManaC", "Min E Mana in Combo").SetValue(new Slider(20, 1, 100)));
             menu.SubMenu("ManaMan").AddItem(new MenuItem("EManaM", "Min E Mana in Mixed").SetValue(new Slider(20, 1, 100)));
             menu.AddSubMenu(new Menu("[Hunter]EzCondemn", "ezCondemn"));
-            menu.SubMenu("ezCondemn").AddItem(new MenuItem("CheckDistance", "Check Distance").SetValue(new Slider(25, 1, 200)));
+            menu.SubMenu("ezCondemn").AddItem(new MenuItem("CheckDistance", "Condemn check Distance").SetValue(new Slider(25, 1, 200)));
             menu.SubMenu("ezCondemn").AddItem(new MenuItem("Checks", "Num of Checks").SetValue(new Slider(3, 0, 5)));
             menu.SubMenu("ezCondemn").AddItem(new MenuItem("MaxDistance", "Max Condemn Distance").SetValue(new Slider(1000, 0, 1500)));
             //Thank you blm95 ;)
@@ -75,7 +75,7 @@ namespace VayneHunter2._0
             menu.AddSubMenu(new Menu("[Hunter]Gapcloser 2", "gap2"));
             menu.AddSubMenu(new Menu("[Hunter]Interrupts", "int"));
             GPIntmenuCreate();
-            initHeroes();
+           // initHeroes();
             menu.AddToMainMenu();
             Q = new Spell(SpellSlot.Q, 0f);
             E = new Spell(SpellSlot.E, 550f);
