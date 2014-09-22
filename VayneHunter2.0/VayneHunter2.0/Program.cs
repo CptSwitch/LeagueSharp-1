@@ -22,6 +22,9 @@ namespace VayneHunter2._0
         public static string[] gapcloser;
         public static Obj_AI_Hero tar;
         public static Dictionary<string, SpellSlot> spellData;
+        public static Dictionary<Obj_AI_Hero, Vector3> dirDic, lastVecDic= new Dictionary<Obj_AI_Hero,Vector3>();
+        public static Dictionary<Obj_AI_Hero, float> angleDic = new Dictionary<Obj_AI_Hero,float>();
+        public static Vector3 currentVec, lastVec;
         static void Main(string[] args)
         {
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
@@ -48,6 +51,7 @@ namespace VayneHunter2._0
             menu.SubMenu("Misc").AddItem(new MenuItem("AntiGP", "Use AntiGapcloser").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("Interrupt", "Interrupt Spells").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle)));
+            menu.SubMenu("Misc").AddItem(new MenuItem("ezCondemnE", "Use ezCondemn E").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("SmartQ", "Use Q for GapClose").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("UsePK", "Use Packets").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("PushDistance", "E Push Dist").SetValue(new Slider(425, 400, 475)));
@@ -62,6 +66,10 @@ namespace VayneHunter2._0
             menu.SubMenu("ManaMan").AddItem(new MenuItem("QManaM", "Min Q Mana in Mixed").SetValue(new Slider(30, 1, 100)));
             menu.SubMenu("ManaMan").AddItem(new MenuItem("EManaC", "Min E Mana in Combo").SetValue(new Slider(20, 1, 100)));
             menu.SubMenu("ManaMan").AddItem(new MenuItem("EManaM", "Min E Mana in Mixed").SetValue(new Slider(20, 1, 100)));
+            menu.AddSubMenu(new Menu("ezCondemn", "ezCondemn By Yomie"));
+            menu.SubMenu("ezCondemn").AddItem(new MenuItem("CheckDistance", "Check Distance").SetValue(new Slider(25, 1, 200)));
+            menu.SubMenu("ezCondemn").AddItem(new MenuItem("Checks", "Num of Checks").SetValue(new Slider(3, 0, 5)));
+            menu.SubMenu("ezCondemn").AddItem(new MenuItem("MaxDistance", "Max Condemn Distance").SetValue(new Slider(1000, 0, 1500)));
             //Thank you blm95 ;)
             menu.AddSubMenu(new Menu("[Hunter]Gapcloser", "gap"));
             menu.AddSubMenu(new Menu("[Hunter]Gapcloser 2", "gap2"));
@@ -69,7 +77,7 @@ namespace VayneHunter2._0
             GPIntmenuCreate();
 
             menu.AddToMainMenu();
-            
+            initHeroes();
             Q = new Spell(SpellSlot.Q, 0f);
             E = new Spell(SpellSlot.E, 550f);
             R = new Spell(SpellSlot.R, 0f);
@@ -146,23 +154,165 @@ namespace VayneHunter2._0
         public static void OnTick(EventArgs args)
         {
             if (!isMode("Combo") || !isEn("UseE") || !E.IsReady()) { return; }
-            foreach (var hero in from hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f))
-                                 let prediction = E.GetPrediction(hero)
-                                 where NavMesh.GetCollisionFlags(
-                                     prediction.UnitPosition.To2D()
-                                         .Extend(ObjectManager.Player.ServerPosition.To2D(),
-                                             -menu.Item("PushDistance").GetValue<Slider>().Value)
-                                         .To3D())
-                                     .HasFlag(CollisionFlags.Wall) || NavMesh.GetCollisionFlags(
+            if (!isEn("ezCondemnE"))
+            {
+                foreach (var hero in from hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f))
+                                     let prediction = E.GetPrediction(hero)
+                                     where NavMesh.GetCollisionFlags(
                                          prediction.UnitPosition.To2D()
                                              .Extend(ObjectManager.Player.ServerPosition.To2D(),
-                                                 -(menu.Item("PushDistance").GetValue<Slider>().Value / 2))
+                                                 -menu.Item("PushDistance").GetValue<Slider>().Value)
                                              .To3D())
-                                         .HasFlag(CollisionFlags.Wall)
-                                 select hero)
-            {
-                CastE(hero);
+                                         .HasFlag(CollisionFlags.Wall) || NavMesh.GetCollisionFlags(
+                                             prediction.UnitPosition.To2D()
+                                                 .Extend(ObjectManager.Player.ServerPosition.To2D(),
+                                                     -(menu.Item("PushDistance").GetValue<Slider>().Value / 2))
+                                                 .To3D())
+                                             .HasFlag(CollisionFlags.Wall)
+                                     select hero)
+                {
+                    CastE(hero);
+                }
             }
+            else
+            {
+                foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f)))
+                {
+                    Vector3 enemyPosition=new Vector3(0,0,0);
+                    Vector3 predPosition = condemnCollisionTime(hero);
+                    if(predPosition != new Vector3(0,0,0) && !IsWall(predPosition))
+                    {
+                        float checkHeroDistance = menu.Item("CheckDistance").GetValue<Slider>().Value;
+                        //float pushDistance = menu.Item("PushDistance").GetValue<Slider>().Value;
+                        var heroChecks = (double)menu.Item("Checks").GetValue<Slider>().Value;
+                        bool AllInsideWall = true;
+                        int checkCount = 0;
+                        float sumCheckDist = 0;
+                        for (double i = -Math.Floor(heroChecks / 2); i<=Math.Floor(heroChecks / 2);i++ )
+                        {
+                            checkCount++;
+                            Vector3 var1 = (enemyPosition-player.Position);
+                            var1.Normalize();
+                            var enemyPos = predPosition +  Vector3.Multiply(var1,checkHeroDistance*(float)i);
+                            var checkDistance = 50;
+                            var checks =(int) Math.Ceiling(425 / (double)checkDistance);
+                            bool InsideTheWall = false;
+                            Vector3 checksPos = new Vector3(0,0,0);
+                            for (int k = 1; k <= checks; k++)
+                            {
+                                Vector3 var2 = (enemyPos - player.Position);
+                                var2.Normalize();
+                                checksPos = enemyPos + Vector3.Multiply(var2,checkHeroDistance*(float)k);
+                                if(IsWall(checksPos))
+                                {
+                                    InsideTheWall = true;
+                                    break;
+                                }
+                            }
+                            if(!InsideTheWall)
+                            {
+                                AllInsideWall = false;
+                            }
+                            sumCheckDist = sumCheckDist + Vector3.Distance(checksPos, player.Position);
+                            if(AllInsideWall)
+                            {
+                                if (sumCheckDist / checkCount < menu.Item("MaxDistance").GetValue<Slider>().Value && player.Distance(hero) < sumCheckDist / checkCount)
+                                {
+                                    CastE(hero);
+                                }                          
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        static void initHeroes()
+        {
+            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
+            {
+                dirDic.Add(hero, new Vector3(0, 0, 0));
+                lastVecDic.Add(hero, new Vector3(0, 0, 0));
+                angleDic.Add(hero, 0f);
+            }
+        }
+         public static bool IsWall(Vector3 position)
+       {
+           var cFlags = NavMesh.GetCollisionFlags(position);
+            return (cFlags == CollisionFlags.Wall || cFlags == CollisionFlags.Building || cFlags == CollisionFlags.Prop);
+        }
+        static void UpdateHeroes()
+        {
+            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f)))
+            {
+                currentVec = hero.Position;
+                Vector3 direction = Vector3.Subtract(currentVec,lastVec);
+                
+                if(!(direction == new Vector3(0,0,0)))
+                {
+                    direction.Normalize();
+                }
+                float angle = Vector3.Dot(direction,direction);
+                lastVecDic[hero] = currentVec;
+                dirDic[hero] = direction;
+                angleDic[hero] = angle;
+                
+            }
+        }
+        static Vector3 condemnCollisionTime(Obj_AI_Hero target)
+        {
+            Vector3 dir = dirDic[target];
+            float angle = angleDic[target];
+            if(!(dir==new Vector3(0,0,0)))
+            {
+                if(angle!=null && angle<.8f)
+                {
+                    return new Vector3(0, 0, 0);
+                }
+                Vector3 windup = target.Position + dir * (target.MoveSpeed * 250 / 1000);
+                float time = (float)GetCollisionTime(windup, dir, target.MoveSpeed, player.Position, 1600f);
+                if(time == 0)
+                {
+                    return new Vector3(0, 0, 0);
+                }
+                
+                Vector3 returner = target.Position + dir * (target.MoveSpeed * (time+0.25f))/2;
+                return returner;
+            }
+            return new Vector3(0,0,0);
+        }
+        //Thanks Yomie
+        static double GetCollisionTime(Vector3 position,Vector3 direction,float tSpeed,Vector3 sourcePos,float projSpeed)
+        {
+            var velocity = direction * tSpeed;
+            float velocityX = velocity.X;
+	        float velocityY = velocity.Z;
+	
+	        Vector3 relStart = position - sourcePos;
+
+            float relStartX = relStart.X;
+	        float relStartY = relStart.Z;
+            float a = velocityX * velocityX + velocityY * velocityY - projSpeed * projSpeed;
+	        float b = 2 * velocityX * relStartX + 2 * velocityY * relStartY;
+	        float c = relStartX * relStartX + relStartY * relStartY;
+         	float disc = b * b - 4 * a * c;
+	
+	        if(disc >= 0){
+		        double t1 = -( b + Math.Sqrt( disc )) / (2 * a );
+		        double t2 = -( b - Math.Sqrt( disc )) / (2 * a );
+		        if(t1!=null && t2 != null && t1 > 0 && t2 > 0){
+			        if (t1 > t2){
+				        return t2;
+			        }else{
+			    	    return t1;
+			        }
+                }
+		        else if(t1!=null && t1 > 0){
+			        return t1;
+		        }else if(t2!=null && t2 > 0){
+			        return t2;
+		        }
+            }
+            return 0;  
         }
         static void GPIntmenuCreate()
         {
