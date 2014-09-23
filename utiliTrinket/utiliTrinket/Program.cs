@@ -38,6 +38,7 @@ namespace utiliTrinket
             
             menu = new Menu("utiliTrinket", "UtiliTrkMenu", true);
             menu.AddItem(new MenuItem("ward", "Buy WTotem at start").SetValue(true));
+            menu.AddItem(new MenuItem("EnSW", "Buy Sweeper").SetValue(true));
             menu.AddItem(new MenuItem("timer", "Buy Sw at x min").SetValue(new Slider(15, 1, 30)));
             menu.AddItem(new MenuItem("orb", "Buy Orb").SetValue(true));
             menu.AddItem(new MenuItem("timer2", "Buy Orb at x min").SetValue(new Slider(40, 30, 60)));
@@ -80,7 +81,7 @@ namespace utiliTrinket
                     Packet.C2S.SellItem.Encoded(new Packet.C2S.SellItem.Struct(SpellSlot.Trinket, player.NetworkId)).Send();
                     Packet.C2S.BuyItem.Encoded(new Packet.C2S.BuyItem.Struct(Orb, ObjectManager.Player.NetworkId)).Send();
                 }
-                if (hasItem(YellowW) && (GetTimer() >= menu.Item("timer").GetValue<Slider>().Value) && (GetTimer() < menu.Item("timer2").GetValue<Slider>().Value) && !hasItem(TRINKET_RED))
+                if (isEn("EnSW") && hasItem(YellowW) && (GetTimer() >= menu.Item("timer").GetValue<Slider>().Value) && (GetTimer() < menu.Item("timer2").GetValue<Slider>().Value) && !hasItem(TRINKET_RED))
                 {
                    // Game.PrintChat("Called");
                     Packet.C2S.SellItem.Encoded(new Packet.C2S.SellItem.Struct(SpellSlot.Trinket, player.NetworkId)).Send();

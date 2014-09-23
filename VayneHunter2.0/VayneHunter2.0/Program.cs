@@ -184,30 +184,9 @@ namespace VayneHunter2._0
                         var pred = E.GetPrediction(hero);
 
                         Vector3 enemyPosition = pred.UnitPosition;
-                        Vector3 sub = Vector3.Subtract(hero.Position, player.Position);
-                        sub.Normalize();
-                        Vector3 pushingPosition = enemyPosition + sub * menu.Item("PushDistance").GetValue<Slider>().Value;
-                        if (hero.Position.X > 0 && hero.Position.Z > 0)
+                        if(pred.Hitchance>HitChance.Low)
                         {
-                            var checks = Math.Ceiling((double)menu.Item("PushDistance").GetValue<Slider>().Value / 65);
-                            var checkDistance = menu.Item("PushDistance").GetValue<Slider>().Value / checks;
-                            bool InsideWall = false;
-                            for (int k = 1; k < checks; k++)
-                            {
-                                Vector3 sub2 = Vector3.Subtract(enemyPosition, player.Position);
-                                sub2.Normalize();
-                                Vector3 checkPos = enemyPosition + Vector3.Multiply(sub2, (float)(checkDistance * k));
-                                bool isThePosWall = IsWall(checkPos);
-                                if (isThePosWall)
-                                {
-                                    InsideWall = true;
-                                    break;
-                                }
-                                if (InsideWall)
-                                {
-                                    CastE(hero);
-                                }
-                            }
+
                         }
                     }
 
