@@ -52,7 +52,7 @@ namespace VayneHunter2._0
             menu.SubMenu("Misc").AddItem(new MenuItem("AntiGP", "Use AntiGapcloser").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("Interrupt", "Interrupt Spells").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle)));
-            menu.SubMenu("Misc").AddItem(new MenuItem("AdvE", "Use AdvE logic").SetValue(true));
+            menu.SubMenu("Misc").AddItem(new MenuItem("AdvE", "WIP Use AdvE logic").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("SmartQ", "Use Q for GapClose").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("UsePK", "Use Packets").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("PushDistance", "E Push Dist").SetValue(new Slider(425, 400, 475)));
@@ -186,7 +186,7 @@ namespace VayneHunter2._0
                             for(int i=0;i<pushDist;i+=60)
                             {
                                 Vector3 checker = (pred.UnitPosition - player.Position);
-                                checker.Normalize();
+                                //checker.Normalize();
                                 var CheckPosition = pred.UnitPosition + checker * i;
                                 if(IsWall(CheckPosition))
                                 {
