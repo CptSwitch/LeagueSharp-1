@@ -82,7 +82,7 @@ namespace VayneHunter2._0
             Q = new Spell(SpellSlot.Q, 0f);
             E = new Spell(SpellSlot.E, 550f);
             R = new Spell(SpellSlot.R, 0f);
-            E.SetTargetted(0.25f, 2200f);
+            E.SetTargetted(0.3f, 1600f);
             Game.OnGameUpdate += OnTick;
             Orbwalking.AfterAttack += OW_AfterAttack;
             Obj_AI_Base.OnProcessSpellCast += OnProcessSpell;
@@ -155,7 +155,7 @@ namespace VayneHunter2._0
         {
             
             if (!isMode("Combo") || !isEn("UseE") || !E.IsReady()) { return; }
-            if (1==1)
+            if (isEn("AdvE"))
             {
                 foreach (var hero in from hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f))
                                      let prediction = E.GetPrediction(hero)
@@ -179,11 +179,22 @@ namespace VayneHunter2._0
                     if (hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero) < 715f && player.Distance(hero) > 0f)
                     {
                         var pred = E.GetPrediction(hero);
-
+                        var pushDist = menu.Item("PushDistance").GetValue<Slider>().Value;
                         Vector3 enemyPosition = pred.UnitPosition;
                         if(pred.Hitchance>HitChance.Low)
                         {
-                            
+                            for(int i=0;i<pushDist;i+=60)
+                            {
+                                Vector3 checker = (pred.UnitPosition - player.Position);
+                                checker.Normalize();
+                                var CheckPosition = pred.UnitPosition + checker * i;
+                                if(IsWall(CheckPosition))
+                                {
+                                    CastE(hero);
+                                    break;
+                                }
+
+                            }
                         }
                     }
 
