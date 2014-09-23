@@ -183,10 +183,11 @@ namespace VayneHunter2._0
                         Vector3 enemyPosition = pred.UnitPosition;
                         if(pred.Hitchance>HitChance.Low)
                         {
-                            for(int i=0;i<pushDist;i+=60)
+                            for(int i=1;i<pushDist;i+=60)
                             {
+
                                 Vector3 checker = (pred.UnitPosition - player.Position);
-                                //checker.Normalize();
+                                checker.Normalize();
                                 var CheckPosition = pred.UnitPosition + checker * i;
                                 if(IsWall(CheckPosition))
                                 {
