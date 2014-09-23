@@ -52,7 +52,7 @@ namespace VayneHunter2._0
             menu.SubMenu("Misc").AddItem(new MenuItem("AntiGP", "Use AntiGapcloser").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("Interrupt", "Interrupt Spells").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle)));
-            //menu.SubMenu("Misc").AddItem(new MenuItem("AdvE", "WIP Use Adv E").SetValue(false));
+            menu.SubMenu("Misc").AddItem(new MenuItem("AdvE", "WIP Use Adv E").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("SmartQ", "Use Q for GapClose").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("UsePK", "Use Packets").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("PushDistance", "E Push Dist").SetValue(new Slider(425, 400, 475)));
@@ -160,10 +160,7 @@ namespace VayneHunter2._0
                 foreach (var hero in from hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f))
                                      let prediction = E.GetPrediction(hero)
                                      where NavMesh.GetCollisionFlags(
-                                         prediction.UnitPosition.To2D()
-                                             .Extend(ObjectManager.Player.ServerPosition.To2D(),
-                                                 -menu.Item("PushDistance").GetValue<Slider>().Value)
-                                             .To3D())
+                                         prediction.UnitPosition.To2D().Extend(ObjectManager.Player.ServerPosition.To2D(),-menu.Item("PushDistance").GetValue<Slider>().Value).To3D())
                                          .HasFlag(CollisionFlags.Wall) || NavMesh.GetCollisionFlags(
                                              prediction.UnitPosition.To2D()
                                                  .Extend(ObjectManager.Player.ServerPosition.To2D(),
@@ -186,7 +183,7 @@ namespace VayneHunter2._0
                         Vector3 enemyPosition = pred.UnitPosition;
                         if(pred.Hitchance>HitChance.Low)
                         {
-
+                            
                         }
                     }
 
@@ -223,10 +220,6 @@ namespace VayneHunter2._0
             float angle = angleDic[target];
             if(!(dir==new Vector3(0,0,0)))
             {
-                if(angle!=null && angle<.8f)
-                {
-                    return new Vector3(0, 0, 0);
-                }
                 Vector3 windup = target.Position + dir * (target.MoveSpeed * 250 / 1000);
                 float time = (float)GetCollisionTime(windup, dir, target.MoveSpeed, player.Position, 1600f);
                 if(time == 0)
