@@ -186,10 +186,10 @@ namespace VayneHunter2._0
                             for(int i=1;i<pushDist;i+=60)
                             {
 
-                                Vector3 checker = (pred.UnitPosition - player.Position);
+                                Vector2 checker = (pred.UnitPosition.To2D() - player.ServerPosition.To2D());
                                 checker.Normalize();
-                                var CheckPosition = pred.UnitPosition + checker * i;
-                                if(IsWall(CheckPosition))
+                                var CheckPosition = pred.UnitPosition.To2D() + checker * i;
+                                if(IsWall(CheckPosition.To3D()))
                                 {
                                     CastE(hero);
                                     break;
