@@ -53,7 +53,7 @@ namespace VayneHunter2._0
             menu.SubMenu("Misc").AddItem(new MenuItem("Interrupt", "Interrupt Spells").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle)));
             menu.SubMenu("Misc").AddItem(new MenuItem("AdvE", "WIP Use AdvE logic").SetValue(true));
-            menu.SubMenu("Misc").AddItem(new MenuItem("SmartQ", "Use Q for GapClose").SetValue(false));
+            menu.SubMenu("Misc").AddItem(new MenuItem("SmartQ", "WIP Use Q for GapClose").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("UsePK", "Use Packets").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("PushDistance", "E Push Dist").SetValue(new Slider(425, 400, 475)));
             menu.AddSubMenu(new Menu("[Hunter]Items", "Items"));
@@ -95,13 +95,7 @@ namespace VayneHunter2._0
             if (unit.IsMe)
             {
                 Obj_AI_Hero targ = (Obj_AI_Hero)target;
-                if(isEn("SmartQ")){
-                    if ((player.Distance(targ) > Orbwalking.GetRealAutoAttackRange(null) + 300f)) { return; }
-                }
-                else
-                {
-                    if (!targ.IsValidTarget()) { return; }
-                }
+                if (!targ.IsValidTarget()) { return; }
                 if (isEnK("ENextAuto"))
                 {
                     CastE(targ);
@@ -178,6 +172,7 @@ namespace VayneHunter2._0
                 {
                     if (hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero) < 715f && player.Distance(hero) > 0f)
                     {
+                        
                         var pred = E.GetPrediction(hero);
                         var pushDist = menu.Item("PushDistance").GetValue<Slider>().Value;
                         Vector3 enemyPosition = pred.UnitPosition;
@@ -193,6 +188,7 @@ namespace VayneHunter2._0
                                 {
                                     CastE(hero);
                                     break;
+                                    
                                 }
 
                             }
@@ -385,7 +381,7 @@ namespace VayneHunter2._0
             }
             if (menu.Item("Youmuu").GetValue<bool>())
             {
-                useItem(3142, tar);
+                useItem(3142);
             }
         }
         static bool isEn(String opt)
