@@ -55,7 +55,7 @@ namespace VayneHunter2._0
             menu.SubMenu("Misc").AddItem(new MenuItem("AdvE", "Use AdvE logic").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("SmartQ", "WIP Use Q for GapClose").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("UsePK", "Use Packets").SetValue(true));
-            menu.SubMenu("Misc").AddItem(new MenuItem("AutoE", "Use Auto E").SetValue(true));
+            menu.SubMenu("Misc").AddItem(new MenuItem("AutoE", "Use Auto E").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("PushDistance", "E Push Dist").SetValue(new Slider(425, 400, 475)));
             menu.AddSubMenu(new Menu("[Hunter]Items", "Items"));
             menu.SubMenu("Items").AddItem(new MenuItem("Botrk", "Use BOTRK").SetValue(true));
@@ -198,7 +198,7 @@ namespace VayneHunter2._0
 
                 }
             }
-            if(isEn("AutoE"))
+            if (isEn("AutoE"))
             {
                 foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
                 {
