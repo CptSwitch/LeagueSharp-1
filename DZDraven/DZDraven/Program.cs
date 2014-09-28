@@ -436,12 +436,10 @@ namespace DZDraven
                     WNeeded = true;
 
                 }
-                if ((CanReachRet || WNeeded))
+                if ((CanReachRet))
                 {
                     WNeeded = false;
-
                     Orbwalker.SetOrbwalkingPoint(ClosestRet.getPosition());
-
                     Console.WriteLine("Orbwalking to " + ClosestRet.getPosition().ToString());
                 }
 
