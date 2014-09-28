@@ -368,7 +368,7 @@ namespace DZDraven
                 var EPred = E.GetPrediction(gapcloser.Sender);
                 if(EPred.Hitchance>=HitChance.Medium)
                 {
-                    E.Cast(EPred.UnitPosition);
+                    E.Cast(EPred.CastPosition);
                 }
             }
         }
@@ -379,7 +379,7 @@ namespace DZDraven
             var EPred = E.GetPrediction(unit);
             if (EPred.Hitchance >= HitChance.Medium)
             {
-                E.Cast(unit);
+                E.Cast(EPred.CastPosition);
             }
         }
         private static bool IsInStandRange()
@@ -466,11 +466,11 @@ namespace DZDraven
             {
                 case Orbwalking.OrbwalkingMode.Combo:
                     var EManaCombo = menu.Item("EManaC").GetValue<Slider>().Value;
-                    if ((getManaPer() >= EManaCombo) && EPrediction.Hitchance>HitChance.Low) { E.Cast(unit); }
+                    if ((getManaPer() >= EManaCombo) && EPrediction.Hitchance > HitChance.Low) { E.Cast(EPrediction.CastPosition); }
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     var EManaMix = menu.Item("EManaM").GetValue<Slider>().Value;
-                    if ((getManaPer() >= EManaMix) && EPrediction.Hitchance>HitChance.Low) { E.Cast(unit); }
+                    if ((getManaPer() >= EManaMix) && EPrediction.Hitchance>HitChance.Low) { E.Cast(EPrediction.CastPosition); }
                     break;
                 default:
                     break;
@@ -483,11 +483,11 @@ namespace DZDraven
             {
                 case Orbwalking.OrbwalkingMode.Combo:
                     var RManaCombo = menu.Item("RManaC").GetValue<Slider>().Value;
-                    if ((getManaPer() >= RManaCombo) && RPrediction.Hitchance > HitChance.Low && player.Distance(unit)<2000f) { R.Cast(unit); }
+                    if ((getManaPer() >= RManaCombo) && RPrediction.Hitchance > HitChance.Low && player.Distance(unit) < 2000f) { R.Cast(RPrediction.CastPosition); }
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     var RManaMix = menu.Item("RManaM").GetValue<Slider>().Value;
-                    if ((getManaPer() >= RManaMix) && RPrediction.Hitchance > HitChance.Low && player.Distance(unit) < 2000f) { R.Cast(unit); }
+                    if ((getManaPer() >= RManaMix) && RPrediction.Hitchance > HitChance.Low && player.Distance(unit) < 2000f) { R.Cast(RPrediction.CastPosition); }
                     break;
                 default:
                     
