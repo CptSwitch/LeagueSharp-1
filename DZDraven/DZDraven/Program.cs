@@ -36,23 +36,23 @@ namespace DZDraven
             menu.AddSubMenu(ts);
             menu.AddSubMenu(new Menu("[Draven]Skill Q", "QMenu"));
             //Q Menu
-            
+
             menu.SubMenu("QMenu").AddItem(new MenuItem("QC", "Use Q Combo").SetValue(true));
-            
+
             menu.SubMenu("QMenu").AddItem(new MenuItem("QM", "Use Q Mixed").SetValue(false));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QLH", "Use Q LastHit").SetValue(false));
-            
+
             menu.SubMenu("QMenu").AddItem(new MenuItem("QLC", "Use Q LaneClear").SetValue(false));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QKs", "Use Q Ks").SetValue(true));
             menu.SubMenu("QMenu").AddItem(new MenuItem("MaxQNum", "Max n of Q").SetValue(new Slider(2, 1, 4)));
             menu.SubMenu("QMenu").AddItem(new MenuItem("SafeZone", "BETA SafeZone").SetValue(new Slider(100, 0, 400)));
-            menu.SubMenu("QMenu").AddItem(new MenuItem("QRadius", "Catch Radius").SetValue(new Slider(600, 200, 800)));      
+            menu.SubMenu("QMenu").AddItem(new MenuItem("QRadius", "Catch Radius").SetValue(new Slider(600, 200, 800)));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QManaC", "Min Q Mana in Combo").SetValue(new Slider(10, 1, 100)));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QManaM", "Min Q Mana in Mixed").SetValue(new Slider(10, 1, 100)));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QRefresh", "Refresh List (if bug)").SetValue(new KeyBind("Z".ToCharArray()[0], KeyBindType.Press)));
 
             menu.AddSubMenu(new Menu("[Draven]Skill W", "WMenu"));
-            
+
             //W Menu
             menu.SubMenu("WMenu").AddItem(new MenuItem("WC", "Use W Combo").SetValue(true));
             menu.SubMenu("WMenu").AddItem(new MenuItem("WM", "Use W Mixed").SetValue(true));
@@ -80,10 +80,10 @@ namespace DZDraven
             menu.SubMenu("RMenu").AddItem(new MenuItem("RC", "Use R Combo").SetValue(false));
             menu.SubMenu("RMenu").AddItem(new MenuItem("RM", "Use R Mixed").SetValue(false));
             menu.SubMenu("RMenu").AddItem(new MenuItem("RKs", "Use R Ks").SetValue(true));
-            menu.SubMenu("RMenu").AddItem(new MenuItem("ManualR", "Manual R Cast").SetValue(new KeyBind("T".ToCharArray()[0],KeyBindType.Press)));
+            menu.SubMenu("RMenu").AddItem(new MenuItem("ManualR", "Manual R Cast").SetValue(new KeyBind("T".ToCharArray()[0], KeyBindType.Press)));
             menu.SubMenu("RMenu").AddItem(new MenuItem("RManaC", "Min R Mana in Combo").SetValue(new Slider(5, 1, 100)));
             menu.SubMenu("RMenu").AddItem(new MenuItem("RManaM", "Min R Mana in Mixed").SetValue(new Slider(5, 1, 100)));
-            
+
             //Axe Catcher
             menu.AddSubMenu(new Menu("[Draven]Axe Catcher", "AxeCatcher"));
 
@@ -104,10 +104,10 @@ namespace DZDraven
 
             //Drawings Menu
             menu.SubMenu("Drawing").AddItem(new MenuItem("DrawE", "Draw E range").SetValue(false));
-            menu.SubMenu("Drawing").AddItem(new MenuItem("DrawCRange", "Draw CatchRange").SetValue(new Circle(true,  Color.FromArgb(80, 255, 0, 255))));
-            menu.SubMenu("Drawing").AddItem(new MenuItem("DrawRet", "Draw Reticles").SetValue(new Circle(true,Color.Yellow)));
-            
-            
+            menu.SubMenu("Drawing").AddItem(new MenuItem("DrawCRange", "Draw CatchRange").SetValue(new Circle(true, Color.FromArgb(80, 255, 0, 255))));
+            menu.SubMenu("Drawing").AddItem(new MenuItem("DrawRet", "Draw Reticles").SetValue(new Circle(true, Color.Yellow)));
+
+
             menu.AddToMainMenu();
             Game.PrintChat("DZDraven 1.0 Loaded");
             Q = new Spell(SpellSlot.Q);
@@ -131,20 +131,25 @@ namespace DZDraven
             var QRadius = menu.Item("QRadius").GetValue<Slider>().Value;
             var drawCatch = menu.Item("DrawCRange").GetValue<Circle>();
             var drawRet = menu.Item("DrawRet").GetValue<Circle>();
-            if(drawCatch.Active)
+            var ERange = menu.Item("DrawE").GetValue<Circle>();
+            if (drawCatch.Active)
             {
                 Drawing.DrawCircle(Game.CursorPos, QRadius, drawCatch.Color);
             }
+            if (ERange.Active)
+            {
+                Drawing.DrawCircle(player.Position, E.Range, ERange.Color);
+            }
             if (drawRet.Active)
             {
-                foreach(Reticle r in reticleList)
+                foreach (Reticle r in reticleList)
                 {
-                    if(r.getObj().IsValid)
+                    if (r.getObj().IsValid)
                     {
-                        Drawing.DrawCircle(r.getPosition(), 100 , drawRet.Color);
+                        Drawing.DrawCircle(r.getPosition(), 100, drawRet.Color);
                     }
                 }
-                
+
             }
         }
 
@@ -156,7 +161,7 @@ namespace DZDraven
             switch (Orbwalker.ActiveMode)
             {
                 case Orbwalking.OrbwalkingMode.Combo:
-                    if(isEn("WC"))
+                    if (isEn("WC"))
                     {
                         var WManaCombo = menu.Item("WManaC").GetValue<Slider>().Value;
                         if (getManaPer() >= WManaCombo) { W.Cast(); }
@@ -208,16 +213,16 @@ namespace DZDraven
         }
         private static bool PlayerInTurretRange()
         {
-            foreach(var val in towerPos)
+            foreach (var val in towerPos)
             {
-                if(val.Health == 0)
+                if (val.Health == 0)
                 {
                     towerPos.Remove(val);
                 }
             }
             foreach (var val in towerPos)
             {
-                if(player.Distance(val)< 975f)
+                if (player.Distance(val) < 975f)
                 {
                     return true;
                 }
@@ -235,7 +240,7 @@ namespace DZDraven
             }
             foreach (var val in towerPos)
             {
-                if (Vector3.Distance(retPosition,val.Position) < 975f)
+                if (Vector3.Distance(retPosition, val.Position) < 975f)
                 {
                     return true;
                 }
@@ -244,16 +249,16 @@ namespace DZDraven
         }
         private static void compileTowerArray()
         {
-            foreach(var tower in ObjectManager.Get<Obj_AI_Turret>().Where(tower=>tower.IsEnemy))
+            foreach (var tower in ObjectManager.Get<Obj_AI_Turret>().Where(tower => tower.IsEnemy))
             {
                 towerPos.Add(tower);
             }
         }
         private static bool IsZoneSafe(Vector3 v, float dist)
         {
-            foreach(var enemy in ObjectManager.Get<Obj_AI_Hero>().Where(enemy => enemy.IsEnemy))
+            foreach (var enemy in ObjectManager.Get<Obj_AI_Hero>().Where(enemy => enemy.IsEnemy))
             {
-                if(Vector3.Distance(enemy.Position,v)< dist && !enemy.IsDead && enemy!=null)
+                if (Vector3.Distance(enemy.Position, v) < dist && !enemy.IsDead && enemy != null)
                 {
                     return false;
                 }
@@ -262,10 +267,10 @@ namespace DZDraven
         }
         private static Obj_AI_Hero ClosestHero(float range)
         {
-             Obj_AI_Hero clhero = null;
-            foreach(var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
+            Obj_AI_Hero clhero = null;
+            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
             {
-                if(!hero.IsDead && hero.IsVisible && player.Distance(hero)<player.Distance(clhero))
+                if (!hero.IsDead && hero.IsVisible && player.Distance(hero) < player.Distance(clhero))
                 {
                     clhero = hero;
                 }
@@ -274,57 +279,57 @@ namespace DZDraven
         }
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            
+
             var target = SimpleTs.GetTarget(550f, SimpleTs.DamageType.Physical);
             var ETarget = SimpleTs.GetTarget(E.Range, SimpleTs.DamageType.Physical);
             var RTarget = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
             if (target == null) return;
-            if(menu.Item("ManualR").GetValue<KeyBind>().Active)
+            if (menu.Item("ManualR").GetValue<KeyBind>().Active)
             {
                 CastR(target);
             }
-                foreach(var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero=>hero.IsEnemy))
+            foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
+            {
+                if (isEn("EKs"))
                 {
-                    if (isEn("EKs"))
+                    var ePred = E.GetPrediction(hero);
+                    if (ePred.Hitchance > HitChance.Low && E.GetDamage(hero) >= target.Health)
                     {
-                        var ePred = E.GetPrediction(hero);
-                        if (ePred.Hitchance > HitChance.Low && E.GetDamage(hero) >= target.Health)
-                        {
-                            E.Cast(hero);
-                        }
-                        break;
+                        E.Cast(hero);
                     }
-                    if(isEn("QKs"))
+                    break;
+                }
+                if (isEn("QKs"))
+                {
+                    if (Q.GetDamage(hero) + player.GetAutoAttackDamage(hero) >= hero.Health)
                     {
-                        if(Q.GetDamage(hero)+player.GetAutoAttackDamage(hero)>=hero.Health)
-                        {
-                            if(GetQNumber()<1){Q.Cast();}
-                            Orbwalker.SetAttacks(true);
-                            Orbwalker.ForceTarget(hero);
-                        }
-                        break;
+                        if (GetQNumber() < 1) { Q.Cast(); }
+                        Orbwalker.SetAttacks(true);
+                        Orbwalker.ForceTarget(hero);
                     }
-                    if (isEn("RKs"))
+                    break;
+                }
+                if (isEn("RKs"))
+                {
+                    var RPred = R.GetPrediction(hero);
+                    if (RPred.Hitchance > HitChance.Low && R.GetDamage(hero) >= target.Health && player.Distance(hero) <= 2000f)
                     {
-                        var RPred = R.GetPrediction(hero);
-                        if (RPred.Hitchance > HitChance.Low && R.GetDamage(hero) >= target.Health && player.Distance(hero)<=2000f)
-                        {
-                            R.Cast(hero);
-                            break;
-                        }
+                        R.Cast(hero);
+                        break;
                     }
                 }
-            if(menu.Item("QRefresh").GetValue<KeyBind>().Active)
+            }
+            if (menu.Item("QRefresh").GetValue<KeyBind>().Active)
             {
                 reticleList.Clear();
             }
             switch (Orbwalker.ActiveMode)
-            {  
+            {
                 case Orbwalking.OrbwalkingMode.Combo:
                     if (isEn("QC")) { CastQ(); }
-                    if (isEn("EC")) { CastE(ETarget);}
+                    if (isEn("EC")) { CastE(ETarget); }
                     if (isEn("RC")) { CastR(RTarget); }
-                    
+
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     if (isEn("QM")) { CastQ(); }
@@ -335,7 +340,7 @@ namespace DZDraven
                     if (isEn("QLH")) { CastQ(); }
                     break;
                 case Orbwalking.OrbwalkingMode.LaneClear:
-                    if (isEn("QLC")) { CastQ(); } 
+                    if (isEn("QLC")) { CastQ(); }
                     break;
                 default:
                     break;
@@ -351,15 +356,15 @@ namespace DZDraven
         private static void OnCreateObject(GameObject sender, EventArgs args)
         {
             if (!sender.Name.Contains("Q_reticle_self")) { return; }
-            reticleList.Add(new Reticle(sender, Game.Time, sender.Position,Game.Time + 1.20, sender.NetworkId));
+            reticleList.Add(new Reticle(sender, Game.Time, sender.Position, Game.Time + 1.20, sender.NetworkId));
         }
 
         private static void OnDeleteObject(GameObject sender, EventArgs args)
         {
             if (!sender.Name.Contains("Q_reticle_self")) { return; }
-            foreach(Reticle ret in reticleList)
+            foreach (Reticle ret in reticleList)
             {
-                if(ret.getNetworkId() == sender.NetworkId){reticleList.Remove(ret);}
+                if (ret.getNetworkId() == sender.NetworkId) { reticleList.Remove(ret); }
             }
         }
 
@@ -369,7 +374,7 @@ namespace DZDraven
             if (gapcloser.End.Distance(player.ServerPosition) <= 50f)
             {
                 var EPred = E.GetPrediction(gapcloser.Sender);
-                if(EPred.Hitchance>=HitChance.Medium)
+                if (EPred.Hitchance >= HitChance.Medium)
                 {
                     E.Cast(EPred.CastPosition);
                 }
@@ -387,64 +392,64 @@ namespace DZDraven
         }
         private static bool IsInStandRange()
         {
-            return (Vector3.Distance(Game.CursorPos,player.Position)<220);
+            return (Vector3.Distance(Game.CursorPos, player.Position) < 220);
         }
-        private static void OrbWalkToReticle(int SafeZone,int RetSafeZone)
+        private static void OrbWalkToReticle(int SafeZone, int RetSafeZone)
         {
             var target = ClosestHero(900f);
             Reticle ClosestRet = null;
             var QRadius = menu.Item("QRadius").GetValue<Slider>().Value;
-            foreach(Reticle r in reticleList)
+            foreach (Reticle r in reticleList)
             {
                 if (!r.getObj().IsValid) { reticleList.Remove(r); }
             }
-            if(reticleList.Count >0)
+            if (reticleList.Count > 0)
             {
                 float closestDist = float.MaxValue;
-                foreach(Reticle r in reticleList)
+                foreach (Reticle r in reticleList)
                 {
-                    if(Vector3.Distance(r.getPosition(),player.ServerPosition)<closestDist)
+                    if (Vector3.Distance(r.getPosition(), player.ServerPosition) < closestDist)
                     {
-                        if(r.getPosition().Distance(Game.CursorPos)<=QRadius && player.Distance(r.getPosition())< closestDist)
+                        if (r.getPosition().Distance(Game.CursorPos) <= QRadius && player.Distance(r.getPosition()) < closestDist)
                         {
-                            if (IsZoneSafe(r.getPosition(), RetSafeZone) && IsZoneSafe(player.Position,SafeZone) )
+                            if (IsZoneSafe(r.getPosition(), RetSafeZone) && IsZoneSafe(player.Position, SafeZone))
                             {
                                 ClosestRet = r;
                                 closestDist = player.Distance(r.getPosition());
                             }
-                            
+
                         }
                     }
                 }
             }
-            if(ClosestRet!=null && !RetInTurretRange(ClosestRet.getPosition()))
+            if (ClosestRet != null && !RetInTurretRange(ClosestRet.getPosition()))
             {
                 float myHitbox = 65;
-                float QDist = Vector2.Distance(ClosestRet.getPosition().To2D(), player.ServerPosition.To2D())-myHitbox;
+                float QDist = Vector2.Distance(ClosestRet.getPosition().To2D(), player.ServerPosition.To2D()) - myHitbox;
                 float QDist1 = player.GetPath(ClosestRet.getPosition()).ToList().To2D().PathLength();
-                bool CanReachRet = ( QDist1 / player.MoveSpeed+Game.Time)<(ClosestRet.getEndTime());
-                bool CanReachRetWBonus  = ( QDist1 / (player.MoveSpeed+(player.MoveSpeed*(getMoveSpeedBonusW()/100))) + Game.Time)<(ClosestRet.getEndTime());
+                bool CanReachRet = (QDist1 / player.MoveSpeed + Game.Time) < (ClosestRet.getEndTime());
+                bool CanReachRetWBonus = (QDist1 / (player.MoveSpeed + (player.MoveSpeed * (getMoveSpeedBonusW() / 100))) + Game.Time) < (ClosestRet.getEndTime());
                 bool WNeeded = false;
                 if (CanReachRetWBonus && !CanReachRet)
                 {
                     W.Cast();
                     WNeeded = true;
-                    
+
                 }
-                if((CanReachRet || WNeeded))
+                if ((CanReachRet || WNeeded))
                 {
                     WNeeded = false;
-                   
+
                     Orbwalker.SetOrbwalkingPoint(ClosestRet.getPosition());
-                    
+
                     Console.WriteLine("Orbwalking to " + ClosestRet.getPosition().ToString());
                 }
-                
+
             }
         }
         public static int getMoveSpeedBonusW()
         {
-            switch(W.Level)
+            switch (W.Level)
             {
                 case 1:
                     return 40;
@@ -471,7 +476,7 @@ namespace DZDraven
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     var EManaMix = menu.Item("EManaM").GetValue<Slider>().Value;
-                    if ((getManaPer() >= EManaMix) && EPrediction.Hitchance>HitChance.Low) { E.Cast(EPrediction.CastPosition); }
+                    if ((getManaPer() >= EManaMix) && EPrediction.Hitchance > HitChance.Low) { E.Cast(EPrediction.CastPosition); }
                     break;
                 default:
                     break;
