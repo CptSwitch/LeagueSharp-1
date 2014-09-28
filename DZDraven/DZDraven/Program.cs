@@ -431,9 +431,7 @@ namespace DZDraven
                     WNeeded = true;
                     
                 }
-                if((CanReachRet || WNeeded) && target!=null 
-                                && !(target != null && Vector3.Distance(ClosestRet.getPosition(),target.Position)>Orbwalking.GetRealAutoAttackRange(null))
-                                )
+                if((CanReachRet || WNeeded))
                 {
                     WNeeded = false;
                    
