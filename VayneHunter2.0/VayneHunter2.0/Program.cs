@@ -51,7 +51,7 @@ namespace VayneHunter2._0
             menu.AddSubMenu(new Menu("[Hunter]Misc", "Misc"));
             menu.SubMenu("Misc").AddItem(new MenuItem("AntiGP", "Use AntiGapcloser").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("Interrupt", "Interrupt Spells").SetValue(true));
-            menu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind("E".ToCharArray()[0], KeyBindType.Toggle)));
+            menu.SubMenu("Misc").AddItem(new MenuItem("ENextAuto", "Use E after next AA").SetValue(new KeyBind("T".ToCharArray()[0], KeyBindType.Toggle)));
             menu.SubMenu("Misc").AddItem(new MenuItem("AdvE", "Use AdvE logic").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("SmartQ", "WIP Use Q for GapClose").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("UsePK", "Use Packets").SetValue(true));
