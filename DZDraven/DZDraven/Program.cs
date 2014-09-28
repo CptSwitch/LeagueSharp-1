@@ -27,6 +27,7 @@ namespace DZDraven
 
         static void Game_OnGameLoad(EventArgs args)
         {
+            if (player.BaseSkinName != charName) { return; }
             menu = new Menu("DZDraven", "DZdrvenMenu", true);
             menu.AddSubMenu(new Menu("Orbwalker", "Orbwalker1"));
             Orbwalker = new Orbwalking.Orbwalker(menu.SubMenu("Orbwalker1"));
