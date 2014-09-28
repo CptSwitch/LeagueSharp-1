@@ -34,7 +34,7 @@ namespace DZDraven
             var ts = new Menu("Target Selector", "TargetSelector");
             SimpleTs.AddToMenu(ts);
             menu.AddSubMenu(ts);
-            menu.AddSubMenu(new Menu("Skill Q", "QMenu"));
+            menu.AddSubMenu(new Menu("[Draven]Skill Q", "QMenu"));
             //Q Menu
             
             menu.SubMenu("QMenu").AddItem(new MenuItem("QC", "Use Q Combo").SetValue(true));
@@ -50,8 +50,8 @@ namespace DZDraven
             menu.SubMenu("QMenu").AddItem(new MenuItem("QManaC", "Min Q Mana in Combo").SetValue(new Slider(10, 1, 100)));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QManaM", "Min Q Mana in Mixed").SetValue(new Slider(10, 1, 100)));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QRefresh", "Refresh List (if bug)").SetValue(new KeyBind("Z".ToCharArray()[0], KeyBindType.Press)));
-            
-            menu.AddSubMenu(new Menu("Skill W", "WMenu"));
+
+            menu.AddSubMenu(new Menu("[Draven]Skill W", "WMenu"));
             
             //W Menu
             menu.SubMenu("WMenu").AddItem(new MenuItem("WC", "Use W Combo").SetValue(true));
@@ -62,7 +62,7 @@ namespace DZDraven
             menu.SubMenu("WMenu").AddItem(new MenuItem("WManaM", "Min W Mana in Mixed").SetValue(new Slider(60, 1, 100)));
 
 
-            menu.AddSubMenu(new Menu("Skill E", "EMenu"));
+            menu.AddSubMenu(new Menu("[Draven]Skill E", "EMenu"));
 
             //E Menu
             menu.SubMenu("EMenu").AddItem(new MenuItem("EC", "Use E Combo").SetValue(true));
@@ -74,7 +74,7 @@ namespace DZDraven
             menu.SubMenu("EMenu").AddItem(new MenuItem("EManaM", "Min R Mana in Mixed").SetValue(new Slider(20, 1, 100)));
 
 
-            menu.AddSubMenu(new Menu("Skill R (2000 Units)", "RMenu"));
+            menu.AddSubMenu(new Menu("[Draven]Skill R (2000un)", "RMenu"));
 
             //R Menu
             menu.SubMenu("RMenu").AddItem(new MenuItem("RC", "Use R Combo").SetValue(false));
@@ -279,7 +279,10 @@ namespace DZDraven
             var ETarget = SimpleTs.GetTarget(E.Range, SimpleTs.DamageType.Physical);
             var RTarget = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
             if (target == null) return;
-            
+            if(menu.Item("ManualR").GetValue<KeyBind>().Active)
+            {
+                CastR(target);
+            }
                 foreach(var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero=>hero.IsEnemy))
                 {
                     if (isEn("EKs"))
@@ -490,7 +493,10 @@ namespace DZDraven
                     if ((getManaPer() >= RManaMix) && RPrediction.Hitchance > HitChance.Low && player.Distance(unit) < 2000f) { R.Cast(RPrediction.CastPosition); }
                     break;
                 default:
-                    
+                    if (RPrediction.Hitchance > HitChance.Low && player.Distance(unit) < 2000f)
+                    {
+                        R.Cast(RPrediction.CastPosition);
+                    }
                     break;
             }
         }
