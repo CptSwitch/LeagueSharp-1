@@ -284,7 +284,7 @@ namespace DZDraven
                     if (isEn("EKs"))
                     {
                         var ePred = E.GetPrediction(hero);
-                        if (ePred.Hitchance > HitChance.Low && E.GetDamage(hero) >= target.Health)
+                        if (E.GetHealthPrediction(hero) <= 0)
                         {
                             E.Cast(hero);
                         }
@@ -303,9 +303,9 @@ namespace DZDraven
                     if (isEn("RKs"))
                     {
                         var RPred = R.GetPrediction(hero);
-                        if (RPred.Hitchance > HitChance.Low && R.GetDamage(hero) >= target.Health && player.Distance(hero)<=2000f)
+                        if (R.GetHealthPrediction(hero)<=0 && player.Distance(hero)<=2000f)
                         {
-                            R.Cast(RPred.UnitPosition);
+                            R.Cast(hero);
                             break;
                         }
                     }
@@ -463,11 +463,11 @@ namespace DZDraven
             {
                 case Orbwalking.OrbwalkingMode.Combo:
                     var EManaCombo = menu.Item("EManaC").GetValue<Slider>().Value;
-                    if ((getManaPer() >= EManaCombo) && EPrediction.Hitchance > HitChance.Low) { E.Cast(unit); }
+                    if ((getManaPer() >= EManaCombo) ) { E.Cast(unit); }
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     var EManaMix = menu.Item("EManaM").GetValue<Slider>().Value;
-                    if ((getManaPer() >= EManaMix) && EPrediction.Hitchance>HitChance.Low) { E.Cast(unit); }
+                    if ((getManaPer() >= EManaMix) ) { E.Cast(unit); }
                     break;
                 default:
                     break;
@@ -480,11 +480,11 @@ namespace DZDraven
             {
                 case Orbwalking.OrbwalkingMode.Combo:
                     var RManaCombo = menu.Item("RManaC").GetValue<Slider>().Value;
-                    if ((getManaPer() >= RManaCombo) && RPrediction.Hitchance > HitChance.Low && player.Distance(unit) < 2000f) { R.Cast(RPrediction.UnitPosition); }
+                    if ((getManaPer() >= RManaCombo) && player.Distance(unit) < 2000f) { R.Cast(unit); }
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     var RManaMix = menu.Item("RManaM").GetValue<Slider>().Value;
-                    if ((getManaPer() >= RManaMix) && RPrediction.Hitchance > HitChance.Low && player.Distance(unit) < 2000f) { R.Cast(RPrediction.UnitPosition); }
+                    if ((getManaPer() >= RManaMix) &&  player.Distance(unit) < 2000f) { R.Cast(unit); }
                     break;
                 default:
                     
