@@ -463,11 +463,11 @@ namespace DZDraven
             {
                 case Orbwalking.OrbwalkingMode.Combo:
                     var EManaCombo = menu.Item("EManaC").GetValue<Slider>().Value;
-                    if ((getManaPer() >= EManaCombo) && EPrediction.Hitchance > HitChance.Low) { E.Cast(EPrediction.CastPosition); }
+                    if ((getManaPer() >= EManaCombo) && EPrediction.Hitchance > HitChance.Low) { E.Cast(EPrediction.UnitPosition); }
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     var EManaMix = menu.Item("EManaM").GetValue<Slider>().Value;
-                    if ((getManaPer() >= EManaMix) && EPrediction.Hitchance>HitChance.Low) { E.Cast(EPrediction.CastPosition); }
+                    if ((getManaPer() >= EManaMix) && EPrediction.Hitchance>HitChance.Low) { E.Cast(EPrediction.UnitPosition); }
                     break;
                 default:
                     break;
@@ -480,11 +480,11 @@ namespace DZDraven
             {
                 case Orbwalking.OrbwalkingMode.Combo:
                     var RManaCombo = menu.Item("RManaC").GetValue<Slider>().Value;
-                    if ((getManaPer() >= RManaCombo) && RPrediction.Hitchance > HitChance.Low && player.Distance(unit) < 2000f) { R.Cast(RPrediction.CastPosition); }
+                    if ((getManaPer() >= RManaCombo) && RPrediction.Hitchance > HitChance.Low && player.Distance(unit) < 2000f) { R.Cast(RPrediction.UnitPosition); }
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     var RManaMix = menu.Item("RManaM").GetValue<Slider>().Value;
-                    if ((getManaPer() >= RManaMix) && RPrediction.Hitchance > HitChance.Low && player.Distance(unit) < 2000f) { R.Cast(RPrediction.CastPosition); }
+                    if ((getManaPer() >= RManaMix) && RPrediction.Hitchance > HitChance.Low && player.Distance(unit) < 2000f) { R.Cast(RPrediction.UnitPosition); }
                     break;
                 default:
                     
