@@ -193,12 +193,14 @@ namespace DZDraven
                     break;
 
                 case Orbwalking.OrbwalkingMode.LastHit:
+                    if (isEn("QLH")) { CastQ(); }
                     if (isEn("WLH")) { W.Cast(); }
                     if (isEn("ACLH")) { OrbWalkToReticle(safeZone, 100); }
                     break;
 
                 case Orbwalking.OrbwalkingMode.LaneClear:
                     if (isEn("WLC")) { W.Cast(); }
+                    if (isEn("QLC")) { CastQ(); } 
                     if (isEn("ACLC")) { OrbWalkToReticle(safeZone, 100); }
                     break;
                 default:
@@ -328,10 +330,10 @@ namespace DZDraven
                     if (isEn("RM")) { CastR(RTarget); }
                     break;
                 case Orbwalking.OrbwalkingMode.LastHit:
-                    if (isEn("QLH")) { CastQ(); }
+                    
                     break;
                 case Orbwalking.OrbwalkingMode.LaneClear:
-                    if (isEn("QLC")) { CastQ(); } 
+                    
                     break;
                 default:
                     break;
