@@ -34,7 +34,7 @@ namespace DZDraven
             var ts = new Menu("Target Selector", "TargetSelector");
             SimpleTs.AddToMenu(ts);
             menu.AddSubMenu(ts);
-            menu.AddSubMenu(new Menu("Skill Q", "QMenu"));
+            menu.AddSubMenu(new Menu("[Draven]Skill Q", "QMenu"));
             //Q Menu
             
             menu.SubMenu("QMenu").AddItem(new MenuItem("QC", "Use Q Combo").SetValue(true));
@@ -50,8 +50,8 @@ namespace DZDraven
             menu.SubMenu("QMenu").AddItem(new MenuItem("QManaC", "Min Q Mana in Combo").SetValue(new Slider(10, 1, 100)));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QManaM", "Min Q Mana in Mixed").SetValue(new Slider(10, 1, 100)));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QRefresh", "Refresh List (if bug)").SetValue(new KeyBind("Z".ToCharArray()[0], KeyBindType.Press)));
-            
-            menu.AddSubMenu(new Menu("Skill W", "WMenu"));
+
+            menu.AddSubMenu(new Menu("[Draven]Skill W", "WMenu"));
             
             //W Menu
             menu.SubMenu("WMenu").AddItem(new MenuItem("WC", "Use W Combo").SetValue(true));
@@ -62,7 +62,7 @@ namespace DZDraven
             menu.SubMenu("WMenu").AddItem(new MenuItem("WManaM", "Min W Mana in Mixed").SetValue(new Slider(60, 1, 100)));
 
 
-            menu.AddSubMenu(new Menu("Skill E", "EMenu"));
+            menu.AddSubMenu(new Menu("[Draven]Skill E", "EMenu"));
 
             //E Menu
             menu.SubMenu("EMenu").AddItem(new MenuItem("EC", "Use E Combo").SetValue(true));
@@ -74,13 +74,13 @@ namespace DZDraven
             menu.SubMenu("EMenu").AddItem(new MenuItem("EManaM", "Min R Mana in Mixed").SetValue(new Slider(20, 1, 100)));
 
 
-            menu.AddSubMenu(new Menu("Skill R (2000 Units)", "RMenu"));
+            menu.AddSubMenu(new Menu("[Draven]Skill R (2000un)", "RMenu"));
 
             //R Menu
             menu.SubMenu("RMenu").AddItem(new MenuItem("RC", "Use R Combo").SetValue(false));
             menu.SubMenu("RMenu").AddItem(new MenuItem("RM", "Use R Mixed").SetValue(false));
             menu.SubMenu("RMenu").AddItem(new MenuItem("RKs", "Use R Ks").SetValue(true));
-            menu.SubMenu("RMenu").AddItem(new MenuItem("ManualR", "Manual R Cast").SetValue(new KeyBind("T".ToCharArray()[0],KeyBindType.Press)));
+            //menu.SubMenu("RMenu").AddItem(new MenuItem("ManualR", "Manual R Cast").SetValue(new KeyBind("T".ToCharArray()[0],KeyBindType.Press)));
             menu.SubMenu("RMenu").AddItem(new MenuItem("RManaC", "Min R Mana in Combo").SetValue(new Slider(5, 1, 100)));
             menu.SubMenu("RMenu").AddItem(new MenuItem("RManaM", "Min R Mana in Mixed").SetValue(new Slider(5, 1, 100)));
             
@@ -103,13 +103,12 @@ namespace DZDraven
             menu.AddSubMenu(new Menu("[Draven]Drawing", "Drawing"));
 
             //Drawings Menu
-            menu.SubMenu("Drawing").AddItem(new MenuItem("DrawE", "Draw E range").SetValue(false));
             menu.SubMenu("Drawing").AddItem(new MenuItem("DrawCRange", "Draw CatchRange").SetValue(new Circle(true,  Color.FromArgb(80, 255, 0, 255))));
             menu.SubMenu("Drawing").AddItem(new MenuItem("DrawRet", "Draw Reticles").SetValue(new Circle(true,Color.Yellow)));
             
             
             menu.AddToMainMenu();
-            Game.PrintChat("DZDraven 1.0 Loaded");
+            Game.PrintChat("DZDraven 1.0 Loaded.Bugs should be fixed.");
             Q = new Spell(SpellSlot.Q);
             W = new Spell(SpellSlot.W);
             E = new Spell(SpellSlot.E, 1100);
@@ -428,9 +427,7 @@ namespace DZDraven
                     WNeeded = true;
                     
                 }
-                if((CanReachRet || WNeeded) && target!=null 
-                                && !(target != null && Vector3.Distance(ClosestRet.getPosition(),target.Position)>Orbwalking.GetRealAutoAttackRange(null))
-                                )
+                if((CanReachRet || WNeeded) && target!=null )
                 {
                     WNeeded = false;
                    
