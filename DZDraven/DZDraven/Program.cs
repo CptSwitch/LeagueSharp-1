@@ -286,7 +286,7 @@ namespace DZDraven
                         var ePred = E.GetPrediction(hero);
                         if (ePred.Hitchance > HitChance.Low && E.GetDamage(hero) >= target.Health)
                         {
-                            E.Cast(hero);
+                            E.Cast(ePred.CastPosition);
                         }
                         break;
                     }
@@ -305,7 +305,7 @@ namespace DZDraven
                         var RPred = R.GetPrediction(hero);
                         if (RPred.Hitchance > HitChance.Low && R.GetDamage(hero) >= target.Health && player.Distance(hero)<=2000f)
                         {
-                            R.Cast(hero);
+                            R.Cast(RPred.CastPosition);
                             break;
                         }
                     }
