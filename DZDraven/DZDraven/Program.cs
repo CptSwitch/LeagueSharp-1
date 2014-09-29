@@ -286,7 +286,7 @@ namespace DZDraven
                         var ePred = E.GetPrediction(hero);
                         if (ePred.Hitchance > HitChance.Low && E.GetDamage(hero) >= target.Health)
                         {
-                            E.Cast(ePred.UnitPosition);
+                            E.Cast(hero);
                         }
                         break;
                     }
@@ -463,11 +463,11 @@ namespace DZDraven
             {
                 case Orbwalking.OrbwalkingMode.Combo:
                     var EManaCombo = menu.Item("EManaC").GetValue<Slider>().Value;
-                    if ((getManaPer() >= EManaCombo) && EPrediction.Hitchance > HitChance.Low) { E.Cast(EPrediction.UnitPosition); }
+                    if ((getManaPer() >= EManaCombo) && EPrediction.Hitchance > HitChance.Low) { E.Cast(unit); }
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     var EManaMix = menu.Item("EManaM").GetValue<Slider>().Value;
-                    if ((getManaPer() >= EManaMix) && EPrediction.Hitchance>HitChance.Low) { E.Cast(EPrediction.UnitPosition); }
+                    if ((getManaPer() >= EManaMix) && EPrediction.Hitchance>HitChance.Low) { E.Cast(unit); }
                     break;
                 default:
                     break;
