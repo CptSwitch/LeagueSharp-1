@@ -305,7 +305,7 @@ namespace DZDraven
                         var RPred = R.GetPrediction(hero);
                         if (RPred.Hitchance > HitChance.Low && R.GetDamage(hero) >= target.Health && player.Distance(hero)<=2000f)
                         {
-                            R.Cast(RPred.unitPosition);
+                            R.Cast(RPred.UnitPosition);
                             break;
                         }
                     }
