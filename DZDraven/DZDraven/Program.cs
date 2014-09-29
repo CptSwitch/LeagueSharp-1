@@ -427,8 +427,8 @@ namespace DZDraven
                 float myHitbox = 65;
                 float QDist = Vector2.Distance(ClosestRet.getPosition().To2D(), player.ServerPosition.To2D()) - myHitbox;
                 float QDist1 = player.GetPath(ClosestRet.getPosition()).ToList().To2D().PathLength();
-                bool CanReachRet = (QDist1 / player.MoveSpeed + Game.Time) < (ClosestRet.getEndTime());
-                bool CanReachRetWBonus = (QDist1 / (player.MoveSpeed + (player.MoveSpeed * (getMoveSpeedBonusW() / 100))) + Game.Time) < (ClosestRet.getEndTime());
+                bool CanReachRet = (QDist / player.MoveSpeed + Game.Time) < (ClosestRet.getEndTime());
+                bool CanReachRetWBonus = (QDist / (player.MoveSpeed + (player.MoveSpeed * (getMoveSpeedBonusW() / 100))) + Game.Time) < (ClosestRet.getEndTime());
                 bool WNeeded = false;
                 if (CanReachRetWBonus && !CanReachRet)
                 {
