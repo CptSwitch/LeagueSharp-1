@@ -43,6 +43,9 @@ namespace DZDraven
         {
             return this.NetworkId;
         }
-
+        public float DistanceToPlayer()
+        {
+            return ObjectManager.Player.Distance(this.getPosition());
+        }
     }
 }
