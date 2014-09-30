@@ -49,6 +49,7 @@ namespace DZDraven
             menu.SubMenu("QMenu").AddItem(new MenuItem("QRadius", "Catch Radius").SetValue(new Slider(600, 200, 800)));      
             menu.SubMenu("QMenu").AddItem(new MenuItem("QManaC", "Min Q Mana in Combo").SetValue(new Slider(10, 1, 100)));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QManaM", "Min Q Mana in Mixed").SetValue(new Slider(10, 1, 100)));
+            menu.SubMenu("QMenu").AddItem(new MenuItem("UseAARet", "Use AA while orbwalking to reticle").SetValue(true));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QRefresh", "Refresh List (if bug)").SetValue(new KeyBind("Z".ToCharArray()[0], KeyBindType.Press)));
 
             menu.AddSubMenu(new Menu("[Draven]Skill W", "WMenu"));
@@ -108,7 +109,7 @@ namespace DZDraven
             
             
             menu.AddToMainMenu();
-            Game.PrintChat("DZDraven 1.0 Loaded.Bugs should be fixed.");
+            Game.PrintChat("DZDraven 1.1 Loaded.");
             Q = new Spell(SpellSlot.Q);
             W = new Spell(SpellSlot.W);
             E = new Spell(SpellSlot.E, 1100);
@@ -387,8 +388,14 @@ namespace DZDraven
         {
             return (Vector3.Distance(Game.CursorPos,player.Position)<220);
         }
+        /// <summary>
+        /// Orbwalker to catch the axes.
+        /// </summary>
+        /// <param name="SafeZone">Heroes safe zone,def 100</param>
+        /// <param name="RetSafeZone">Reticle safe zone, def 100</param>
         private static void OrbWalkToReticle(int SafeZone,int RetSafeZone)
         {
+            bool toggle = isEn("UseAARet");
             var target = ClosestHero(900f);
             Reticle ClosestRet = null;
             var QRadius = menu.Item("QRadius").GetValue<Slider>().Value;
@@ -399,10 +406,8 @@ namespace DZDraven
             if(reticleList.Count >0)
             {
                 float closestDist = float.MaxValue;
-                foreach(Reticle r in reticleList)
+                foreach(Reticle r in reticleList.OrderBy(reticle=>reticle.getEndTime()))
                 {
-                    if(Vector3.Distance(r.getPosition(),player.ServerPosition)<closestDist)
-                    {
                         if(r.getPosition().Distance(Game.CursorPos)<=QRadius && player.Distance(r.getPosition())< closestDist)
                         {
                             if (IsZoneSafe(r.getPosition(), RetSafeZone) && IsZoneSafe(player.Position,SafeZone) )
@@ -410,11 +415,10 @@ namespace DZDraven
                                 ClosestRet = r;
                                 closestDist = player.Distance(r.getPosition());
                             }
-                            
                         }
-                    }
                 }
             }
+            
             if(ClosestRet!=null && !RetInTurretRange(ClosestRet.getPosition()))
             {
                 float myHitbox = 65;
@@ -432,9 +436,18 @@ namespace DZDraven
                 if((CanReachRet || WNeeded) && target!=null )
                 {
                     WNeeded = false;
-                   
-                    Orbwalker.SetOrbwalkingPoint(ClosestRet.getPosition());
-                    
+                    if (!toggle)
+                    {
+                        Orbwalker.SetAttacks(false);
+                    }
+                    if (player.Distance(ClosestRet.getPosition()) >= 100)
+                    {
+                        Orbwalker.SetOrbwalkingPoint(ClosestRet.getPosition());
+                    }
+                    if (!toggle)
+                    {
+                        Orbwalker.SetAttacks(true);
+                    }
                     Console.WriteLine("Orbwalking to " + ClosestRet.getPosition().ToString());
                 }
                 
