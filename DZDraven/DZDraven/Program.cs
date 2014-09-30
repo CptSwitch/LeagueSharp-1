@@ -182,7 +182,7 @@ namespace DZDraven
                             Orbwalker.ForceTarget(target);
                         }
                     }
-                    if (isEn("ACC")) { OrbWalkToReticle(safeZone, 100); }
+                    if (isEn("ACC")) { Orbwalker.SetMovement(false); OrbWalkToReticle(safeZone, 100); Orbwalker.SetMovement(true); }
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     if (isEn("WM"))
@@ -190,19 +190,19 @@ namespace DZDraven
                         var WManaMix = menu.Item("WManaM").GetValue<Slider>().Value;
                         if (getManaPer() >= WManaMix) { W.Cast(); }
                     }
-                    if (isEn("ACM")) { OrbWalkToReticle(safeZone, 100); }
+                    if (isEn("ACM")) { Orbwalker.SetMovement(false); OrbWalkToReticle(safeZone, 100); Orbwalker.SetMovement(true); }
                     break;
 
                 case Orbwalking.OrbwalkingMode.LastHit:
                     if (isEn("QLH")) { CastQ(); }
                     if (isEn("WLH")) { W.Cast(); }
-                    if (isEn("ACLH")) { OrbWalkToReticle(safeZone, 100); }
+                    if (isEn("ACLH")) { Orbwalker.SetMovement(false); OrbWalkToReticle(safeZone, 100); Orbwalker.SetMovement(true); }
                     break;
 
                 case Orbwalking.OrbwalkingMode.LaneClear:
                     if (isEn("WLC")) { W.Cast(); }
-                    if (isEn("QLC")) { CastQ(); } 
-                    if (isEn("ACLC")) { OrbWalkToReticle(safeZone, 100); }
+                    if (isEn("QLC")) { CastQ(); }
+                    if (isEn("ACLC")) { Orbwalker.SetMovement(false); OrbWalkToReticle(safeZone, 100); Orbwalker.SetMovement(true); }
                     break;
                 default:
                     return;
@@ -444,6 +444,7 @@ namespace DZDraven
                     }
                     if (player.Distance(ClosestRet.getPosition()) >= 100)
                     {
+                        
                         Orbwalker.SetOrbwalkingPoint(ClosestRet.getPosition());
                     }
                     if (!toggle)
