@@ -182,7 +182,6 @@ namespace DZDraven
                             Orbwalker.ForceTarget(target);
                         }
                     }
-                    if (isEn("ACC")) { Orbwalker.SetMovement(false); OrbWalkToReticle(safeZone, 100); Orbwalker.SetMovement(true); }
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     if (isEn("WM"))
@@ -190,13 +189,13 @@ namespace DZDraven
                         var WManaMix = menu.Item("WManaM").GetValue<Slider>().Value;
                         if (getManaPer() >= WManaMix) { W.Cast(); }
                     }
-                    if (isEn("ACM")) { Orbwalker.SetMovement(false); OrbWalkToReticle(safeZone, 100); Orbwalker.SetMovement(true); }
+                   
                     break;
 
                 case Orbwalking.OrbwalkingMode.LastHit:
                     if (isEn("QLH")) { CastQ(); }
                     if (isEn("WLH")) { W.Cast(); }
-                    if (isEn("ACLH")) { Orbwalker.SetMovement(false); OrbWalkToReticle(safeZone, 100); Orbwalker.SetMovement(true); }
+                    
                     break;
 
                 case Orbwalking.OrbwalkingMode.LaneClear:
