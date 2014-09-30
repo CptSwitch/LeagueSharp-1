@@ -151,7 +151,7 @@ namespace DZDraven
         static void Orbwalking_AfterAttack(Obj_AI_Base unit, Obj_AI_Base target)
         {
             if (!unit.IsMe) { return; }
-            var safeZone = menu.Item("SafeZone").GetValue<Slider>().Value;
+            
             var tar = (Obj_AI_Hero)target;
             switch (Orbwalker.ActiveMode)
             {
@@ -202,7 +202,7 @@ namespace DZDraven
                 case Orbwalking.OrbwalkingMode.LaneClear:
                     if (isEn("WLC")) { W.Cast(); }
                     if (isEn("QLC")) { CastQ(); }
-                    if (isEn("ACLC")) { Orbwalker.SetMovement(false); OrbWalkToReticle(safeZone, 100); Orbwalker.SetMovement(true); }
+                    
                     break;
                 default:
                     return;
@@ -276,7 +276,7 @@ namespace DZDraven
         }
         private static void Game_OnGameUpdate(EventArgs args)
         {
-            
+            var safeZone = menu.Item("SafeZone").GetValue<Slider>().Value;
             var target = SimpleTs.GetTarget(550f, SimpleTs.DamageType.Physical);
             var ETarget = SimpleTs.GetTarget(E.Range, SimpleTs.DamageType.Physical);
             var RTarget = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
@@ -323,18 +323,20 @@ namespace DZDraven
                     if (isEn("QC")) { CastQ(); }
                     if (isEn("EC")) { CastE(ETarget);}
                     if (isEn("RC")) { CastR(RTarget); }
+                    if (isEn("ACC")) {  OrbWalkToReticle(safeZone, 100);  }
                     
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     if (isEn("QM")) { CastQ(); }
                     if (isEn("EM")) { CastE(ETarget); }
                     if (isEn("RM")) { CastR(RTarget); }
+                    if (isEn("ACM")) {OrbWalkToReticle(safeZone, 100);  }
                     break;
                 case Orbwalking.OrbwalkingMode.LastHit:
-                    
+                    if (isEn("ACLH")) {  OrbWalkToReticle(safeZone, 100);  }
                     break;
                 case Orbwalking.OrbwalkingMode.LaneClear:
-                    
+                    if (isEn("ACLC")) { OrbWalkToReticle(safeZone, 100);  }
                     break;
                 default:
                     break;
