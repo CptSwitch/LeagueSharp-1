@@ -109,7 +109,7 @@ namespace DZDraven
             
             
             menu.AddToMainMenu();
-            Game.PrintChat("DZDraven 1.11 Loaded.");
+            Game.PrintChat("DZDraven 1.1 Loaded.");
             Q = new Spell(SpellSlot.Q);
             W = new Spell(SpellSlot.W);
             E = new Spell(SpellSlot.E, 1100);
@@ -322,20 +322,20 @@ namespace DZDraven
                     if (isEn("QC")) { CastQ(); }
                     if (isEn("EC")) { CastE(ETarget);}
                     if (isEn("RC")) { CastR(RTarget); }
-                    if (isEn("ACC")) { Orbwalker.SetMovement(false); OrbWalkToReticle(safeZone, 100); Orbwalker.SetMovement(true); }
+                    if (isEn("ACC")) {  OrbWalkToReticle(safeZone, 100);  }
                     
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     if (isEn("QM")) { CastQ(); }
                     if (isEn("EM")) { CastE(ETarget); }
                     if (isEn("RM")) { CastR(RTarget); }
-                    if (isEn("ACM")) { Orbwalker.SetMovement(false); OrbWalkToReticle(safeZone, 100); Orbwalker.SetMovement(true); }
+                    if (isEn("ACM")) {OrbWalkToReticle(safeZone, 100);  }
                     break;
                 case Orbwalking.OrbwalkingMode.LastHit:
-                    if (isEn("ACLH")) { Orbwalker.SetMovement(false); OrbWalkToReticle(safeZone, 100); Orbwalker.SetMovement(true); }
+                    if (isEn("ACLH")) {  OrbWalkToReticle(safeZone, 100);  }
                     break;
                 case Orbwalking.OrbwalkingMode.LaneClear:
-                    if (isEn("ACLC")) { Orbwalker.SetMovement(false); OrbWalkToReticle(safeZone, 100); Orbwalker.SetMovement(true); }
+                    if (isEn("ACLC")) { OrbWalkToReticle(safeZone, 100);  }
                     break;
                 default:
                     break;
