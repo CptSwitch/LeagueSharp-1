@@ -405,7 +405,9 @@ namespace DZDraven
             }
             if(reticleList.Count >0)
             {
-                float closestDist = float.MaxValue;
+                ClosestRet = reticleList.OrderBy(reticle => reticle.getEndTime()).OrderBy(reticle => reticle.DistanceToPlayer()).FirstOrDefault();
+                float closestDist = player.Distance(ClosestRet.getPosition());
+                
                 foreach(Reticle r in reticleList.OrderBy(reticle=>reticle.getEndTime()).OrderBy(reticle=>reticle.DistanceToPlayer()))
                 {
                         if(r.getPosition().Distance(Game.CursorPos)<=QRadius && player.Distance(r.getPosition())< closestDist)
