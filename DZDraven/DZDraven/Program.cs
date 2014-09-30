@@ -445,8 +445,15 @@ namespace DZDraven
                     }
                     if (player.Distance(ClosestRet.getPosition()) >= 100)
                     {
+                        if (ClosestRet.getPosition() != Game.CursorPos)
+                        {
+                            Orbwalker.SetOrbwalkingPoint(ClosestRet.getPosition());
+                        }
+                        else
+                        {
+                            Orbwalker.SetOrbwalkingPoint(Game.CursorPos);
+                        }
                         
-                        Orbwalker.SetOrbwalkingPoint(ClosestRet.getPosition());
                     }
                     if (!toggle)
                     {
