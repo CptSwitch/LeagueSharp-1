@@ -435,7 +435,7 @@ namespace DZDraven
                     WNeeded = true;
                     
                 }
-                if((CanReachRet || WNeeded) && target!=null )
+                if((CanReachRet || WNeeded))
                 {
                     WNeeded = false;
                     if (!toggle)
