@@ -109,7 +109,7 @@ namespace DZDraven
             
             
             menu.AddToMainMenu();
-            Game.PrintChat("DZDraven 1.2 Loaded.");
+            Game.PrintChat("DZDraven 1.1 Loaded.");
             Q = new Spell(SpellSlot.Q);
             W = new Spell(SpellSlot.W);
             E = new Spell(SpellSlot.E, 1100);
