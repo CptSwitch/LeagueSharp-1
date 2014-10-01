@@ -170,7 +170,8 @@ namespace DZDraven
             {
                 case Orbwalking.OrbwalkingMode.Combo:
                     if (isEn("QC")) { CastQ(); }
-                    if(isEn("WC"))
+                    if (isEn("WC") && (ObjectManager.Player.Buffs.FirstOrDefault(
+                        buff => buff.Name == "dravenfurybuff" || buff.Name == "DravenFury") == null))
                     {
                         var WManaCombo = menu.Item("WManaC").GetValue<Slider>().Value;
                         if (getManaPer() >= WManaCombo) { W.Cast(); }
@@ -199,7 +200,8 @@ namespace DZDraven
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     if (isEn("QM")) { CastQ(); }
-                    if (isEn("WM"))
+                    if (isEn("WM") && (ObjectManager.Player.Buffs.FirstOrDefault(
+                        buff => buff.Name == "dravenfurybuff" || buff.Name == "DravenFury") == null))
                     {
                         var WManaMix = menu.Item("WManaM").GetValue<Slider>().Value;
                         if (getManaPer() >= WManaMix) { W.Cast(); }
@@ -209,12 +211,14 @@ namespace DZDraven
 
                 case Orbwalking.OrbwalkingMode.LastHit:
                     if (isEn("QLH")) { CastQ(); }
-                    if (isEn("WLH")) { W.Cast(); }
+                    if (isEn("WLH") && (ObjectManager.Player.Buffs.FirstOrDefault(
+                        buff => buff.Name == "dravenfurybuff" || buff.Name == "DravenFury") == null)) { W.Cast(); }
                     
                     break;
 
                 case Orbwalking.OrbwalkingMode.LaneClear:
-                    if (isEn("WLC")) { W.Cast(); }
+                    if (isEn("WLC") && ( ObjectManager.Player.Buffs.FirstOrDefault(
+                        buff => buff.Name == "dravenfurybuff" || buff.Name == "DravenFury") == null) { W.Cast(); }
                     if (isEn("QLC")) { CastQ(); }
                     
                     break;
