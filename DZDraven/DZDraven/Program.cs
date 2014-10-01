@@ -280,21 +280,22 @@ namespace DZDraven
             var ETarget = SimpleTs.GetTarget(E.Range, SimpleTs.DamageType.Physical);
             var RTarget = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
             //
-            if(Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Combo && isEn("ACC"))
+            switch (Orbwalker.ActiveMode)
             {
-                OrbWalkToReticle(safeZone, 100);
-            }
-            if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.Mixed && isEn("ACM"))
-            {
-                OrbWalkToReticle(safeZone, 100);
-            }
-            if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.LastHit && isEn("ALH"))
-            {
-                OrbWalkToReticle(safeZone, 100);
-            }
-            if (Orbwalker.ActiveMode == Orbwalking.OrbwalkingMode.LaneClear && isEn("ALC"))
-            {
-                OrbWalkToReticle(safeZone, 100);
+                case Orbwalking.OrbwalkingMode.Combo:
+                    if (isEn("ACC")) { OrbWalkToReticle(safeZone, 100); }
+                    break;
+                case Orbwalking.OrbwalkingMode.Mixed:
+                    if (isEn("ACM")) { OrbWalkToReticle(safeZone, 100); }
+                    break;
+                case Orbwalking.OrbwalkingMode.LastHit:
+                    if (isEn("ACLH")) { OrbWalkToReticle(safeZone, 100); }
+                    break;
+                case Orbwalking.OrbwalkingMode.LaneClear:
+                    if (isEn("ACLC")) { OrbWalkToReticle(safeZone, 100); }
+                    break;
+                default:
+                    break;
             }
                 foreach(var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero=>hero.IsEnemy))
                 {
