@@ -289,8 +289,8 @@ namespace DZDraven
                         if (E.GetHealthPrediction(hero) <= 0)
                         {
                             E.Cast(hero);
+                            break;
                         }
-                        break;
                     }
                     if(isEn("QKs"))
                     {
@@ -299,8 +299,8 @@ namespace DZDraven
                             if(GetQNumber()<1){Q.Cast();}
                             Orbwalker.SetAttacks(true);
                             Orbwalker.ForceTarget(hero);
+                            break;
                         }
-                        break;
                     }
                     if (isEn("RKs"))
                     {
