@@ -279,7 +279,7 @@ namespace DZDraven
             var target = SimpleTs.GetTarget(550f, SimpleTs.DamageType.Physical);
             var ETarget = SimpleTs.GetTarget(E.Range, SimpleTs.DamageType.Physical);
             var RTarget = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
-            if (target == null) return;
+            //if (target == null) return;
             
                 foreach(var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero=>hero.IsEnemy))
                 {
@@ -452,8 +452,7 @@ namespace DZDraven
                         else
                         {
                             Orbwalker.SetOrbwalkingPoint(Game.CursorPos);
-                        }
-                        
+                        } 
                     }
                     if (!toggle)
                     {
@@ -484,6 +483,7 @@ namespace DZDraven
         }
         public static void CastE(Obj_AI_Base unit)
         {
+            if (unit == null) { return; }
             var EPrediction = E.GetPrediction(unit);
             switch (Orbwalker.ActiveMode)
             {
@@ -501,6 +501,7 @@ namespace DZDraven
         }
         public static void CastR(Obj_AI_Base unit)
         {
+            if (unit == null) { return; }
             var RPrediction = R.GetPrediction(unit);
             switch (Orbwalker.ActiveMode)
             {
