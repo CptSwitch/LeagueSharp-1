@@ -291,7 +291,6 @@ namespace DZDraven
                             E.Cast(hero);
                             break;
                         }
-                        
                     }
                     if(isEn("QKs"))
                     {
