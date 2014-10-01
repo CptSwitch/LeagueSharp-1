@@ -109,7 +109,7 @@ namespace DZDraven
             
             
             menu.AddToMainMenu();
-            Game.PrintChat("DZDraven 1.2 Loaded.");
+            Game.PrintChat("DZDraven 1.1 Loaded.");
             Q = new Spell(SpellSlot.Q);
             W = new Spell(SpellSlot.W);
             E = new Spell(SpellSlot.E, 1100);
@@ -279,7 +279,7 @@ namespace DZDraven
             var target = SimpleTs.GetTarget(550f, SimpleTs.DamageType.Physical);
             var ETarget = SimpleTs.GetTarget(E.Range, SimpleTs.DamageType.Physical);
             var RTarget = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
-            
+            if (target == null) return;
             
                 foreach(var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero=>hero.IsEnemy))
                 {
@@ -319,21 +319,17 @@ namespace DZDraven
             switch (Orbwalker.ActiveMode)
             {  
                 case Orbwalking.OrbwalkingMode.Combo:
-                    if (isEn("ACC")) { OrbWalkToReticle(safeZone, 100); }
-                    if (target == null) break;
                     if (isEn("QC")) { CastQ(); }
                     if (isEn("EC")) { CastE(ETarget);}
                     if (isEn("RC")) { CastR(RTarget); }
-                    
+                    if (isEn("ACC")) {  OrbWalkToReticle(safeZone, 100);  }
                     
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
-                    if (isEn("ACM")) { OrbWalkToReticle(safeZone, 100); }
-                    if (target == null) break;
                     if (isEn("QM")) { CastQ(); }
                     if (isEn("EM")) { CastE(ETarget); }
                     if (isEn("RM")) { CastR(RTarget); }
-                    
+                    if (isEn("ACM")) {OrbWalkToReticle(safeZone, 100);  }
                     break;
                 case Orbwalking.OrbwalkingMode.LastHit:
                     if (isEn("ACLH")) {  OrbWalkToReticle(safeZone, 100);  }
