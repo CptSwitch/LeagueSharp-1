@@ -109,7 +109,7 @@ namespace DZDraven
             
             
             menu.AddToMainMenu();
-            Game.PrintChat("DZDraven 1.1 Loaded.");
+            Game.PrintChat("DZDraven 1.23 Loaded.");
             Q = new Spell(SpellSlot.Q);
             W = new Spell(SpellSlot.W);
             E = new Spell(SpellSlot.E, 1100);
@@ -156,6 +156,7 @@ namespace DZDraven
             switch (Orbwalker.ActiveMode)
             {
                 case Orbwalking.OrbwalkingMode.Combo:
+                    if (isEn("QC")) { CastQ(); }
                     if(isEn("WC"))
                     {
                         var WManaCombo = menu.Item("WManaC").GetValue<Slider>().Value;
@@ -184,6 +185,7 @@ namespace DZDraven
                     }
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
+                    if (isEn("QM")) { CastQ(); }
                     if (isEn("WM"))
                     {
                         var WManaMix = menu.Item("WManaM").GetValue<Slider>().Value;
@@ -279,7 +281,7 @@ namespace DZDraven
             var target = SimpleTs.GetTarget(550f, SimpleTs.DamageType.Physical);
             var ETarget = SimpleTs.GetTarget(E.Range, SimpleTs.DamageType.Physical);
             var RTarget = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
-            if (target == null) return;
+            //if (target == null) return;
             
                 foreach(var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero=>hero.IsEnemy))
                 {
@@ -319,14 +321,13 @@ namespace DZDraven
             switch (Orbwalker.ActiveMode)
             {  
                 case Orbwalking.OrbwalkingMode.Combo:
-                    if (isEn("QC")) { CastQ(); }
+                    
                     if (isEn("EC")) { CastE(ETarget);}
                     if (isEn("RC")) { CastR(RTarget); }
                     if (isEn("ACC")) {  OrbWalkToReticle(safeZone, 100);  }
                     
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
-                    if (isEn("QM")) { CastQ(); }
                     if (isEn("EM")) { CastE(ETarget); }
                     if (isEn("RM")) { CastR(RTarget); }
                     if (isEn("ACM")) {OrbWalkToReticle(safeZone, 100);  }
