@@ -109,7 +109,7 @@ namespace DZDraven
             
             
             menu.AddToMainMenu();
-            Game.PrintChat("DZDraven 1.23 Loaded.");
+            Game.PrintChat("DZDraven 1.24 Loaded.");
             Q = new Spell(SpellSlot.Q);
             W = new Spell(SpellSlot.W);
             E = new Spell(SpellSlot.E, 1100);
@@ -137,6 +137,7 @@ namespace DZDraven
             }
             if (drawRet.Active)
             {
+                /**
                 foreach(Reticle r in reticleList)
                 {
                     if(r.getObj().IsValid)
@@ -144,6 +145,7 @@ namespace DZDraven
                         Drawing.DrawCircle(r.getPosition(), 100 , drawRet.Color);
                     }
                 }
+                 */
                 foreach (Reticle r in reticleList.OrderBy(reticle => reticle.getEndTime()).OrderBy(reticle => reticle.DistanceToPlayer()))
                 {
                     if (r.getPosition().Distance(Game.CursorPos) <= QRadius)
