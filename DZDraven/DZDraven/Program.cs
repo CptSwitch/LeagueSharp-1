@@ -144,18 +144,7 @@ namespace DZDraven
                         Drawing.DrawCircle(r.getPosition(), 100 , drawRet.Color);
                     }
                 }
-                foreach (Reticle r in reticleList.OrderBy(reticle => reticle.getEndTime()).OrderBy(reticle => reticle.DistanceToPlayer()))
-                {
-                    if (r.getPosition().Distance(Game.CursorPos) <= QRadius)
-                    {
-                        float QDist1 = player.GetPath(r.getPosition()).ToList().To2D().PathLength();
-                        bool CanReachRet = (QDist1 / player.MoveSpeed + Game.Time) < (r.getEndTime());
-                        if (IsZoneSafe(r.getPosition(), 100) && IsZoneSafe(player.Position, 100) && CanReachRet)
-                        {
-                            Drawing.DrawCircle(r.getPosition(), 100, drawRet.Color);
-                        }
-                    }
-                }
+                
             }
         }
 
@@ -340,6 +329,7 @@ namespace DZDraven
                     if (isEn("EC")) { CastE(ETarget);}
                     if (isEn("RC")) { CastR(RTarget); }
                     if (isEn("ACC")) {  OrbWalkToReticle(safeZone, 100);  }
+                    
                     break;
                 case Orbwalking.OrbwalkingMode.Mixed:
                     if (isEn("EM")) { CastE(ETarget); }
