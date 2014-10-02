@@ -298,7 +298,7 @@ namespace DZDraven
             var target = SimpleTs.GetTarget(550f, SimpleTs.DamageType.Physical);
             var ETarget = SimpleTs.GetTarget(E.Range, SimpleTs.DamageType.Physical);
             var RTarget = SimpleTs.GetTarget(R.Range, SimpleTs.DamageType.Physical);
-            //
+            //if (target == null) return;
             
                 foreach(var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero=>hero.IsEnemy))
                 {
@@ -335,7 +335,6 @@ namespace DZDraven
             {
                 reticleList.Clear();
             }
-            
             switch (Orbwalker.ActiveMode)
             {  
                 case Orbwalking.OrbwalkingMode.Combo:
@@ -457,6 +456,10 @@ namespace DZDraven
                 if((CanReachRet || WNeeded))
                 {
                     WNeeded = false;
+                    if (!toggle)
+                    {
+                        Orbwalker.SetAttacks(false);
+                    }
                     if (player.Distance(ClosestRet.getPosition()) >= 100)
                     {
                         if (ClosestRet.getPosition() != Game.CursorPos)
@@ -467,6 +470,11 @@ namespace DZDraven
                         {
                             Orbwalker.SetOrbwalkingPoint(Game.CursorPos);
                         }
+                        
+                    }
+                    if (!toggle)
+                    {
+                        Orbwalker.SetAttacks(true);
                     }
                     Console.WriteLine("Orbwalking to " + ClosestRet.getPosition().ToString());
                 }
