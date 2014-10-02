@@ -218,7 +218,7 @@ namespace DZDraven
 
                 case Orbwalking.OrbwalkingMode.LaneClear:
                     if (isEn("WLC") && ( ObjectManager.Player.Buffs.FirstOrDefault(
-                        buff => buff.Name == "dravenfurybuff" || buff.Name == "DravenFury") == null)) { W.Cast(); }
+                        buff => buff.Name == "dravenfurybuff" || buff.Name == "DravenFury") == null) { W.Cast(); }
                     if (isEn("QLC")) { CastQ(); }
                     
                     break;
