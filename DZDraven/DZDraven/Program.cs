@@ -411,10 +411,10 @@ namespace DZDraven
             }
             if(reticleList.Count >0)
             {
-                ClosestRet = reticleList.OrderBy(reticle => reticle.getEndTime()).OrderBy(reticle => reticle.DistanceToPlayer()).FirstOrDefault();
-                float closestDist = player.Distance(ClosestRet.getPosition());
+
+                float closestDist = float.MaxValue;
                 
-                foreach(Reticle r in reticleList.OrderBy(reticle=>reticle.getEndTime()).OrderBy(reticle=>reticle.DistanceToPlayer()))
+                foreach(Reticle r in reticleList)
                 {
                         if(r.getPosition().Distance(Game.CursorPos)<=QRadius && player.Distance(r.getPosition())< closestDist)
                         {
@@ -444,10 +444,7 @@ namespace DZDraven
                 if((CanReachRet || WNeeded))
                 {
                     WNeeded = false;
-                    if (!toggle)
-                    {
-                        Orbwalker.SetAttacks(false);
-                    }
+                    
                     if (player.Distance(ClosestRet.getPosition()) >= 100)
                     {
                         if (ClosestRet.getPosition() != Game.CursorPos)
@@ -458,12 +455,8 @@ namespace DZDraven
                         {
                             Orbwalker.SetOrbwalkingPoint(Game.CursorPos);
                         }
-                        
                     }
-                    if (!toggle)
-                    {
-                        Orbwalker.SetAttacks(true);
-                    }
+                    
                     Console.WriteLine("Orbwalking to " + ClosestRet.getPosition().ToString());
                 }
                 
