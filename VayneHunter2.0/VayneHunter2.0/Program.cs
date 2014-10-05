@@ -150,7 +150,27 @@ namespace VayneHunter2._0
         }
         public static void OnTick(EventArgs args)
         {
-            
+            if (isEn("AutoE"))
+            {
+                foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
+                {
+                    if (hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero) < 715f && player.Distance(hero) > 0f && menu.Item(hero.BaseSkinName).GetValue<bool>())
+                    {
+
+                        var pred = E.GetPrediction(hero);
+                        var pushDist = menu.Item("PushDistance").GetValue<Slider>().Value;
+                        for (var i = 0; i < pushDist; i += (int)hero.BoundingRadius)
+                        {
+                            if (IsWall(pred.UnitPosition.To2D().Extend(ObjectManager.Player.ServerPosition.To2D(), -i).To3D()))
+                            {
+                                CastE(hero);
+                                break;
+                            }
+                        }
+                    }
+
+                }
+            }
             if (!isMode("Combo") || !isEn("UseE") || !E.IsReady()) { return; }
             if (!isEn("AdvE"))
             {
@@ -190,27 +210,7 @@ namespace VayneHunter2._0
 
                 }
             }
-            if (isEn("AutoE"))
-            {
-                foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
-                {
-                    if (hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero) < 715f && player.Distance(hero) > 0f && menu.Item(hero.BaseSkinName).GetValue<bool>())
-                    {
-
-                        var pred = E.GetPrediction(hero);
-                        var pushDist = menu.Item("PushDistance").GetValue<Slider>().Value;
-                        for (var i = 0; i < pushDist; i += (int)hero.BoundingRadius)
-                        {
-                            if (IsWall(pred.UnitPosition.To2D().Extend(ObjectManager.Player.ServerPosition.To2D(), -i).To3D()))
-                            {
-                                CastE(hero);
-                                break;
-                            }
-                        }
-                    }
-
-                }
-            }
+            
         }
         
          public static bool IsWall(Vector3 position)
