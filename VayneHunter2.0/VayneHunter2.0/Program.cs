@@ -185,7 +185,7 @@ namespace VayneHunter2._0
                             {
                                 Vector2 checker = (enemyPosition.To2D() - player.ServerPosition.To2D());
                                 checker.Normalize();
-                                var CheckPosition = enemyPosition.To2D() + checker * (checkerDist*i);
+                                var CheckPosition = enemyPosition.To2D() + checker * (i);
                                 if(IsWall(CheckPosition.To3D()))
                                 {
                                     CastE(hero);
@@ -214,7 +214,7 @@ namespace VayneHunter2._0
                         {
                             Vector2 checker = (enemyPosition.To2D() - player.ServerPosition.To2D());
                             checker.Normalize();
-                            var CheckPosition = enemyPosition.To2D() + checker * (checkerDist * i);
+                            var CheckPosition = enemyPosition.To2D() + checker * (i);
                             if (IsWall(CheckPosition.To3D()))
                             {
                                 CastE(hero);
