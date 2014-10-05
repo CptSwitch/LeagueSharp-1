@@ -171,58 +171,42 @@ namespace VayneHunter2._0
             }
             else
             {
-                foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
+                foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
                 {
                     if (hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero) < 715f && player.Distance(hero) > 0f && menu.Item(hero.BaseSkinName).GetValue<bool>())
                     {
                         
                         var pred = E.GetPrediction(hero);
                         var pushDist = menu.Item("PushDistance").GetValue<Slider>().Value;
-                        Vector3 enemyPosition = pred.UnitPosition;
-                        var nChecks = Math.Ceiling((double)(menu.Item("PushDistance").GetValue<Slider>().Value) / 65);
-                        var checkerDist = (int)Math.Ceiling(pushDist / nChecks);
-                            for(int i=1;i<nChecks;i+=1)
-                            {
-                                Vector2 checker = (enemyPosition.To2D() - player.ServerPosition.To2D());
-                                checker.Normalize();
-                                var CheckPosition = enemyPosition.To2D() + checker * (i);
-                                if(IsWall(CheckPosition.To3D()))
-                                {
-                                    CastE(hero);
-                                    break;    
-                                }
-
-                            }
-                        
+                        for (var i = 0; i < pushDist; i+=(int)hero.BoundingRadius)
+                       {
+                           if (IsWall(pred.UnitPosition.To2D().Extend(ObjectManager.Player.ServerPosition.To2D(), -i).To3D()))
+                           {
+                               CastE(hero);
+                               break;
+                           }
+                       }       
                     }
 
                 }
             }
             if (isEn("AutoE"))
             {
-                foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
+                foreach (Obj_AI_Hero hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
                 {
                     if (hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero) < 715f && player.Distance(hero) > 0f && menu.Item(hero.BaseSkinName).GetValue<bool>())
                     {
 
                         var pred = E.GetPrediction(hero);
                         var pushDist = menu.Item("PushDistance").GetValue<Slider>().Value;
-                        Vector3 enemyPosition = pred.UnitPosition;
-                        var nChecks = Math.Ceiling((double)(menu.Item("PushDistance").GetValue<Slider>().Value) / 65);
-                        var checkerDist = (int)Math.Ceiling(pushDist / nChecks);
-                        for (int i = 1; i < nChecks; i += 1)
+                        for (var i = 0; i < pushDist; i += (int)hero.BoundingRadius)
                         {
-                            Vector2 checker = (enemyPosition.To2D() - player.ServerPosition.To2D());
-                            checker.Normalize();
-                            var CheckPosition = enemyPosition.To2D() + checker * (i);
-                            if (IsWall(CheckPosition.To3D()))
+                            if (IsWall(pred.UnitPosition.To2D().Extend(ObjectManager.Player.ServerPosition.To2D(), -i).To3D()))
                             {
                                 CastE(hero);
                                 break;
                             }
-
                         }
-
                     }
 
                 }
