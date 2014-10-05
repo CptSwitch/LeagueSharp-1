@@ -19,6 +19,7 @@ namespace DZDraven
         public static Obj_AI_Base player = ObjectManager.Player;
         public static Spell Q, W, E, R;
         public static Menu menu;
+        public static bool isCatching = false;
         public static float autoRange = 550f;
         static void Main(string[] args)
         {
@@ -49,7 +50,7 @@ namespace DZDraven
             menu.SubMenu("QMenu").AddItem(new MenuItem("QRadius", "Catch Radius").SetValue(new Slider(600, 200, 800)));      
             menu.SubMenu("QMenu").AddItem(new MenuItem("QManaC", "Min Q Mana in Combo").SetValue(new Slider(10, 1, 100)));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QManaM", "Min Q Mana in Mixed").SetValue(new Slider(10, 1, 100)));
-            menu.SubMenu("QMenu").AddItem(new MenuItem("UseAARet", "Use AA while orbwalking to reticle").SetValue(true));
+            //menu.SubMenu("QMenu").AddItem(new MenuItem("UseAARet", "Use AA while orbwalking to reticle").SetValue(true));
             menu.SubMenu("QMenu").AddItem(new MenuItem("QRefresh", "Refresh List (if bug)").SetValue(new KeyBind("Z".ToCharArray()[0], KeyBindType.Press)));
 
             menu.AddSubMenu(new Menu("[Draven]Skill W", "WMenu"));
@@ -124,6 +125,7 @@ namespace DZDraven
             Game.OnGameUpdate += Game_OnGameUpdate;
             Orbwalking.AfterAttack += Orbwalking_AfterAttack;
             Drawing.OnDraw += Drawing_OnDraw;
+            
         }
 
         static void Drawing_OnDraw(EventArgs args)
@@ -364,7 +366,11 @@ namespace DZDraven
             if (!sender.Name.Contains("Q_reticle_self")) { return; }
             foreach(Reticle ret in reticleList)
             {
-                if(ret.getNetworkId() == sender.NetworkId){reticleList.Remove(ret);}
+                if (player.ServerPosition.Distance(ret.getPosition()) <= 100 && ret.getNetworkId() == sender.NetworkId)
+                {
+                    isCatching = false;
+                }
+                if(ret.getNetworkId() == sender.NetworkId){reticleList.Remove(ret);}           
             }
         }
 

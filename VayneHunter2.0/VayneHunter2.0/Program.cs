@@ -55,7 +55,7 @@ namespace VayneHunter2._0
             menu.SubMenu("Misc").AddItem(new MenuItem("AdvE", "Use AdvE logic").SetValue(true));
             menu.SubMenu("Misc").AddItem(new MenuItem("SmartQ", "WIP Use Q for GapClose").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("UsePK", "Use Packets").SetValue(true));
-            menu.SubMenu("Misc").AddItem(new MenuItem("AutoE", "Use Auto E").SetValue(false));
+            menu.SubMenu("Misc").AddItem(new MenuItem("AutoE", "Use Auto E (Lag)").SetValue(false));
             menu.SubMenu("Misc").AddItem(new MenuItem("PushDistance", "E Push Dist").SetValue(new Slider(425, 400, 475)));
             menu.AddSubMenu(new Menu("[Hunter]Items", "Items"));
             menu.SubMenu("Items").AddItem(new MenuItem("Botrk", "Use BOTRK").SetValue(true));
@@ -73,10 +73,12 @@ namespace VayneHunter2._0
             //menu.SubMenu("ezCondemn").AddItem(new MenuItem("Checks", "Num of Checks").SetValue(new Slider(3, 0, 5)));
             //menu.SubMenu("ezCondemn").AddItem(new MenuItem("MaxDistance", "Max Condemn Distance").SetValue(new Slider(1000, 0, 1500)));
             //Thank you blm95 ;)
+            menu.AddSubMenu(new Menu("[Hunter]Condemn: ", "CondemnHero"));
             menu.AddSubMenu(new Menu("[Hunter]Gapcloser", "gap"));
             menu.AddSubMenu(new Menu("[Hunter]Gapcloser 2", "gap2"));
             menu.AddSubMenu(new Menu("[Hunter]Interrupts", "int"));
             GPIntmenuCreate();
+            NoCondemnMenuCreate();
            // initHeroes();
             
             menu.AddToMainMenu();
@@ -152,7 +154,7 @@ namespace VayneHunter2._0
             if (!isMode("Combo") || !isEn("UseE") || !E.IsReady()) { return; }
             if (!isEn("AdvE"))
             {
-                foreach (var hero in from hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f))
+                foreach (var hero in from hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsValidTarget(550f) && menu.Item(hero.BaseSkinName).GetValue<bool>())
                                      let prediction = E.GetPrediction(hero)
                                      where NavMesh.GetCollisionFlags(
                                          prediction.UnitPosition.To2D().Extend(ObjectManager.Player.ServerPosition.To2D(),-menu.Item("PushDistance").GetValue<Slider>().Value).To3D())
@@ -171,29 +173,27 @@ namespace VayneHunter2._0
             {
                 foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
                 {
-                    if (hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero) < 715f && player.Distance(hero) > 0f)
+                    if (hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero) < 715f && player.Distance(hero) > 0f && menu.Item(hero.BaseSkinName).GetValue<bool>())
                     {
                         
                         var pred = E.GetPrediction(hero);
                         var pushDist = menu.Item("PushDistance").GetValue<Slider>().Value;
                         Vector3 enemyPosition = pred.UnitPosition;
-                        if(pred.Hitchance>HitChance.Low)
-                        {
-                            for(int i=1;i<pushDist;i+=60)
+                        var nChecks = Math.Ceiling((double)(menu.Item("PushDistance").GetValue<Slider>().Value) / 65);
+                        var checkerDist = (int)Math.Ceiling(pushDist / nChecks);
+                            for(int i=1;i<nChecks;i+=1)
                             {
-
-                                Vector2 checker = (pred.UnitPosition.To2D() - player.ServerPosition.To2D());
+                                Vector2 checker = (enemyPosition.To2D() - player.ServerPosition.To2D());
                                 checker.Normalize();
-                                var CheckPosition = pred.UnitPosition.To2D() + checker * i;
+                                var CheckPosition = enemyPosition.To2D() + checker * (checkerDist*i);
                                 if(IsWall(CheckPosition.To3D()))
                                 {
                                     CastE(hero);
-                                    break;
-                                    
+                                    break;    
                                 }
 
                             }
-                        }
+                        
                     }
 
                 }
@@ -202,29 +202,27 @@ namespace VayneHunter2._0
             {
                 foreach (var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
                 {
-                    if (hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero) < 715f && player.Distance(hero) > 0f)
+                    if (hero.IsValid && !hero.IsDead && hero.IsVisible && player.Distance(hero) < 715f && player.Distance(hero) > 0f && menu.Item(hero.BaseSkinName).GetValue<bool>())
                     {
 
                         var pred = E.GetPrediction(hero);
                         var pushDist = menu.Item("PushDistance").GetValue<Slider>().Value;
                         Vector3 enemyPosition = pred.UnitPosition;
-                        if (pred.Hitchance > HitChance.Low)
+                        var nChecks = Math.Ceiling((double)(menu.Item("PushDistance").GetValue<Slider>().Value) / 65);
+                        var checkerDist = (int)Math.Ceiling(pushDist / nChecks);
+                        for (int i = 1; i < nChecks; i += 1)
                         {
-                            for (int i = 1; i < pushDist; i += 60)
+                            Vector2 checker = (enemyPosition.To2D() - player.ServerPosition.To2D());
+                            checker.Normalize();
+                            var CheckPosition = enemyPosition.To2D() + checker * (checkerDist * i);
+                            if (IsWall(CheckPosition.To3D()))
                             {
-
-                                Vector2 checker = (pred.UnitPosition.To2D() - player.ServerPosition.To2D());
-                                checker.Normalize();
-                                var CheckPosition = pred.UnitPosition.To2D() + checker * i;
-                                if (IsWall(CheckPosition.To3D()))
-                                {
-                                    CastE(hero);
-                                    break;
-
-                                }
-
+                                CastE(hero);
+                                break;
                             }
+
                         }
+
                     }
 
                 }
@@ -337,6 +335,13 @@ namespace VayneHunter2._0
             for (int i = 0; i < interrupt.Length; i++)
             {
                 menu.SubMenu("int").AddItem(new MenuItem(interrupt[i], interrupt[i])).SetValue(true);
+            }
+        }
+        static void NoCondemnMenuCreate()
+        {
+            foreach(var hero in ObjectManager.Get<Obj_AI_Hero>().Where(hero => hero.IsEnemy))
+            {
+                menu.SubMenu("CondemnHero").AddItem(new MenuItem(hero.BaseSkinName, hero.BaseSkinName)).SetValue(true);
             }
         }
         
