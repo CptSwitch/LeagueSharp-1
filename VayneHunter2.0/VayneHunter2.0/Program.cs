@@ -97,8 +97,8 @@ namespace VayneHunter2._0
         {
             if (unit.IsMe)
             {
+                
                 Obj_AI_Hero targ = (Obj_AI_Hero)target;
-                if (!targ.IsValidTarget()) { return; }
                 if (isEnK("ENextAuto"))
                 {
                     CastE(targ);
@@ -171,6 +171,7 @@ namespace VayneHunter2._0
 
                 }
             }
+            
             if (!isMode("Combo") || !isEn("UseE") || !E.IsReady()) { return; }
             if (!isEn("AdvE"))
             {
@@ -197,6 +198,7 @@ namespace VayneHunter2._0
                     {
                         
                         var pred = E.GetPrediction(hero);
+                        
                         var pushDist = menu.Item("PushDistance").GetValue<Slider>().Value;
                         for (var i = 0; i < pushDist; i+=(int)hero.BoundingRadius)
                        {
