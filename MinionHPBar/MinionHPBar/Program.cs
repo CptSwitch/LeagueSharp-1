@@ -52,9 +52,9 @@ namespace DZDraven
                 var Minions = MinionManager.GetMinions(player.Position, menu.Item("DrRange").GetValue<Slider>().Value, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
                 foreach(var minion in Minions.Where(minion=>!minion.IsDead && minion.IsValid && minion!=null && minion.Team != player.Team && minion.IsVisible && player.Distance(minion)<=menu.Item("DrRange").GetValue<Slider>().Value && minion.IsEnemy))
                 {
-                    
-                    var autoToKill = Math.Ceiling(minion.MaxHealth/ DamageCalculator.Calculate((Obj_AI_Hero)player, minion));
-                    var BTD = Math.Ceiling(minion.MaxHealth / DamageCalculator.Calculate((Obj_AI_Hero)player, minion));
+
+                    var autoToKill = Math.Ceiling(minion.MaxHealth / Damage.GetAutoAttackDamage(player, minion, true));
+                    var BTD = Math.Ceiling(minion.MaxHealth / Damage.GetAutoAttackDamage(player,minion,true));
                     var HPBarPos = minion.HPBarPosition;
                     var BarsToDraw = Math.Ceiling((100/minion.MaxHealth) / autoToKill);
                     var width = minion.IsMelee()?75:81;
