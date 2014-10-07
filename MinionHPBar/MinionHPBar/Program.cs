@@ -63,7 +63,7 @@ namespace DZDraven
                     var barDistanceBetween =  width/ autoToKill;
                     for (int i=0;i<BTD;i++)
                     {
-                        if(i!=0 || i!=BTD-1)
+                        if(i!=0)
                         {
                             Drawing.DrawLine(new Vector2(HPBarPos.X + 45 + (float)(barDistanceBetween) * i, HPBarPos.Y + 18), new Vector2(HPBarPos.X + 45 + ((float)(barDistanceBetween) * i), HPBarPos.Y + 23), 1f, (minion.Health<=Damage.GetAutoAttackDamage(player,minion,true)?Color.Lime:Color.Black));
                         }
