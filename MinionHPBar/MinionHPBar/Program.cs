@@ -57,7 +57,7 @@ namespace DZDraven
                     var BTD = Math.Ceiling(minion.MaxHealth / Damage.GetAutoAttackDamage(player,minion,true));
                     var HPBarPos = minion.HPBarPosition;
                     var BarsToDraw = Math.Ceiling((100/minion.MaxHealth) / autoToKill);
-                    var width = minion.IsMelee()?75:81;
+                    var width = minion.IsMelee()?75:80;
                     if (!minion.IsMelee())casterDamage = minion.BaseAttackDamage;
                     if(minion.HasBuff("turretshield",true))width = 70;
                     var barDistanceBetween =  width/ autoToKill;
