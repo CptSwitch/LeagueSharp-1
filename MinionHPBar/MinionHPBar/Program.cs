@@ -49,14 +49,15 @@ namespace DZDraven
             if(isEn("DrawLines"))
             {
                // Game.PrintChat("Called");
-                foreach(var minion in ObjectManager.Get<Obj_AI_Minion>().Where(minion=>!minion.IsDead && minion.IsValid && minion!=null && minion.Team != player.Team && minion.IsVisible && player.Distance(minion)<=menu.Item("DrRange").GetValue<Slider>().Value && minion.IsEnemy))
+                var Minions = MinionManager.GetMinions(player.Position, menu.Item("DrRange").GetValue<Slider>().Value, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
+                foreach(var minion in Minions.Where(minion=>!minion.IsDead && minion.IsValid && minion!=null && minion.Team != player.Team && minion.IsVisible && player.Distance(minion)<=menu.Item("DrRange").GetValue<Slider>().Value && minion.IsEnemy))
                 {
                     
                     var autoToKill = Math.Ceiling(minion.MaxHealth/ DamageCalculator.Calculate((Obj_AI_Hero)player, minion));
                     var BTD = Math.Ceiling(minion.MaxHealth / DamageCalculator.Calculate((Obj_AI_Hero)player, minion));
                     var HPBarPos = minion.HPBarPosition;
                     var BarsToDraw = Math.Ceiling((100/minion.MaxHealth) / autoToKill);
-                    var width = minion.IsMelee()?75.6:81.2;
+                    var width = minion.IsMelee()?75:81;
                     if (!minion.IsMelee())casterDamage = minion.BaseAttackDamage;
                     if(minion.HasBuff("turretshield",true))width = 70;
                     var barDistanceBetween =  width/ autoToKill;
@@ -64,7 +65,7 @@ namespace DZDraven
                     {
                         if(i!=0 || i!=BTD-1)
                         {
-                            Drawing.DrawLine(new Vector2(HPBarPos.X + 45f + (float)(barDistanceBetween) * i, HPBarPos.Y + 18), new Vector2(HPBarPos.X + 45f + ((float)(barDistanceBetween) * i), HPBarPos.Y + 23), 1f, attackToKill==1?Color.Lime:Color.Black);
+                            Drawing.DrawLine(new Vector2(HPBarPos.X + 45.1f + (float)(barDistanceBetween) * i, HPBarPos.Y + 18), new Vector2(HPBarPos.X + 45.1f + ((float)(barDistanceBetween) * i), HPBarPos.Y + 23), 1f, (minion.Health<=DamageCalculator.Calculate((Obj_AI_Hero)player, minion))?Color.Lime:Color.Black);
                         }
                     }
                 }
