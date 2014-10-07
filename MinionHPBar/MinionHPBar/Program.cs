@@ -1,69 +1,79 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Input;
 using LeagueSharp;
 using LeagueSharp.Common;
 using SharpDX;
+
 using Color = System.Drawing.Color;
 
-namespace MinionHPBar
+namespace DZDraven
 {
 
     class Program
     {
-        public static Obj_AI_Base Player = ObjectManager.Player;
-        public static Menu Menu;
+        private const int MaxMinionDistance = 1000;
+        private static float casterDamage = 0;
+        private static List<Obj_AI_Minion> _killableMinions = new List<Obj_AI_Minion>();
 
-        private static void Main(string[] args)
+        public static Obj_AI_Base player = ObjectManager.Player;
+        public static Menu menu;
+        static void Main(string[] args)
         {
             CustomEvents.Game.OnGameLoad += Game_OnGameLoad;
         }
 
-        private static void Game_OnGameLoad(EventArgs args)
+        static void Game_OnGameLoad(EventArgs args)
         {
-            Menu = new Menu("DZ191's Minion HP Bar", "MinionHPBar", true);
-            Menu.AddSubMenu(new Menu("Drawing", "Drawing"));
-
+            menu = new Menu("DZ191's Minion HP Bar", "MinionHPBar", true);
+            menu.AddSubMenu(new Menu("Drawing", "Drawing"));
             //Drawings Menu
-            Menu.SubMenu("Drawing").AddItem(new MenuItem("DrawLines", "Draw Bars").SetValue(true));
-            Menu.AddSubMenu(new Menu("Ranges", "Range"));
-            Menu.SubMenu("Range").AddItem(new MenuItem("DrRange", "Draw Range").SetValue(new Slider(850,450,1200)));
-            Menu.AddToMainMenu();
-
-            //Credits
+            menu.SubMenu("Drawing").AddItem(new MenuItem("DrawLines", "Draw Bars").SetValue(true));
+            //menu.SubMenu("Drawing").AddItem(new MenuItem("Debug", "Debug").SetValue(false));
+            menu.AddSubMenu(new Menu("Ranges", "Range"));
+            menu.SubMenu("Range").AddItem(new MenuItem("DrRange", "Draw Range").SetValue(new Slider(850,450,1200)));
+            menu.AddToMainMenu();
             Game.PrintChat("MinionHPBar by DZ191. Damage Calculations by Lizzaran.");
             
-            //Events
             Drawing.OnDraw += Drawing_OnDraw;
+            Game.OnGameUpdate += Game_OnGameUpdate;
         }
 
-        private static void Drawing_OnDraw(EventArgs args)
+        static void Game_OnGameUpdate(EventArgs args)
         {
-            if (!Menu.Item("DrawLines").GetValue<bool>())
-                return;
+        }
 
-            var minionList = MinionManager.GetMinions(Player.Position, Menu.Item("DrRange").GetValue<Slider>().Value, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
-            foreach (var minion in minionList.Where(minion => minion.IsValidTarget(Menu.Item("DrRange").GetValue<Slider>().Value)))
+        static void Drawing_OnDraw(EventArgs args)
+        {
+            if(isEn("DrawLines"))
             {
-                var attackToKill  = Math.Ceiling(minion.MaxHealth/Player.GetAutoAttackDamage(minion, true));
-                var hpBarPosition = minion.HPBarPosition;
-                var barWidth = minion.IsMelee() ? 75 : 80;
-                if (minion.HasBuff("turretshield", true))
+               // Game.PrintChat("Called");
+                var Minions = MinionManager.GetMinions(player.Position, menu.Item("DrRange").GetValue<Slider>().Value, MinionTypes.All, MinionTeam.Enemy, MinionOrderTypes.MaxHealth);
+                foreach(var minion in Minions.Where(minion=>!minion.IsDead && minion.IsValid && minion!=null && minion.Team != player.Team && minion.IsVisible && player.Distance(minion)<=menu.Item("DrRange").GetValue<Slider>().Value && minion.IsEnemy))
                 {
-                    barWidth = 70;
-                }
-                var barDistance = barWidth/attackToKill;
-                for (var i = 0; i < attackToKill; i++)
-                {
-                    if (i != 0)
+
+                    var autoToKill = Math.Ceiling(minion.MaxHealth / Damage.GetAutoAttackDamage(player, minion, true));
+                    var BTD = Math.Ceiling(minion.MaxHealth / Damage.GetAutoAttackDamage(player,minion,true));
+                    var HPBarPos = minion.HPBarPosition;
+                    var BarsToDraw = Math.Ceiling((100/minion.MaxHealth) / autoToKill);
+                    var width = minion.IsMelee()?75:80;
+                    if (!minion.IsMelee())casterDamage = minion.BaseAttackDamage;
+                    if(minion.HasBuff("turretshield",true))width = 70;
+                    var barDistanceBetween =  width/ autoToKill;
+                    for (int i=0;i<BTD;i++)
                     {
-                        Drawing.DrawLine(
-                            new Vector2(hpBarPosition.X + 45 + (float) (barDistance)*i, hpBarPosition.Y + 18),
-                            new Vector2(hpBarPosition.X + 45 + ((float) (barDistance)*i), hpBarPosition.Y + 23), 1f,
-                            (minion.Health <= Player.GetAutoAttackDamage(minion, true) ? Color.Lime : Color.Black));
+                        if(i!=0)
+                        {
+                            Drawing.DrawLine(new Vector2(HPBarPos.X + 45 + (float)(barDistanceBetween) * i, HPBarPos.Y + 18), new Vector2(HPBarPos.X + 45 + ((float)(barDistanceBetween) * i), HPBarPos.Y + 23), 1f, (minion.Health<=Damage.GetAutoAttackDamage(player,minion,true)?Color.Lime:Color.Black));
+                        }
                     }
                 }
             }
+        }
+        static bool isEn(String opt)
+        {
+            return menu.Item(opt).GetValue<bool>();
         }
     }
 }
